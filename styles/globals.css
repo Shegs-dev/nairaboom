@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  font-family: "Inter", sans-serif;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Inter, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
+    Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: brder-box;
+}
+
+@media screen and (min-width: 280px) {
+  canvas {
+    width: 400px !important;
+    margin: 0 auto;
+    margin-left: 50px;
+    /* background-color: blue !important; */
+  }
+  .wheeldownbox{
+    margin-top: 2rem !important;
+  }
+  .eightAtplaygame{
+    margin-top: 0.5rem !important;
+  }
+}
+
+
+@media screen and (min-width: 760px) {
+  canvas {
+    width: 700px !important;
+    height: 550px !important;
+    margin: 0 auto;
+    margin-left: 100px;
+    /* background-color: red !important; */
+  }
+  .howtowinpattern{
+    margin-left: 0rem !important;
+    height: "27rem" !important;
+    width: "27rem" !important;
+  }
+  .eightAtplaygame{
+    margin-top: 0 !important;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 570px) {
+  .aboutRes {
+    padding-top: 15%;
+  }
+}
+
+
+@media screen and (min-width: 571px) and (max-width: 630px) {
+  .aboutRes {
+    padding-top: 25%;
+  }
+}
+@media screen and (min-width: 631px) and (max-width: 767px) {
+  .aboutRes {
+    padding-top: 35%;
+  }
+  .howtowinpattern{
+    margin-left: -0.5rem !important;
+    height: "14rem" !important;
+  }
+}
+
+.eighteenPlus {
+  /* position: relative; */
+  width: 4em !important;
+  text-align: right;
+  top: -70%;
+  right: -5%;
+  width: 60%;
+  z-index: 100;
+}
+
+.no-wrap {
+  white-space: nowrap !important;
+}
+
+
+/* .img18 {
+  top: 100vh !important;
+  height: 2rem !important;
+  left: '17.5vw' !important;
+  background-color: aquamarine !important;
+} */
+
+.eight {
+  background: url("/redesign/homepage/18.png") no-repeat,
+    url("/redesign/homepage/top-component-background.svg");
+  background-position: 90% 100%, top;
+  background-size: 8%, contain;
+}
+
+@media (min-width: 1023px) {
+  .eight {
+    background-position: 82% 100%, top;
+  }
+}
+
+
+/* ::selection {
+  background: red;
+}
+
+.required:after {
+  content: '*';
+  color: red;
+  padding-left: 5px;
+} */
+
+@keyframes pulse {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 255, 0.5);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+

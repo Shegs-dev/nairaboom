@@ -1,0 +1,162 @@
+@media screen and (max-width: 450px) and (min-width: 400px) {
+    .hometext1 {
+      white-space: nowrap !important;
+      font-size: 1.4rem !important;
+    }
+    .hometext2 {
+      white-space: nowrap !important;
+      font-size: 1.1rem !important;
+    }
+    .crossoverbtn {
+        margin: 0 auto !important;
+    }
+    .forgotpasswordlogo{
+        margin-left: 0.1rem !important;
+       
+    }
+
+  }
+  
+  @media screen and (max-width: 400px) and (min-width: 320px) {
+    .hometext1 {
+      white-space: nowrap !important;
+      font-size: 1.25rem !important;
+    }
+    .hometext2 {
+      white-space: nowrap !important;
+      font-size: 0.925rem !important;
+    }
+    .crossoverbtn {
+        margin: 0 auto !important;
+    }
+    .forgotpasswordlogo{
+        margin-left: -0.5rem !important;
+    }
+  }
+  @media screen and (max-width: 400px) and (min-width: 350px) {
+    .hometext1 {
+      white-space: nowrap !important;
+      font-size: 1.25rem !important;
+    }
+    .hometext2 {
+      white-space: nowrap !important;
+      font-size: 1.0rem !important;
+    }
+  }
+
+  @media screen and (max-width: 767px) and (min-width: 450px) {
+    .forgotpasswordlogo{
+        margin-left: 0.5rem !important;
+    }
+  }
+  @media screen and (max-width: 1028px) and (min-width: 768px) {
+    .forgotpasswordlogo{
+        margin-left: 0.5rem !important;
+    }
+  }
+  @media screen and (max-width: 340px) and (min-width: 320px) {
+    .jackpotamount{
+        font-size: 23px !important;
+    }
+
+  }
+  /* @media screen and (max-width: 380px) and (min-width: 280px) {
+    .crossovertab{
+        width: 90% !important;
+    }
+
+  }
+  @media screen and (max-width: 286px) and (min-width: 280px) {
+    .crossovertab{
+        width: 95% !important;
+    }
+  }
+  @media screen and (max-width: 320px) and (min-width: 308px) {
+    .crossovertab{
+        width: 95% !important;
+    }
+  }
+  @media screen and (max-width: 500px) and (min-width: 450px) {
+    .crossovertab{
+        width: 70% !important;
+    }
+  }
+
+  @media screen and (max-width: 600px) and (min-width: 450px) {
+    .crossovertab{
+        width: 40% !important;
+    }
+  } */
+
+
+
+  
+  /* @media screen and (min-width: 340px) {
+    .jackpotamount{
+        font-size: 27.5px !important;
+    }
+  } */
+
+
+  
+
+
+/* Loader */
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+  }
+  .wave {
+    width: 5px;
+    height: 25px;
+    background: #1ed760;
+    margin: 10px;
+    animation: wave 1s linear infinite;
+    border-radius: 20px;
+  }
+  .wave:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  .wave:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  .wave:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+  .wave:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+  .wave:nth-child(6) {
+    animation-delay: 0.5s;
+  }
+  .wave:nth-child(7) {
+    animation-delay: 0.6s;
+  }
+  .wave:nth-child(8) {
+    animation-delay: 0.7s;
+  }
+  .wave:nth-child(9) {
+    animation-delay: 0.8s;
+  }
+  .wave:nth-child(10) {
+    animation-delay: 0.9s;
+  }
+  
+  @keyframes wave {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }

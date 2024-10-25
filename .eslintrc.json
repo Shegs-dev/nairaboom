@@ -1,0 +1,13 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "react/prop-types": [2, { "ignore": ["variant"] }],
+    "react/no-unknown-property": [
+      "error",
+      2,
+      {
+        "ignore": ["variant", "jsx"]
+      }
+    ]
+  }
+}

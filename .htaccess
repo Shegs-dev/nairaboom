@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Captures the folder name and appends .html to it, rewriting the request
+  # to it equiv file name based on how Next JS works internally
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^([^/]+)/?$ /$1.html [L]
+</IfModule>
