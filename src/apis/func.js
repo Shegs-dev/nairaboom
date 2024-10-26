@@ -243,3 +243,20 @@ export const playFastestFinger = async (bearerToken, fastFinger) => {
     return error;
   }
 };
+
+export const getThreeSureCashOutStatus = async (bearerToken) => {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/three_sure_cashout_status`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

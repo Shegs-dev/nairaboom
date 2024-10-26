@@ -48,6 +48,7 @@ import {
   BsWallet,
 } from "react-icons/bs";
 import { IoMdCheckmark } from "react-icons/io";
+import { FaXmark } from "react-icons/fa6";
 import { HiHome, HiOutlineCash } from "react-icons/hi";
 import { MdContentPaste, MdFileCopy, MdHelpCenter } from "react-icons/md";
 import { BiShare, BiSolidCopy } from "react-icons/bi";
@@ -87,7 +88,8 @@ import {
   getAppSettings,
   monetizationAgreement,
   getMonetizationEligibility,
-  playFastestFinger
+  playFastestFinger,
+  getThreeSureCashOutStatus
 } from "../../src/apis/func";
 
 const BASE_URL = AUTH_API_ROUTES.PRODUCTION_BASE_URL;
@@ -114,6 +116,9 @@ const UserDashboard = () => {
   const [noSell, setNoSell] = useState(false);
   const [sell, setSell] = useState(false);
   const [sellPayload, setSellPayload] = useState(null);
+  const [cashOut1, setCashOut1] = useState(0);
+  const [cashOut2, setCashOut2] = useState(1);
+  const [cashOut3, setCashOut3] = useState(2);
 
   function parseJwt(token) {
     if (!bearerToken) return;
@@ -171,7 +176,7 @@ const UserDashboard = () => {
         duration: 10000,
         status: "info",
         title:
-          "Get ₦35.000 in your Rollover Wallet after your first wallet funding.",
+          "Make Your First Deposit and Get ₦35.000 Boom Coins to Start Cashing Out!",
         position: "top",
       });
     }
@@ -207,6 +212,7 @@ const UserDashboard = () => {
     fetchWheelTracker();
     fetchWishClock();
     fetchAppSettings();
+    checkThreeSureCashOutStatus();
   }, [bearerToken, toast, user?.token]);
 
 
@@ -314,6 +320,30 @@ const UserDashboard = () => {
     } else if (res?.data?.payload?.monetization_status === "3") {
       setAllowMonetize(true);
       setAgreeMonetize(false);
+    }
+  };
+
+  const checkThreeSureCashOutStatus = async () => {
+    const res = await getThreeSureCashOutStatus(bearerToken);
+
+    if (res?.data?.payload?.games) {
+      let x = 1;
+      while (x <= res?.data?.payload?.games.length) {
+        let val = 2;
+        if (res?.data?.payload?.games[x-1].green_balls > 0) {
+          val = 1;
+        }
+
+        if (x === 1) {
+          setCashOut1(val);
+        } else if (x === 2) {
+          setCashOut2(val);
+        } else if (x === 3) {
+          setCashOut3(val);
+        }
+
+        x++;
+      }
     }
   };
 
@@ -565,7 +595,7 @@ const UserDashboard = () => {
                 <Link href="/customer_dashboard/editprofile">link </Link>
                 to invite 35 people to <b>Sign Up</b> and <b>Play Games</b> on Nairaboom
                 <br />
-                2. Have a minimum of N 200,000 in your Rollover Wallet
+                2. Have a minimum of 200,000 in your Boom Coins Wallet
                 <br />
                 <br />
                 Benefits of monetizing your Nairaboom account:
@@ -876,7 +906,7 @@ const UserDashboard = () => {
               >
                 <ModalOverlay />
                 <ModalContent>
-                  <ModalHeader><Center><font size="5" color="brown">Rollover Wallet Sell Offer</font></Center></ModalHeader>
+                  <ModalHeader><Center><font size="5" color="brown">Boom Coins Wallet Sell Offer</font></Center></ModalHeader>
                   <ModalCloseButton />
                   <ModalBody>
                     <Center>
@@ -899,7 +929,7 @@ const UserDashboard = () => {
               >
                 <ModalOverlay />
                 <ModalContent>
-                  <ModalHeader><Center><font size="5" color="brown">Rollover Wallet Sell Offer</font></Center></ModalHeader>
+                  <ModalHeader><Center><font size="5" color="brown">Boom Coins Wallet Sell Offer</font></Center></ModalHeader>
                   <ModalCloseButton />
                   <ModalBody>
                     You've Received an Offer to Sell Your Boom Coins!
@@ -1173,6 +1203,14 @@ const UserDashboard = () => {
                   fontWeight={"bold"}
                   borderRadius={"100%"}
                 >
+                  {cashOut1 === 1 &&
+                    <IoMdCheckmark size={25}
+                      color="#0F9624" /> 
+                  }
+                  {cashOut1 === 2 &&
+                    <FaXmark size={25}
+                      color="#D80000" /> 
+                  }
                 </Box>
                 <Box
                   color={"white"}
@@ -1187,7 +1225,14 @@ const UserDashboard = () => {
                   fontWeight={"bold"}
                   borderRadius={"100%"}
                 >
-                  <IoMdCheckmark />
+                  {cashOut2 === 1 &&
+                    <IoMdCheckmark size={25}
+                      color="#0F9624" /> 
+                  }
+                  {cashOut2 === 2 &&
+                    <FaXmark size={25}
+                      color="#D80000" /> 
+                  }
                 </Box>
                 <Box
                   color={"white"}
@@ -1202,7 +1247,14 @@ const UserDashboard = () => {
                   fontWeight={"bold"}
                   borderRadius={"100%"}
                 >
-                  <IoMdCheckmark />
+                  {cashOut3 === 1 &&
+                    <IoMdCheckmark size={25}
+                      color="#0F9624" /> 
+                  }
+                  {cashOut3 === 2 &&
+                    <FaXmark size={25}
+                      color="#D80000" /> 
+                  }
                 </Box>
               </Box>
             </HStack>
@@ -1484,7 +1536,7 @@ const UserDashboard = () => {
           p={{ base: "1rem", md: "3rem" }}
         >
           <ModalHeader textAlign={"center"} fontWeight={700} fontSize="1.5rem">
-            How To Build Your Rollover Wallet
+            How To Build Your Boom Coins Wallet
           </ModalHeader>
           <div style={{ marginHorizontal: "auto" }}>
             <Text
@@ -1503,7 +1555,7 @@ const UserDashboard = () => {
               color="nairablue"
               textAlign={"center"}
             >
-              There are many ways to build your Rollover Wallet to Cashout
+              There are many ways to build your Boom Coins Wallet to Cashout
               Millions on Nairaboom. Click the button below to see how
             </Text>
             <Box

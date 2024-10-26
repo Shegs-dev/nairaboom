@@ -134,11 +134,15 @@ const Footer = () => {
               },
               {
                 image: "footer-tiktok.png",
-                link: "https://tiktok.com/@nairaboomng",
+                link: "https://www.tiktok.com/@nairaboom.ng?_t=8ouwtQ6j16L&_r=1",
               },
               {
                 image: "footer-threads.png",
                 link: "https://www.threads.net/@nairaboomng",
+              },
+              {
+                image: "footer-youtube.png",
+                link: "https://youtube.com/@nairaboomng?si=SsQoitRoAbRc1EvK",
               },
             ].map((item, index) => (
               <Link key={index} href={item.link} passHref legacyBehavior>
