@@ -1,20 +1,31 @@
 import { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
-// import Sidebar from "../components/sidebar";
+// import { Outlet } from "react-router-dom";
+// import "../../../styles/index.css";
 
-export default function Navigation() {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
+export default function Navigation({ children }) {
+  const [isMobile, setIsMobile] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [domLoaded, setDomLoaded] = useState(false);
+
+  useEffect(() => {
+    setDomLoaded(true);
+    // Set initial mobile state based on the window width
+    const initialIsMobile = window.innerWidth < 768;
+    setIsMobile(initialIsMobile);
+    setSidebarOpen(!initialIsMobile);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      const newIsMobile = window.innerWidth < 768;
+      setIsMobile(newIsMobile);
       if (window.innerWidth >= 768) {
-        setSidebarOpen(true); // Always keep sidebar open on larger screens
+        setSidebarOpen(true);
       } else {
         setSidebarOpen(false);
       }
     };
+
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -26,22 +37,21 @@ export default function Navigation() {
   };
 
   return (
-    <div className="flex h-screen font-changa w-full overflow-hidden">
-      {/* <Sidebar isOpen={sidebarOpen} onToggle={handleSidebarToggle} /> */}
-      <div
-        className={`flex flex-col flex-1 transition-all duration-300 ${
-          isMobile && sidebarOpen ? "blur-sm" : ""
-        }`}
-        onClick={() => isMobile && sidebarOpen && handleSidebarToggle()}
-      >
-        {/* <div className="bg-white p-4 flex justify-between items-center shadow-md"></div> */}
-        <div
-          //   style={{ maxWidth: window.innerWidth, overflow: "scroll" }}
-          className="bg-secondary text-white flex-1 overflow-y-auto"
-        >
-          <Outlet />
+    <>
+      {domLoaded && (
+        <div className="flex h-screen font-changa w-full overflow-hidden">
+          <div
+            className={`flex flex-col flex-1 transition-all duration-300 ${
+              isMobile && sidebarOpen ? "blur-sm" : ""
+            }`}
+            onClick={() => isMobile && sidebarOpen && handleSidebarToggle()}
+          >
+            <div className="bg-secondary text-white flex-1 overflow-y-auto">
+              {children}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }

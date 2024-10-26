@@ -1,0 +1,80 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Changa:wght@400;600&family=Changa+One&display=swap'); */
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    background: #fff;
+    border-radius: 5px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #1D173A;
+    border-radius: 5px;
+}
+ 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #1D173A;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important; /* Adjust background color as needed */
+}
+.bg-custom {
+  background-image: url('/mobile/assets/signin_background.png');
+}
+.background-ribbon {
+  background-image: url('/mobile/assets/BackgroundRibbon.png');
+  aspect-ratio: 16 / 9;
+}
+.small-ribbon {
+  background-image: url('/mobile/assets/SmallRibbon.png');
+}
+.ribbon-left {
+  background-image: url('/mobile/assets/RibbonLeft.png');
+  min-height: 158px;
+  max-height: 158px;
+  min-width: 155px;
+  max-width: 155px;
+}
+.ribbon-right {
+  background-image: url('/mobile/assets/RibbonRight.png');
+  min-height: 159px;
+  max-height: 159px;
+  min-width: 159px;
+  max-width: 159px;
+}
+.home-card {
+  background-image: url('/mobile/assets/HomeCard.png');
+  min-height: "fit-content";
+  max-height: "fit-content";
+}
+.gradient-div {
+  background: linear-gradient(to bottom, 
+  #1ED760 20%,   /* Light green ends at 20% */
+  #17A449 50%,   /* Darker green ends at 50% */
+  #107132 80%    /* Darkest green ends at 80% */
+);
+}
+/* Hide the scrollbar but still allow scrolling */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

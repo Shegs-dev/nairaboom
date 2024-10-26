@@ -6,41 +6,46 @@ import AboutNairaBoom from "./AboutNairaBoom";
 import HowToPlay from "./HowToPlay";
 import HowToWin from "./HowToWin";
 import Footer from "./Footer";
-import HomeMobile from "../mobile/pages/homepage/Home"
-import { useMediaQuery } from 'react-responsive';
+import HomeMobile from "../mobile/pages/homepage/Home";
+import { useMediaQuery } from "react-responsive";
+import Navigation from "../mobile/pages/Navigation";
 
 const Home = () => {
   const isLargerThan768 = useMediaQuery({
-    query: '(max-width: 768px)'
+    query: "(max-width: 768px)"
   });
 
   return (
     <div>
-    {!isLargerThan768 ? (
-      <>
-      <Box bg="brand.background">
-      <Head>
-        <title>Nairaboom | Rollover Your Alert & Cashout Up To ₦35,000,000</title>
-        {/* Boom up to ₦30,000,000 Instant Jackpot */}
-      </Head>
-      <TopComponent />
-      <AboutNairaBoom />
-      <Box pos="relative" pb="45rem">
-        <HowToPlay />
-      </Box>
-      <Box pos="relative">
-        <HowToWin />
-      </Box>
-      <Box pos="relative" bgColor="brand.background">
-        <Footer />
-      </Box>
-    </Box>
-      </>
-    ) : (
-      <>
-        <HomeMobile /> 
-      </>
-    )}
+      {!isLargerThan768 ? (
+        <>
+          <Box bg="brand.background">
+            <Head>
+              <title>
+                Nairaboom | Rollover Your Alert & Cashout Up To ₦35,000,000
+              </title>
+              {/* Boom up to ₦30,000,000 Instant Jackpot */}
+            </Head>
+            <TopComponent />
+            <AboutNairaBoom />
+            <Box pos="relative" pb="45rem">
+              <HowToPlay />
+            </Box>
+            <Box pos="relative">
+              <HowToWin />
+            </Box>
+            <Box pos="relative" bgColor="brand.background">
+              <Footer />
+            </Box>
+          </Box>
+        </>
+      ) : (
+        <>
+          <Navigation>
+            <HomeMobile />
+          </Navigation>
+        </>
+      )}
     </div>
   );
 };
