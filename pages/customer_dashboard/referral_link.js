@@ -17,6 +17,9 @@ import empty_records from "../../public/dashboard/empty_record.png";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { AUTH_API_ROUTES } from "../../utils/routes";
+import {
+  UserReferralStats
+} from "../../src/apis/func";
 import { TelegramShareButton, WhatsappShareButton } from "react-share";
 import { RWebShare } from "react-web-share";
 import { useMediaQuery } from "@chakra-ui/react";
@@ -36,12 +39,18 @@ const ReferralLink = () => {
   const [isLargerThan768] = useMediaQuery("(max-width: 768px)");
 
   const [hasCoppied, sethasCoppied] = useState(false);
-  const [referralCount, setReferralCount] = useState("0");
+  const [hasCalled, setHasCalled] = useState(false);
+  const [referralCount, setReferralCount] = useState();
+  const [currentEarnings, setCurrentEarnings] = useState("0");
+  const [totalEarnings, setTotalEarnings] = useState("0");
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
     if (bearerToken && bearerToken.length > 0) {
+      setIsLoading(true);
+      fetchReferrals();
       fetchData();
+      setIsLoading(false);
     }
 
     if (user && user.length > 0) {
@@ -76,75 +85,25 @@ const ReferralLink = () => {
     }
   }
 
-  // useEffect(() => {
-  //   if (bearerToken && bearerToken.length > 0) {
-  //     secondFunction();
-  //   }
-  // }, [bearerToken]);
-
-  // function secondFunction() {
-  //   var requestOptions = {
-  //     method: "get",
-  //     headers: {
-  //       Authorization: `Bearer ${bearerToken}`,
-  //       "X-APP-KEY": NAIRABOOM_KEY,
-  //     },
-  //   };
-  //   fetch("https://nairaboom.com.ng/api/profile", requestOptions)
-  //     .then((response) => {
-  //       console.warn("response", response);
-  //       response.text();
-  //     })
-  //     .then((result))
-  //     .catch((error));
-  // }
-
-  useEffect(() => {
-    if (bearerToken && bearerToken.length > 0) {
-      fetchData();
-    }
-
-    async function fetchData() {
-      const config = {
-        method: "get",
-        url: `${BASE_URL}/api/user_referral_stats`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-      };
-
-      try {
-        setIsLoading(true);
-        const response = await axios(config);
-        setReferralCount(response?.data?.payload?.total);
-      } catch (err) {
-        // toast({
-        //   status: "error",
-        //   isClosable: true,
-        //   duration: "5000",
-        //   title: "Please check your connection and try again",
-        //   position: "top",
-        // });
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  }, [bearerToken, toast]);
-
-
-  // var requestOptions = {
-  //     method: 'GET',
-  //     headers: {
-  //       Authorization:
-  //         'Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJJRCI6IjYwIiwiZnVsbG5hbWUiOiJlYXJsIiwiZW1haWwiOm51bGwsInBob25lX251bWJlciI6IisyMzQ4MTQ1NDA2ODM5IiwiZ2VuZGVyIjpudWxsLCJhZGRyZXNzIjpudWxsLCJyZXNpZGVuY2Vfc3RhdGUiOm51bGwsImNvdW50cnkiOm51bGwsImN1c3RvbWVyX3BhdGgiOiIiLCJzdGF0dXMiOiIxIiwiZGF0ZV9tb2RpZmllZCI6IjIwMjMtMDMtMDQgMTM6MDQ6NTgiLCJkYXRlX2NyZWF0ZWQiOiIyMDIzLTAzLTA0IDEzOjA0OjU4IiwidXNlcm5hbWUiOiIwODE0NTQwNjgzOSIsInVzZXJuYW1lXzIiOm51bGwsInVzZXJfdHlwZSI6ImN1c3RvbWVyIiwidXNlcl90YWJsZV9pZCI6IjE1IiwidG9rZW4iOm51bGwsImhhc19jaGFuZ2VfcGFzc3dvcmQiOiIwIiwibGFzdF9sb2dpbiI6IjIwMjMtMDQtMTQgMTM6MDk6NTgiLCJsYXN0X2xvZ291dCI6bnVsbCwicmVmZXJyYWxfY29kZSI6bnVsbCwibWV0YSI6MTY4MTQ3NjU1N30.3A1UEkxfYDpXfIyYjaEzhQYuXP-hleuBt6mcIROotog',
-  //       'X-APP-KEY': 'FEIX9997eQFKBCjk9FaP95YOOk013XkKgGLVz',
-  //     },
-  //   };
-  //   fetch('https://nairaboom.com.ng/api/wallet_balance', requestOptions)
-  //     .then(response => response.text())
-  //     .then(result)
-  //     .catch(error);
+  const fetchReferrals = async () => {
+      const res = await UserReferralStats(bearerToken);
+      setHasCalled(true);
+      if (res.status && (res.status === 200 || res.status === 201)) {
+        setReferralCount(res?.data?.payload?.total);
+        const cEarn = res?.data?.payload?.current_earning;
+        const cValue = Number(cEarn).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+        setCurrentEarnings(cValue);
+        const tEarn = res?.data?.payload?.total_earning;
+        const tValue = Number(tEarn).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+        setTotalEarnings(tValue);
+      } 
+  };
 
   const router = useRouter();
   const { r } = router.query;
@@ -164,7 +123,7 @@ const ReferralLink = () => {
         >
           My Referral Link
         </Text>
-        {isLoading || !data ? (
+        {!hasCalled ? (
           <Box
             py="10rem"
             display={"flex"}
@@ -176,7 +135,10 @@ const ReferralLink = () => {
         ) : (
           <>
           <Box display={"flex"} alignItems="center" gap="1.6rem">
-            <b>Total Referred: {referralCount}</b>
+            <b>Current Earnings: <br />₦ {currentEarnings}</b>
+            <b>Lifetime Earnings: <br />₦ {totalEarnings}</b>
+            <b>Total Referred: <br />{referralCount}</b>
+            
             <Box as={NextLink} href="/customer_dashboard/editprofile">
               <Avatar
                 name={user?.details?.fullname}

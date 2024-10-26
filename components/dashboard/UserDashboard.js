@@ -47,6 +47,7 @@ import {
   BsShareFill,
   BsWallet,
 } from "react-icons/bs";
+import { IoMdCheckmark } from "react-icons/io";
 import { HiHome, HiOutlineCash } from "react-icons/hi";
 import { MdContentPaste, MdFileCopy, MdHelpCenter } from "react-icons/md";
 import { BiShare, BiSolidCopy } from "react-icons/bi";
@@ -74,6 +75,21 @@ import InfoButtonModal from "./btnMode";
 import { ImInfo } from "react-icons/im";
 import Link from "next/link";
 
+import {
+  sellEligibility,
+  sellAcceptance,
+  getLatestCashbackTime,
+  getBonusWallet,
+  getWalletBalance,
+  getRequestHistory,
+  getWheelTracker,
+  getBoomCode,
+  getAppSettings,
+  monetizationAgreement,
+  getMonetizationEligibility,
+  playFastestFinger
+} from "../../src/apis/func";
+
 const BASE_URL = AUTH_API_ROUTES.PRODUCTION_BASE_URL;
 const NAIRABOOM_KEY = AUTH_API_ROUTES.PRODUCTION_X_APP_KEY;
 const UserDashboard = () => {
@@ -95,6 +111,10 @@ const UserDashboard = () => {
   const [playModal, setplayModal] = useState(false);
   const [boom_code, setboom_code] = useState(null);
 
+  const [noSell, setNoSell] = useState(false);
+  const [sell, setSell] = useState(false);
+  const [sellPayload, setSellPayload] = useState(null);
+
   function parseJwt(token) {
     if (!bearerToken) return;
     var base64Url = token?.split(".")[1];
@@ -110,89 +130,37 @@ const UserDashboard = () => {
     );
     return JSON.parse(jsonPayload);
   }
+
   //modal
   const someFunc = () => {
     setiisOpen(false);
   };
+
   const [iisOpen, setiisOpen] = useState(false);
-  const boomConfig = {
-    method: "get",
-    url: `${BASE_URL}/api/lastest_cashback_time`,
-    headers: {
-      "X-APP-KEY": NAIRABOOM_KEY,
-      Authorization: `Bearer ${user?.token}`,
-    },
-  };
-  const bonusConfig = {
-    method: "get",
-    url: `${BASE_URL}/api/bonus_wallet`,
-    headers: {
-      "X-APP-KEY": NAIRABOOM_KEY,
-      Authorization: `Bearer ${bearerToken}`,
-    },
-  };
-  const walletConfig = {
-    method: "get",
-    url: `${BASE_URL}/api/wallet_balance`,
-    headers: {
-      "X-APP-KEY": NAIRABOOM_KEY,
-      Authorization: `Bearer ${bearerToken}`,
-    },
-  };
   const [bonusBalance, setBonusBalance] = useState();
   const [walletBalance, setWalletBalance] = useState();
   const [gameSettings, setgameSettings] = useState();
+
   const boom = async () => {
-    try {
-      const res = await axios(boomConfig);
+    const res = await getLatestCashbackTime(bearerToken);
+    if (res.status && (res.status === 200 || res.status === 201)) {
       setBoomTimes(res?.data.payload);
-    } catch (e) {
-    }
+    } 
   };
-  const fetchBalance = async () => {
-    try {
-      const bonusRes = await axios(bonusConfig);
-      const walletRes = await axios(walletConfig);
-    } catch (e) {
-    }
-  };
+
   const fetchBalance2 = async () => {
-    const config = {
-      method: "get",
-      url: `${BASE_URL}/api/wallet_balance`,
-      headers: {
-        "X-APP-KEY": NAIRABOOM_KEY,
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    };
-    const bonusConfig = {
-      method: "get",
-      url: `${BASE_URL}/api/bonus_wallet`,
-      headers: {
-        "X-APP-KEY": NAIRABOOM_KEY,
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    };
-
-    try {
-      setIsLoading(true);
-      const response = await axios(config);
-      const response2 = await axios(bonusConfig);
-
+    setIsLoading(true);
+    const response = await getWalletBalance(bearerToken);
+    const response2 = await getBonusWallet(bearerToken);
+    if (response.status && (response.status === 200 || response.status === 201)) {
       setWalletBalance(response?.data);
+    } 
+    if (response2.status && (response2.status === 200 || response2.status === 201)) {
       setBonusBalance(response2?.data);
-    } catch (err) {
-      // toast({
-      //   status: "error",
-      //   isClosable: true,
-      //   duration: "5000",
-      //   title: "Please check your connection and try again",
-      //   position: "top",
-      // });
-    } finally {
-      setIsLoading(false);
-      setwalletBal_avaialable(true);
     }
+    
+    setIsLoading(false);
+    setwalletBal_avaialable(true);
   };
 
   //check if wallet has been funded
@@ -225,215 +193,88 @@ const UserDashboard = () => {
     boom();
     fetchBalance2();
   }, [bearerToken, router]);
+
   function convertStringToArray(inputString) {
     // Split the input string by "::" and convert substrings to integers
     const array = inputString?.split("::").map(Number);
     return array;
   }
+
   useEffect(() => {
     if (!bearerToken) return;
 
-    async function fetchData() {
-      const config = {
-        method: "get",
-        url: `${BASE_URL}/api/request_history`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-      };
-
-      try {
-        setIsLoading(true);
-        const response = await axios(config);
-        setData(response?.data);
-      } catch (err) {
-        // toast({
-        //   status: "error",
-        //   isClosable: true,
-        //   duration: "5000",
-        //   title: "Please check your connection and try again",
-        //   position: "top",
-        // });
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    async function wheelsettings() {
-      const config = {
-        method: "get",
-        url: `${BASE_URL}/api/request_history`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-      };
-
-      try {
-        setIsLoading(true);
-        const response = await axios(config);
-        setData(response?.data);
-      } catch (err) {
-        // toast({
-        //   status: "error",
-        //   isClosable: true,
-        //   duration: "5000",
-        //   title: "Please check your connection and try again",
-        //   position: "top",
-        // });
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    const getter2 = async () => {
-      const wheelconfig = {
-        method: "get",
-        url: `${BASE_URL}/api/wheel_tracker`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-      };
-
-      try {
-        setIsLoading(true);
-        // const response = await axios(config);
-        const response = await axios(wheelconfig);
-        setwheelsettings(response?.data);
-      } catch (err) {
-        // toast({
-        //   status: "error",
-        //   isClosable: true,
-        //   duration: "5000",
-        //   title: "Please check your connection and try again",
-        //   position: "top",
-        // });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    async function fetchWishClock() {
-      const fetchWishConfig = {
-        method: "get",
-        url: `${BASE_URL}/api/boom_code`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${user?.token}`,
-        },
-      };
-      try {
-        const res = await axios(fetchWishConfig);
-        const codes = convertStringToArray(res.data?.payload?.code);
-        setboom_code(codes);
-        localStorage.setItem("boomCode", res.data?.payload?.code);
-      } catch (e) {
-        // toast({
-        //   status: "error",
-        //   isClosable: true,
-        //   duration: "5000",
-        //   title: "Please check your connection and try again",
-        //   position: "top",
-        // });
-      }
-    }
-
-    async function getAppSettings() {
-      const config = {
-        method: "get",
-        url: `${BASE_URL}/api/app_settings`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-      };
-
-      try {
-        setIsLoading(true);
-        const response = await axios(config);
-        setgameSettings(response?.data.payload);
-      } catch (err) {
-        // toast({
-        //   status: "error",
-        //   isClosable: true,
-        //   duration: "5000",
-        //   title: "Please check your connection and try again",
-        //   position: "top",
-        // });
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchData();
-    getter2();
+    fetchRequestHistory();
+    fetchWheelTracker();
     fetchWishClock();
-    getAppSettings();
+    fetchAppSettings();
   }, [bearerToken, toast, user?.token]);
-  // function formatNumberWithCommas(number) {
-  //   return number?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  // }
+
+
+  const fetchRequestHistory = async () => {
+    const res = await getRequestHistory(bearerToken);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      setData(res?.data);
+    } 
+  };
+
+  const fetchWheelTracker = async () => {
+    const res = await getWheelTracker(bearerToken);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      setwheelsettings(res?.data);
+    } 
+  };
+
+  const fetchWishClock = async () => {
+    const res = await getBoomCode(bearerToken);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      const codes = convertStringToArray(res.data?.payload?.code);
+      setboom_code(codes);
+      localStorage.setItem("boomCode", res.data?.payload?.code);
+    } 
+  };
+
+  const fetchAppSettings = async () => {
+    const res = await getAppSettings(bearerToken);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      setgameSettings(res?.data.payload);
+    } 
+  };
+
   function formatNumberWithCommas(number) {
     const formattedNumber = number
       ?.toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return formattedNumber?.replace(/\.00$/, ""); // Remove .00 if present at the end
   }
+
   const isCustomer = router.pathname.includes("customer_dashboard");
   const modalRedirect = () => {
     setiisOpen(true);
   };
 
-  const TopComponent = () => {
-    const menuRef = useRef();
-    const { isOpen, onOpen, onClose } = useDisclosure();
-
-    //
-
   const sendIAgreeForMonetization = async () => {
-    const monetizationConfig = {
-      method: "post",
-      url: `${BASE_URL}/api/monetization_agreement`,
-      headers: {
-        "X-APP-KEY": NAIRABOOM_KEY,
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    };
-
-    try {
-      const res = await axios(monetizationConfig);
-      if (res?.data?.status) {
-        toast({
-          status: "success",
-          isClosable: true,
-          duration: "5000",
-          //title: res.data.message,
-          title: "Congratulations! Your Monetization has commenced.",
-          position: "top",
-        });
-        setAgreeMonetize(true);
-      } else {
-        toast({
-          status: "success",
-          isClosable: true,
-          duration: "5000",
-          title: res.data.message,
-          position: "top",
-        });
-        setAgreeMonetize(false);
-      }
-      
-    } catch (e) {
-      // toast({
-      //   status: "error",
-      //   isClosable: true,
-      //   duration: "5000",
-      //   title: e?.message ?? "Please check your connection and try again",
-      //   position: "top",
-      // });
+    const res = await monetizationAgreement(bearerToken);
+    if (res?.data?.status) {
+      toast({
+        status: "success",
+        isClosable: true,
+        duration: "5000",
+        //title: res.data.message,
+        title: "Congratulations! Your Monetization has commenced.",
+        position: "top",
+      });
+      setAgreeMonetize(true);
+    } else {
+      toast({
+        status: "success",
+        isClosable: true,
+        duration: "5000",
+        title: res.data.message,
+        position: "top",
+      });
+      setAgreeMonetize(false);
     }
+    
     setAgreeMonetizeModal(false);
   }
 
@@ -464,38 +305,62 @@ const UserDashboard = () => {
   };
 
   const checkMonetizationEligibility = async () => {
-    const url = BASE_URL + "/api/monetization_eligibility";
-
-    const monetizationConfig = {
-      method: "get",
-      url: url,
-      headers: {
-        "X-APP-KEY": NAIRABOOM_KEY,
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    };
-
-    try {
-      const res = await axios(monetizationConfig);
-      if (res?.data?.payload?.monetization_status === "0" || res?.data?.payload?.monetization_status === "2") {
-        setAllowMonetize(false);
-      } else if (res?.data?.payload?.monetization_status === "1") {
-        setAllowMonetize(true);
-        setAgreeMonetize(true);
-      } else if (res?.data?.payload?.monetization_status === "3") {
-        setAllowMonetize(true);
-        setAgreeMonetize(false);
-      } 
-    } catch (e) {
-      // toast({
-      //   status: "error",
-      //   isClosable: true,
-      //   duration: "5000",
-      //   title: e?.message ?? "Please check your connection and try again",
-      //   position: "top",
-      // });
+    const res = await getMonetizationEligibility(bearerToken);
+    if (res?.data?.payload?.monetization_status === "0" || res?.data?.payload?.monetization_status === "2") {
+      setAllowMonetize(false);
+    } else if (res?.data?.payload?.monetization_status === "1") {
+      setAllowMonetize(true);
+      setAgreeMonetize(true);
+    } else if (res?.data?.payload?.monetization_status === "3") {
+      setAllowMonetize(true);
+      setAgreeMonetize(false);
     }
   };
+
+  const fetchSellEligibility = async () => {
+    setIsLoading(true);
+    const res = await sellEligibility(bearerToken);
+    setIsLoading(false);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      if (res?.data?.payload?.status === "ineligible") {
+        setSell(false);
+        setNoSell(true);
+      } else {
+        setSellPayload(res?.data?.payload);
+        setNoSell(false);
+        setSell(true);
+      }
+    } 
+  };
+
+  const completeSellAcceptance = async () => {
+    setIsLoading(true);
+    const res = await sellAcceptance(bearerToken);
+    setIsLoading(false);
+    if (res?.data?.status) {
+      toast({
+        status: "success",
+        isClosable: true,
+        duration: "5000",
+        title: res?.data?.message,
+        position: "top",
+      });
+    } else {
+      toast({
+        status: "success",
+        isClosable: true,
+        duration: "5000",
+        title: res.data.message,
+        position: "top",
+      });
+    }
+  };
+
+  const TopComponent = () => {
+    const menuRef = useRef();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    //
 
     return (
       <Stack
@@ -558,15 +423,11 @@ const UserDashboard = () => {
                       link: "customer_dashboard/request_history",
                       icon: <MdContentPaste />,
                     },
-                    // { title: "Agent Code", link: "customer_dashboard/agentcode", icon: <TbUsers/> },
                     {
                       title: "Refer & Monetize",
                       link: "customer_dashboard/referral_link",
                       icon: <MdFileCopy />,
                     },
-                    // { title: "Redeem Winnings", link: "customer_dashboard/redeem_winnings", icon: <BiShare/> },
-                    // { title: "My Bonus", link: "customer_dashboard/request_history", icon: <BsWallet /> },
-
                     {
                       title: "Share & Earn",
                       link: "customer_dashboard/share_ads",
@@ -647,14 +508,12 @@ const UserDashboard = () => {
                     gap="1.18rem"
                     mt="0.5rem"
                     pl="2rem"
-                    // as={Link}
                     display="flex"
                     alignItems="center"
                     onClick={() => {
                       setopenLogout(true);
                     }}
                   >
-                    {/* <Image src={logout} width={"20px"} height={"20px"} alt="logout icon" /> */}
                     <Text color="#FF4B4B" fontWeight={500} fontSize="xl">
                       Log Out
                     </Text>
@@ -670,44 +529,21 @@ const UserDashboard = () => {
             <Text>Got an alert, you want to rollover?</Text>
           </Stack>
           <Spacer />
-          {/* <Box pos="relative">
-            <Circle
-              h="0.65rem"
-              w="0.65rem"
-              bg="red"
-              pos="absolute"
-              top={0}
-              right={0.2}
-            />
-            <BsBell size={20} />
-          </Box> */}
           <Button
             py={2}
-                h={"2rem"}
-                px={8}
-                borderRadius={32}
-                colorScheme="none"
-                bg="#FFBF00"
-                color="white"
-                flexDir={"column"}
+            h={"2rem"}
+            px={8}
+            borderRadius={32}
+            colorScheme="none"
+            bg="#FFBF00"
+            color="white"
+            flexDir={"column"}
             isDisabled={!allowMonetize}
             _hover={{ transform: "scale(1.05)" }}
             onClick={allowedModalRedirect}
           >
             Monetize
           </Button>
-          {/* <Box
-            onClick={() => {
-              setMonetizeModal(true);
-            }}
-            height={"3.25rem"}
-            w={{ base: "2.0rem", lg: "2.5rem" }}
-            // mt={{ base: "0.85rem", lg: "1px" }}
-            className="eightAtplaygame"
-            alignSelf={{ base: "flex-start", md: "center" }}
-          >
-            <ImInfo size={{ base: "1.5rem", lg: "2rem" }} />
-          </Box> */}
           <Modal
             isOpen={monetizeModal}
             onClose={() => {
@@ -753,9 +589,7 @@ const UserDashboard = () => {
                     type={"button"}
                     fontWeight={700}
                     fontSize={"2xl"}
-                    // mb={{ base: "2rem", md: "1rem" }}
                     cursor={"pointer"}
-                    // isDisabled={!isChecked}
                     isDisabled={false}
                     _hover={{ transform: "scale(1.05)" }}
                     onClick={() => {
@@ -781,7 +615,6 @@ const UserDashboard = () => {
               <ModalHeader><Center><font size="14" color="brown">MONETIZE</font></Center></ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                {/* Your modal content goes here */}
                 Congratulations you have qualified for the Nairaboom Monetization Program.
                 <br />
                 <br />
@@ -800,9 +633,7 @@ const UserDashboard = () => {
                     type={"button"}
                     fontWeight={700}
                     fontSize={"2xl"}
-                    // mb={{ base: "2rem", md: "1rem" }}
                     cursor={"pointer"}
-                    // isDisabled={!isChecked}
                     isDisabled={false}
                     _hover={{ transform: "scale(1.05)" }}
                     onClick={sendIAgreeForMonetization}
@@ -845,14 +676,12 @@ const UserDashboard = () => {
                     type={"button"}
                     fontWeight={700}
                     fontSize={"2xl"}
-                    // mb={{ base: "2rem", md: "1rem" }}
                     cursor={"pointer"}
-                    // isDisabled={!isChecked}
                     isDisabled={false}
                     _hover={{ transform: "scale(1.05)" }}
                     onClick={() => {
-              router.push("/customer_dashboard/referral_link");
-            }}
+                      router.push("/customer_dashboard/referral_link");
+                    }}
                   >
                     OK
                   </Button>
@@ -903,7 +732,6 @@ const UserDashboard = () => {
             <HStack
               color="#012647"
               py={2}
-              // justifyContent="center"
               spacing={{ base: 2, md: 5 }}
               px={4}
               flexDir={"row"}
@@ -924,7 +752,6 @@ const UserDashboard = () => {
 
                 <Text fontWeight={{ base: "bold" }} color={"#002047"}>
                   {isLoading ? (
-                    // <Spinner />
                     <Bars
                       height="20"
                       width="40"
@@ -935,9 +762,6 @@ const UserDashboard = () => {
                       visible={true}
                     />
                   ) : (
-                    // <Bars  stroke="#00A85A" />
-                    // <AudioFrequencyIndicator/>
-                    // <Loader2 />
                     <>
                       &#8358;{" "}
                       {walletBalance
@@ -966,7 +790,6 @@ const UserDashboard = () => {
                 color="white"
                 flexDir={"column"}
                 onClick={() => {
-                  // router.push("/agent_dashboard/request_history");
                   router.push("/customer_dashboard/fund_account");
                 }}
                 cursor={"pointer"}
@@ -976,22 +799,6 @@ const UserDashboard = () => {
               </Button>
             </HStack>
           </GridItem>
-          {/* <GridItem colSpan={1} display={{ base: "none", md: "block" }}>
-            <Box
-              bg="nairagreen"
-              color="white"
-              textAlign="center"
-              py={2}
-              borderRadius={32}
-              cursor="pointer"
-              transition={"all ease-in-out .4s"}
-              onClick={() => {
-                router.push("/customer_dashboard/fund_account");
-              }}
-            >
-              Fund
-            </Box>
-          </GridItem> */}
           <GridItem w="100%" colSpan={2} bg="white" borderRadius={32}>
             <HStack
               w={{ base: "100%", lg: "100%" }}
@@ -1003,7 +810,6 @@ const UserDashboard = () => {
               borderRadius={32}
               flexDir={"row"}
               display={"flex"}
-              // justifyContent="center"
               spacing={5}
               onClick={() => modalRedirect()}
             >
@@ -1016,11 +822,10 @@ const UserDashboard = () => {
                   textAlign={"left"}
                   fontWeight={{ base: "bold" }}
                 >
-                  Rollover Wallet
+                  Boom Coins Wallet
                 </Text>
                 <Text fontWeight={{ base: "bold" }} color={"#002047"}>
                   {isLoading ? (
-                    // <Spinner />
                     <Bars
                       height="20"
                       width="40"
@@ -1032,7 +837,6 @@ const UserDashboard = () => {
                     />
                   ) : (
                     <>
-                      &#8358;{" "}
                       {bonusBalance
                         ? !bonusBalance ||
                           bonusBalance?.payload?.totalLength === 0 ||
@@ -1047,31 +851,119 @@ const UserDashboard = () => {
                   )}
                 </Text>
               </VStack>
-              {/* <Button
+              <Button
+                style={{ marginLeft: "auto" }}
                 py={2}
                 h={"2rem"}
-                px={4}
+                px={8}
                 borderRadius={32}
                 colorScheme="none"
-                bg="#FF0000"
+                bg="#FFBF00"
                 color="white"
                 flexDir={"column"}
-                onClick={() => {
-                  // router.push("/agent_dashboard/request_history");
-                  router.push("/customer_dashboard/cashout");
-                }}
+                onClick={fetchSellEligibility}
+                cursor={"pointer"}
+                _hover={{ transform: "scale(1.05)" }}
               >
-                Cashout
-              </Button> */}
-
+                Sell
+              </Button>
+              <Modal
+                isOpen={noSell}
+                onClose={() => {
+                  setNoSell(false);
+                }}
+                size="lg"
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader><Center><font size="5" color="brown">Rollover Wallet Sell Offer</font></Center></ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <Center>
+                      <b>No Sell Offer Available!</b>
+                    </Center>
+                    <br />
+                    <br />
+                    To be eligible to sell, maintain a minimum balance of 500,000 Boom Coins in your wallet and stay active. 
+                    Keep playing Rollover Games to accumulate your alerts and grow your coins!
+                    <br /><br />
+                  </ModalBody>
+                </ModalContent>
+              </Modal>
+              <Modal
+                isOpen={sell}
+                onClose={() => {
+                  setSell(false);
+                }}
+                size="lg"
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader><Center><font size="5" color="brown">Rollover Wallet Sell Offer</font></Center></ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    You've Received an Offer to Sell Your Boom Coins!
+                    <br />
+                    <br />
+                    Sell Percentage: {sellPayload?.sell_percentage}
+                    <br />
+                    Amount: ₦{sellPayload?.sell_amount_display}
+                    <p>
+                      If you accept this offer, you agree to sell your Boom Coins at the specified rate and will receive 
+                      the cash equivalent in your Main Wallet. Note: 5% Agency Fee applies.
+                    </p>
+                  </ModalBody>
+                  <Box
+                    display={"flex"}
+                    justifyContent="space-between"
+                    alignItems={"center"}
+                  >
+                    <Button
+                      w="40%"
+                      h="3.25rem"
+                      colorScheme="none"
+                      bg="green"
+                      color="white"
+                      borderRadius={50}
+                      pos="relative"
+                      border={"none"}
+                      type={"button"}
+                      fontWeight={700}
+                      fontSize={"2xl"}
+                      cursor={"pointer"}
+                      _hover={{ transform: "scale(1.05)" }}
+                      onClick={completeSellAcceptance}
+                    >
+                      ACCEPT
+                    </Button>
+                    <Button
+                      w="40%"
+                      h="3.25rem"
+                      colorScheme="none"
+                      bg="red"
+                      color="white"
+                      borderRadius={50}
+                      pos="relative"
+                      border={"none"}
+                      type={"button"}
+                      fontWeight={700}
+                      fontSize={"2xl"}
+                      cursor={"pointer"}
+                      _hover={{ transform: "scale(1.05)" }}
+                      onClick={() => {
+                        setSell(false);
+                      }}
+                    >
+                      DECLINE
+                    </Button>
+                  </Box>
+                </ModalContent>
+              </Modal>
               <Button
                 py={2}
                 h={"2rem"}
-                // px={8}
                 ml={"auto"}
-                // borderRadius={32}
                 colorScheme="none"
-                // bg="nairagreen"
                 color="white"
                 flexDir={"column"}
                 onClick={() => {
@@ -1083,7 +975,6 @@ const UserDashboard = () => {
                 style={{ marginLeft: "auto" }}
               >
                 <Box>
-                  {/* <BsWallet size={20} color="#002047" /> */}
                   <ImInfo size={20} color="#002047" />
                 </Box>
               </Button>
@@ -1093,34 +984,16 @@ const UserDashboard = () => {
       </Stack>
     );
   };
+
   const CentralComponent = () => {
     const [fastFinger, setfastFinger] = useState("");
     const handleRegChange = (e) => {
-      // if (RegformData.email === "") {
-      //   delete RegformData.email;
-      // }
       setfastFinger(e.target.value.trim());
-      // updateData({
-      //   ...RegformData,
-      //   [e.target.name]: e.target.value.trim(),
-      // });
     };
 
     const handleFastFinger = async () => {
-      const fatestFingerConfig = {
-        method: "post",
-        url: `${BASE_URL}/api/fastest_finger_play`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-        data: {
-          code_word: fastFinger,
-        },
-      };
-
-      try {
-        const Res = await axios(fatestFingerConfig);
+      const Res = await playFastestFinger(bearerToken, fastFinger);
+      if (Res?.data?.message) {
         toast({
           status: "success",
           isClosable: true,
@@ -1128,19 +1001,12 @@ const UserDashboard = () => {
           title: Res.data.message,
           position: "top",
         });
-      } catch (e) {
-        // toast({
-        //   status: "error",
-        //   isClosable: true,
-        //   duration: "5000",
-        //   title: e?.message ?? "Please check your connection and try again",
-        //   position: "top",
-        // });
-      } finally {
-        setfastFinger("");
-        fetchBalance2();
       }
+
+      setfastFinger("");
+      fetchBalance2();
     };
+
     return (
       <Stack
         w="100%"
@@ -1248,123 +1114,106 @@ const UserDashboard = () => {
             </Button>
           </FormControl>
         </Box>
-
-        {/* <HStack
-          spacing={8}
-          color="#012647"
-          px={{ base: 5, md: 0 }}
-          w={{ base: "100%", md: "26rem" }}
+        <Box
+          display={{ base: "block", lg: "flex" }}
+          w={{ base: "100%", md: "100%", lg: "70%" }}
+          flexDir={{ base: "col", md: "col", lg: "row" }}
         >
-          <Button
-            w="50%"
-            py={2}
-            px={5}
-            borderRadius={32}
-            colorScheme="none"
-            bg="#002047"
-            color="white"
-            onClick={() => {
-              router.push("/customer_dashboard/request_history");
-            }}
+          <Box
+            display={"flex"}
+            mt={{ base: "1rem", lg: "0" }}
+            flexDir={"column"}
+            marginX={{ base: "auto" }}
           >
-            My Game History
-          </Button>
-          <Button
-            w="50%"
-            py={2}
-            px={5}
-            borderRadius={32}
-            colorScheme="none"
-            bg="#002047"
-            color="white"
-            onClick={() => {
-              router.push("/how-to-play");
-            }}
-          >
-            How to Play
-          </Button>
-        </HStack> */}
-        {/* check-in option here */}
-        {/* <Box>
-          <HStack
-            spacing={8}
-            color="#012647"
-            px={{ base: 5, md: 0 }}
-            w={{ base: "80vw", md: "30rem" }}
-          >
-            <Box mx={"auto"} w={{ base: "70%", lg: "50%" }}>
-              <Button
-                w="100%"
-                py={2}
-                h={{ base: "5rem", md: '"4rem"' }}
-                px={5}
-                borderRadius={32}
-                colorScheme="none"
-                bg="nairablue"
-                color="white"
-                flexDir={"column"}
-                // onClick={() => {
-                //   router.push("/agent_dashboard/request_history");
-                // }}
-              >
-                <Text
-                  textAlign="center"
-                  color="white"
-                  px={12}
-                  pt={2}
-                  pb={0.5}
+            <HStack
+              spacing={8}
+              color="#012647"
+              px={{ base: 5, md: 0 }}
+              w={{ base: "100%", md: "30rem" }}
+            >
+              <Box mx={"auto"} w="fit-content">
+                <Button
+                  w="100%"
+                  py={2}
+                  px={5}
                   borderRadius={32}
-                  fontSize={22}
+                  colorScheme="none"
+                  bg="#00ff00"
+                  color="white"
                   fontWeight={"bold"}
+                  fontSize={{ base: "1.75rem", md: "2rem" }}
                 >
-                  Check In
-                </Text>
-                <Text
-                  bg={"#ff0000"}
-                  px={2}
-                  py={0.5}
+                  3 Sure Cashout!
+                </Button>
+              </Box>
+            </HStack>
+            <HStack
+              spacing={8}
+              color="#012647"
+              mt={"6"}
+              px={{ base: 5, md: 0 }}
+              w={{ base: "100%", md: "30rem" }}
+            >
+              <Box
+                mx={"auto"}
+                display={"flex"}
+                flexDir={"row"}
+                w={{ base: "65%", lg: "50%" }}
+              >
+                <Box
                   color={"white"}
-                  borderRadius={10}
+                  mx={"auto"}
+                  bg="#002047"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  p={"3"}
+                  w={"48px"}
+                  h={"48px"}
+                  fontWeight={"bold"}
+                  borderRadius={"100%"}
                 >
-                  Only
-                </Text>
-              </Button>
-            </Box>
-          </HStack>
-        </Box> */}
+                </Box>
+                <Box
+                  color={"white"}
+                  mx={"auto"}
+                  bg="#002047"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  p={"3"}
+                  w={"48px"}
+                  h={"48px"}
+                  fontWeight={"bold"}
+                  borderRadius={"100%"}
+                >
+                  <IoMdCheckmark />
+                </Box>
+                <Box
+                  color={"white"}
+                  mx={"auto"}
+                  bg="#002047"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  p={"3"}
+                  w={"48px"}
+                  h={"48px"}
+                  fontWeight={"bold"}
+                  borderRadius={"100%"}
+                >
+                  <IoMdCheckmark />
+                </Box>
+              </Box>
+            </HStack>
+          </Box>
+        </Box>
 
         <Box
           display={{ base: "block", lg: "flex" }}
           w={{ base: "100%", md: "100%", lg: "70%" }}
           flexDir={{ base: "col", md: "col", lg: "row" }}
         >
-          {/* <HStack
-
-            spacing={0}
-            color="#012647"
-            flexDir={"column"}
-            px={{ base: 5, md: 0 }}
-            width="fit-content"
-            marginX={{ base: "auto" }}
-            alignItems="center"
-            className="crossovertab"
-          >
-            <Text
-              bg={"#002047"}
-              w={"100%"}
-              color={"white"}
-              fontWeight={"bold"}
-              border={"1px"}
-              px="2rem"
-              borderRadius={"full"}
-              py={"3"}
-              fontSize={"1.25rem"}
-              // my={"6"}
-              mb={"6"}
-            >
-              Crossover {formatNumberWithCommas(gameSettings?.crossover)}%
-            </Text>
-          </HStack> */}
           <Box
             display={"flex"}
             mt={{ base: "1rem", lg: "0" }}
@@ -1488,7 +1337,6 @@ const UserDashboard = () => {
             m="auto"
             left={0}
             right={0}
-            // w="55%"
             w={{ base: "70%", md: "55%" }}
           >
             <Image src="/redesign/dashboard/jackpot-mockup-02.png" alt="" />
@@ -1535,11 +1383,9 @@ const UserDashboard = () => {
                 }}
               >
                 ₦{formatNumberWithCommas(gameSettings?.jackpot)}
-                {/* 30,000,000 */}
               </Text>
             </Box>
           </Box>
-          {/* <Box h={10}/> */}
         </Box>
       </Stack>
     );
@@ -1562,7 +1408,6 @@ const UserDashboard = () => {
         title: "successfully logged out",
         position: "top",
       });
-      // router.push("/auth?p=login");
       router.replace("/");
       return;
     } catch (err) {
@@ -1649,9 +1494,6 @@ const UserDashboard = () => {
               textAlign={"center"}
             ></Text>
           </div>
-          {/* <Box display={"flex"} justifyItems={'center'} alignItems="center" >
-
-          </Box> */}
           <ModalCloseButton />
           <ModalBody>
             {" "}

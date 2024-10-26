@@ -1284,8 +1284,38 @@ const Wheelcomp = () => {
                     fontWeight={700}
                     fontSize="1.5rem"
                   >
-                    {/* YOU HAVE WON THE BOOMCODE!. */}
-                    YOUR CASHOUT IS SUCCESSFUL !!.
+                    Wow! &#127881; You've earned an entry for 3 Sure Cashout! Play another game 
+                    for a chance to win your cumulative.
+                  </ModalHeader>
+                </>
+              ) : Number(noOfGreens) === 1 ? (
+                <>
+                  <ModalHeader
+                    textAlign={"center"}
+                    fontWeight={600}
+                    fontSize="1.2rem"
+                  >
+                    Congratulations!
+                  </ModalHeader>
+                  <Box
+                    mx={"auto"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                  >
+                    <Image
+                      width={"150%"}
+                      height={"150%"}
+                      src={alert}
+                      alt="frame"
+                    />
+                  </Box>
+                  <ModalHeader
+                    textAlign={"center"}
+                    fontWeight={700}
+                    fontSize="1.5rem"
+                  >
+                    Wow! &#127881; You've earned an entry for 3 Sure Cashout! Play another game 
+                    for a chance to win your cumulative.
                   </ModalHeader>
                 </>
               ) : settingsCheck(

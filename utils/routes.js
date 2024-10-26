@@ -9,6 +9,7 @@ export const AUTH_API_ROUTES = {
   LOG_OUT: "https://staging.nairaboom.ng/api/logout",
   DEV_BASE_URL: "https://staging.nairaboom.ng",
   STAGING_BASE_URL: "http://staging.nairaboom.com.ng",
-  PRODUCTION_BASE_URL: "https://nairaboom.com.ng",
+  PRODUCTION_BASE_URL: "http://staging.nairaboom.com.ng",
+  // PRODUCTION_BASE_URL: "https://nairaboom.com.ng",
   PRODUCTION_X_APP_KEY: "FEIX9997eQFKBCjk9FaP95YOOk013XkKgGLVz",
 };
