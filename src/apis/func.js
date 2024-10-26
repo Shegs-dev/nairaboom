@@ -260,3 +260,20 @@ export const getThreeSureCashOutStatus = async (bearerToken) => {
     return error;
   }
 };
+
+export const getProfile = async (bearerToken) => {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/profile`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

@@ -15,19 +15,15 @@ import Image from "next/legacy/image";
 import { CopyIcon } from "@chakra-ui/icons";
 import empty_records from "../../public/dashboard/empty_record.png";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { AUTH_API_ROUTES } from "../../utils/routes";
 import {
-  UserReferralStats
+  UserReferralStats,
+  getProfile
 } from "../../src/apis/func";
 import { TelegramShareButton, WhatsappShareButton } from "react-share";
 import { RWebShare } from "react-web-share";
 import { useMediaQuery } from "@chakra-ui/react";
 import giftbox3 from "../../public/giftbox3.png";
 import { useRouter } from "next/router";
-
-const BASE_URL = AUTH_API_ROUTES.PRODUCTION_BASE_URL;
-const NAIRABOOM_KEY = AUTH_API_ROUTES.PRODUCTION_X_APP_KEY;
 
 const ReferralLink = () => {
   const { user } = useUser();
@@ -59,20 +55,12 @@ const ReferralLink = () => {
   }, [bearerToken]);
 
   async function fetchData() {
-    const config = {
-      method: "get",
-      url: `${BASE_URL}/api/profile`,
-      headers: {
-        "X-APP-KEY": NAIRABOOM_KEY,
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    };
-
-    try {
-      setIsLoading(true);
-      const response = await axios(config);
-      setData(response?.data?.payload);
-    } catch (err) {
+    setIsLoading(true);
+    const res = await getProfile(bearerToken);
+    setIsLoading(false);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      setData(res?.data?.payload);
+    } else {
       toast({
         status: "error",
         isClosable: true,
@@ -80,8 +68,6 @@ const ReferralLink = () => {
         title: "Please check your connection and try again",
         position: "top",
       });
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -186,11 +172,6 @@ const ReferralLink = () => {
                     color="nairablue"
                     textAlign={"center"}
                   >
-                    {/* Earn ₦ 100 bonus in your Boom  Wallet everytime you share Niaraboom with your friends */}
-                    {/* when your friends sign up with your referral
-                    link and play a game */}
-                    {/* Earn ₦ 500 in your Rollover Wallet everytime your friends sign
-                    up with your referral link and play a game on Nairaboom */}
                     Refer 35 people to create your POD and Monetize your account
                     to start earning daily from your POD Rollovers & Winnings!
                   </Text>
@@ -226,7 +207,6 @@ const ReferralLink = () => {
                   }}
                   mt={"1rem"}
                 >
-                  {/* <CopyIcon w="2rem" h="1.5rem" /> */}
                   {hasCoppied ? (
                     <Text pl=".3rem" fontWeight={500}>
                       copied
@@ -291,7 +271,6 @@ const ReferralLink = () => {
                     sethasCoppied(true);
                   }}
                 >
-                  {/* <CopyIcon w="2rem" h="1.5rem" /> */}
                   {hasCoppied ? (
                     <Text pl=".3rem" fontWeight={500}>
                       copied
@@ -313,9 +292,10 @@ const ReferralLink = () => {
           >
             <RWebShare
               data={{
-                text: "Use my code to Signup on Nairaboom and get instant N 35,000 Rollover bonus & Cashout up to N 35,000,000",
+                text: "Ready to make money? Join NairaBoom, the ultimate Play2Earn platform where you can use your alerts to play games and cashout. \
+                You can also Monetize your account to earn daily from gameplays & winnings on the platform and withdraw instantly! Sign up with my link \
+                now and receive 35,000 Boom Coins to start cashing out!",
                 url: `https://nairaboom.ng/auth/signup/customer?r=${data?.referral_code}&type=normal&t=normal`,
-                // url: `https://nairaboom.ng/share?r=${data?.referral_code}`,
                 title: "Nairaboom",
               }}
               onClick={() => console.log("shared successfully!")}

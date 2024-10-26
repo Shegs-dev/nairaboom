@@ -15,27 +15,15 @@ import Image from "next/legacy/image";
 import { CopyIcon } from "@chakra-ui/icons";
 import empty_records from "../../public/dashboard/empty_record.png";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { AUTH_API_ROUTES } from "../../utils/routes";
 import {
-  TelegramShareButton,
-  TelegramIcon,
-  WhatsappShareButton,
-  WhatsappIcon,
-  TwitterIcon,
-  TwitterShareButton,
-  FacebookIcon,
-  FacebookShareButton,
-  InstapaperIcon,
-  InstapaperShareButton,
+  TelegramShareButton
 } from "react-share";
 import { RWebShare } from "react-web-share";
 import { useMediaQuery } from "@chakra-ui/react";
-// import frame from "../../public/share.jpg";
 import frame from "../../public/share.png";
-
-const BASE_URL = AUTH_API_ROUTES.PRODUCTION_BASE_URL;
-const NAIRABOOM_KEY = AUTH_API_ROUTES.PRODUCTION_X_APP_KEY;
+import { 
+  getProfile
+} from "../../src/apis/func";
 
 const ReferralLink = () => {
   const { user } = useUser();
@@ -49,69 +37,22 @@ const ReferralLink = () => {
   const [hasCoppied, sethasCoppied] = useState(false);
 
   useEffect(() => {
-    if (!bearerToken) return;
-
-    async function fetchData() {
-      const config = {
-        method: "get",
-        url: `${BASE_URL}/api/profile`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-      };
-
-      try {
-        setIsLoading(true);
-        const response = await axios(config);
-        setData(response?.data?.payload);
-      } catch (err) {
-        // toast({
-        //   status: "error",
-        //   isClosable: true,
-        //   duration: "5000",
-        //   title: "Please check your connection and try again",
-        //   position: "top",
-        // });
-      } finally {
-        setIsLoading(false);
-      }
+    if (bearerToken && bearerToken.length > 0) {
+      setIsLoading(true);
+      fetchData();
+      setIsLoading(false);
     }
 
-    fetchData();
   }, [bearerToken, toast]);
 
-  useEffect(() => {
-    var requestOptions = {
-      method: "get",
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-        "X-APP-KEY": NAIRABOOM_KEY,
-      },
-    };
-    fetch("https://nairaboom.com.ng/api/profile", requestOptions)
-      .then((response) => {
-        console.warn("response", response);
-        response.text();
-      })
-      .then((result))
-      .catch((error));
-  }, [bearerToken]);
-
-  // console.warn('here',user?.details.fullname, user?.details?.fullname );
-
-  // var requestOptions = {
-  //     method: 'GET',
-  //     headers: {
-  //       Authorization:
-  //         'Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJJRCI6IjYwIiwiZnVsbG5hbWUiOiJlYXJsIiwiZW1haWwiOm51bGwsInBob25lX251bWJlciI6IisyMzQ4MTQ1NDA2ODM5IiwiZ2VuZGVyIjpudWxsLCJhZGRyZXNzIjpudWxsLCJyZXNpZGVuY2Vfc3RhdGUiOm51bGwsImNvdW50cnkiOm51bGwsImN1c3RvbWVyX3BhdGgiOiIiLCJzdGF0dXMiOiIxIiwiZGF0ZV9tb2RpZmllZCI6IjIwMjMtMDMtMDQgMTM6MDQ6NTgiLCJkYXRlX2NyZWF0ZWQiOiIyMDIzLTAzLTA0IDEzOjA0OjU4IiwidXNlcm5hbWUiOiIwODE0NTQwNjgzOSIsInVzZXJuYW1lXzIiOm51bGwsInVzZXJfdHlwZSI6ImN1c3RvbWVyIiwidXNlcl90YWJsZV9pZCI6IjE1IiwidG9rZW4iOm51bGwsImhhc19jaGFuZ2VfcGFzc3dvcmQiOiIwIiwibGFzdF9sb2dpbiI6IjIwMjMtMDQtMTQgMTM6MDk6NTgiLCJsYXN0X2xvZ291dCI6bnVsbCwicmVmZXJyYWxfY29kZSI6bnVsbCwibWV0YSI6MTY4MTQ3NjU1N30.3A1UEkxfYDpXfIyYjaEzhQYuXP-hleuBt6mcIROotog',
-  //       'X-APP-KEY': 'FEIX9997eQFKBCjk9FaP95YOOk013XkKgGLVz',
-  //     },
-  //   };
-  //   fetch('https://nairaboom.com.ng/api/wallet_balance', requestOptions)
-  //     .then(response => response.text())
-  //     .then(result)
-  //     .catch(error);
+  async function fetchData() {
+    setIsLoading(true);
+    const res = await getProfile(bearerToken);
+    setIsLoading(false);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      setData(res?.data?.payload);
+    }
+  }
 
   return (
     <Wrapper>
@@ -139,53 +80,6 @@ const ReferralLink = () => {
           </Box>
         </Box>
       </Box>
-      {/* {isLoading || !data ? (
-        <Box
-          py="10rem"
-          display={"flex"}
-          justifyContent="center"
-          alignItems={"center"}
-        >
-          <Spinner />
-        </Box>
-      ) : (
-        <>
-          <Box
-            display={"flex"}
-            justifyContent={"space-between"}
-            bgColor={"white"}
-            width={"100%"}
-            py={"2"}
-            px={"4"}
-          >
-            <Text
-              onClick={() => {
-                navigator.clipboard.writeText(data?.referral_code);
-              }}
-              fontWeight={400}
-              fontSize={{ base: "1.25rem", md: "1.5rem" }}
-              color="nairablue"
-            >
-              {data === null ? "" : data?.referral_code}
-            </Text>
-            <Box
-              onClick={() => {
-                navigator.clipboard.writeText(data?.referral_code);
-                sethasCoppied(true);
-              }}
-            >
-              {hasCoppied ? (
-                <Text pl=".3rem" fontWeight={500}>
-                  copied
-                </Text>
-              ) : (
-                <CopyIcon w="2rem" h="1.5rem" />
-              )}
-            </Box>
-          </Box>
-        </>
-      )} */}
-
       <Box
         display={"flex"}
         justifyContent={"center"}
@@ -193,43 +87,6 @@ const ReferralLink = () => {
         mx={"auto"}
         flexDir={"column"}
       >
-        {/* <Box mr={"1rem"}>
-          <TwitterShareButton
-            url={""}
-            title={"Twitter"}
-            className="Demo__some-network__share-button"
-          >
-            <TwitterIcon size={32} round />
-          </TwitterShareButton>
-        </Box>
-        <Box mr={"1rem"}>
-          <FacebookShareButton
-            url={""}
-            title={"Twitter"}
-            className="Demo__some-network__share-button"
-          >
-            <FacebookIcon size={32} round />
-          </FacebookShareButton>
-        </Box>
-        <Box mr={"1rem"}>
-          <WhatsappShareButton
-            url={""}
-            title={"Twitter"}
-            className="Demo__some-network__share-button"
-          >
-            <WhatsappIcon size={32} round />
-          </WhatsappShareButton>
-        </Box>
-        <Box mr={"1rem"}>
-          <InstapaperShareButton
-            url={""}
-            title={"Twitter"}
-            className="Demo__some-network__share-button"
-          >
-            <InstapaperIcon size={32} round />
-          </InstapaperShareButton>
-        </Box> */}
-
         <>
           {isLargerThan768 ? (
             <>
@@ -254,7 +111,7 @@ const ReferralLink = () => {
                   color="nairablue"
                   textAlign={"center"}
                 >
-                  Earn ₦100 in your Rollover wallet everytime you share Nairaboom with your friends via any social media platform
+                  Earn ₦100 in your Boom Coins wallet everytime you share Nairaboom with your friends via any social media platform
                 </Text>
               </Box>
             </>
@@ -309,8 +166,9 @@ const ReferralLink = () => {
           >
             <RWebShare
               data={{
-                text: "Use my code to Signup on Nairaboom and get instant N 35,000 Rollover bonus & Cashout up to N 35,000,000",
-                // url: `https://nairaboom.ng/how-to-play`,
+                text: "Ready to make money? Join NairaBoom, the ultimate Play2Earn platform where you can use your alerts to play games and cashout. \
+                You can also Monetize your account to earn daily from gameplays & winnings on the platform and withdraw instantly! Sign up with my link \
+                now and receive 35,000 Boom Coins to start cashing out!",
                 url: `https://nairaboom.ng/share?r=${data?.referral_code}`,
                 title: "Nairaboom",
               }}

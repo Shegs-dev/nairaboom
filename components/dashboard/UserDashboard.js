@@ -117,8 +117,8 @@ const UserDashboard = () => {
   const [sell, setSell] = useState(false);
   const [sellPayload, setSellPayload] = useState(null);
   const [cashOut1, setCashOut1] = useState(0);
-  const [cashOut2, setCashOut2] = useState(1);
-  const [cashOut3, setCashOut3] = useState(2);
+  const [cashOut2, setCashOut2] = useState(0);
+  const [cashOut3, setCashOut3] = useState(0);
 
   function parseJwt(token) {
     if (!bearerToken) return;
