@@ -11,7 +11,7 @@ export function formatAmount(amount) {
   
     // Use toLocaleString to format the number with commas as thousands separators
     return amount.toLocaleString(undefined, {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     });
   }

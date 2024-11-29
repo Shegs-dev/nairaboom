@@ -16,7 +16,6 @@ import {
     useToast,
     VStack
 } from "@chakra-ui/react";
-import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -28,190 +27,167 @@ import {
 } from "react-icons/hi";
 import { getAuthenticatedUser } from "../../lib/hooks/getAuthUser";
 import useUser from "../../lib/hooks/useUser";
-import { AUTH_API_ROUTES } from "../../utils/routes";
 import PlayResponsibly from "../general/PlayResponsibly";
-
-
-const BASE_URL = AUTH_API_ROUTES.PRODUCTION_BASE_URL;
-const NAIRABOOM_KEY = AUTH_API_ROUTES.PRODUCTION_X_APP_KEY;
+import {
+    registerAgent
+  } from "../../src/apis/func";
 
 const AgentRegisterForm = () => {
-        const toast = useToast();
-        const router = useRouter();
+    const toast = useToast();
+    const router = useRouter();
 
-        const { user } = useUser();
-        const [showAgent, setShowAgent] = useState(false);
-        const [isLoading, setIsLoading] = useState(false);
+    const { user } = useUser();
+    const [showAgent, setShowAgent] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-        //Redirect if authenticated.
-        const redirectIfAuthenticated = async() => {
-            const isUserAuthenticated = await getAuthenticatedUser();
-            // if (isUserAuthenticated === false) {
+    //Redirect if authenticated.
+    const redirectIfAuthenticated = async() => {
+        const isUserAuthenticated = await getAuthenticatedUser();
+        // if (isUserAuthenticated === false) {
 
-            // }
-            if (isUserAuthenticated ? .authenticated) {
-                if (user ? .details ? .user_type === "customer") {
-                    router.push("/customer_dashboard");
-                } else if (user ? .details ? .user_type === "agent") {
-                    router.push("/agent_dashboard");
-                }
+        // }
+        if (isUserAuthenticated?.authenticated) {
+            if (user?.details?.user_type === "customer") {
+                router.push("/customer_dashboard");
+            } else if (user?.details?.user_type === "agent") {
+                router.push("/agent_dashboard");
             }
-        };
-        useEffect(() => {
-            redirectIfAuthenticated();
-        });
-
-        //View eye icons
-        const [showRegPass, setShowRegPass] = useState(false);
-        const [showRegConfirm, setshowRegConfirm] = useState(false);
-
-        //Password Views
-        const handleClick1 = (e) => {
-            setShowRegPass(!showRegPass);
-        };
-
-        const handleClick2 = (e) => {
-            setshowRegConfirm(!showRegConfirm);
-        };
-
-        //Handling Register Form data
-        const [pass, setPass] = useState("");
-        const [confirmPassword, setConfirmPassword] = useState("");
-
-        function formatDate(inputDate) {
-            const inputDateObject = new Date(inputDate);
-
-            const month = (inputDateObject.getMonth() + 1).toString().padStart(2, "0");
-            const day = inputDateObject.getDate().toString().padStart(2, "0");
-
-            return `${month}/${day}`;
         }
+    };
+    useEffect(() => {
+        redirectIfAuthenticated();
+    });
 
-        const checkValid = () => {
-            if (pass.length >= 8 && confirmPassword === pass) {
-                return false;
-            } else {
-                return true;
-            }
-        };
-        const params = {
-            fullname: "",
-            email: "",
-            phone_number: "",
-            password: "",
-            user_type: "agent",
-            superagent_code: "",
-            // dob: "",
-        };
+    //View eye icons
+    const [showRegPass, setShowRegPass] = useState(false);
+    const [showRegConfirm, setshowRegConfirm] = useState(false);
 
-        const initialData = params;
+    //Password Views
+    const handleClick1 = (e) => {
+        setShowRegPass(!showRegPass);
+    };
 
-        const [RegformData, updateData] = useState(initialData);
+    const handleClick2 = (e) => {
+        setshowRegConfirm(!showRegConfirm);
+    };
 
-        const handleRegChange = (e) => {
-            updateData({
-                ...RegformData,
-                [e.target.name]: e.target.value.trim(),
-            });
-        };
+    //Handling Register Form data
+    const [pass, setPass] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-        const regconfig = {
-            method: "post",
-            url: `${BASE_URL}/api/signup`,
-            headers: {
-                "X-APP-KEY": NAIRABOOM_KEY,
-            },
-            data: RegformData,
-        };
+    function formatDate(inputDate) {
+        const inputDateObject = new Date(inputDate);
 
-        const handleRegFormSubmit = async(e) => {
-            try {
-                // e.preventDefault();
-                setIsLoading(true);
-                // if (RegformData?.dob) {
-                //   RegformData.dob = formatDate(RegformData?.dob);
-                // }
-                const response = await axios(regconfig);
-                //Error from server
-                if (
-                    response ? .data ? .status === false &&
-                    response ? .data ? .payload === null
-                ) {
-                    toast({
-                        isClosable: true,
-                        duration: 5000,
-                        status: "error",
-                        title: response.data.message,
-                        position: "top",
-                    });
-                    return;
-                }
+        const month = (inputDateObject.getMonth() + 1).toString().padStart(2, "0");
+        const day = inputDateObject.getDate().toString().padStart(2, "0");
 
-                toast({
-                    isClosable: true,
-                    duration: 3000,
-                    status: "success",
-                    title: "Registration successful!",
-                    position: "top",
-                });
-                router.push("/auth/agent");
+        return `${month}/${day}`;
+    }
 
-                localStorage.setItem(
-                    "user_payload",
-                    JSON.stringify(response.data.payload)
-                );
-            } catch (err) {
+    const checkValid = () => {
+        if (pass.length >= 8 && confirmPassword === pass) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+    const params = {
+        fullname: "",
+        email: "",
+        phone_number: "",
+        password: "",
+        user_type: "agent",
+        superagent_code: "",
+        // dob: "",
+    };
+
+    const initialData = params;
+
+    const [RegformData, updateData] = useState(initialData);
+
+    const handleRegChange = (e) => {
+        updateData({
+            ...RegformData,
+            [e.target.name]: e.target.value.trim(),
+        });
+    };
+
+    const handleRegFormSubmit = async(e) => {
+        try {
+            setIsLoading(true);
+            const response = await registerAgent(RegformData);
+
+            if (
+                response?.data?.status === false &&
+                response?.data?.payload === null
+            ) {
                 toast({
                     isClosable: true,
                     duration: 5000,
                     status: "error",
-                    title: "Some error occurred! check your connection and try again.",
+                    title: response.data.message,
                     position: "top",
                 });
-            } finally {
-                setIsLoading(false);
+                return;
             }
-        };
-        // const [selectedDate, setSelectedDate] = useState(null);
 
-        return ( <
-            >
-            <
-            Head >
-            <
-            title > Nairaboom | Sign Up < /title> < /
-            Head > <
-            Stack alignItems = "center"
+            toast({
+                isClosable: true,
+                duration: 3000,
+                status: "success",
+                title: "Registration successful!",
+                position: "top",
+            });
+            router.push("/auth/agent");
+
+            localStorage.setItem(
+                "user_payload",
+                JSON.stringify(response.data.payload)
+            );
+        } catch (err) {
+            toast({
+                isClosable: true,
+                duration: 5000,
+                status: "error",
+                title: "Some error occurred! check your connection and try again.",
+                position: "top",
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return ( 
+        <>
+            <Head>
+            <title> Nairaboom | Sign Up </title> 
+            </Head> 
+            <Stack alignItems = "center"
             pt = { 10 }
             spacing = { 5 }
             bgImage = "/redesign/generalbackground.svg"
             bgPos = "center"
             bgSize = "cover"
             pos = "relative" >
-            <
-            Image src = "/redesign/logo.png"
+            <Image src = "/redesign/logo.png"
             alt = "Nairaboom logo"
             h = "3rem"
-            w = "fit-content" /
-            >
-            <
-            HStack color = "nairagreen"
+            w = "fit-content" />
+            <HStack color = "nairagreen"
             fontSize = {
                 { md: "1.25rem" }
-            } > { /* <Text color="white">Sign Up to</Text> */ } <
-            Text > Rollover < /Text> <
-            Text > Accumulate < /Text> <
-            Text > Cashout < /Text> < /
-            HStack >
+            } > { /* <Text color="white">Sign Up to</Text> */ } 
+            <Text> Rollover </Text> 
+            <Text> Accumulate </Text> 
+            <Text> Cashout </Text> 
+            </HStack>
 
-            <
-            Box >
-            <
-            Text fontWeight = { 700 }
+            <Box>
+            <Text fontWeight = { 700 }
             fontSize = { 20 }
-            color = "white" > Agent Registration < /Text> < /
-            Box > <
-            Flex justifyContent = "center"
+            color = "white" > Agent Registration </Text> 
+            </Box> 
+            <Flex justifyContent = "center"
             w = "100%"
             maxW = "65rem"
             px = { 10 }
@@ -219,35 +195,27 @@ const AgentRegisterForm = () => {
             flexFlow = {
                 { base: "column-reverse wrap", md: "nowrap" }
             } >
-            <
-            Flex w = {
+            <Flex w = {
                 { base: "100%", md: "50%" }
             }
             alignItems = "flex-end" >
-            <
-            Image src = "/redesign/auth/signuppagemockup.png"
-            alt = "" / >
-            <
-            /Flex> <
-            Stack w = {
+            <Image src = "/redesign/auth/signuppagemockup.png"
+            alt = "" />
+            </Flex> 
+            <Stack w = {
                 { base: "100%", md: "sm" }
             }
             spacing = { 8 }
             alignItems = "center" >
-            <
-            FormControl >
-            <
-            InputGroup bg = "white"
-            borderRadius = { 50 } >
-            <
-            InputLeftElement mt = { "0.4rem" }
-            w = "3.6rem" >
-            <
-            BsPerson size = { 20 }
-            color = "gray" / >
-            <
-            /InputLeftElement> <
-            Input type = "text"
+            <FormControl>
+            <InputGroup bg = "white"
+            borderRadius = { 50 }>
+            <InputLeftElement mt = { "0.4rem" }
+            w = "3.6rem">
+            <BsPerson size = { 20 }
+            color = "gray" />
+            </InputLeftElement> 
+            <Input type = "text"
             h = "3.6rem"
             isRequired _placeholder = {
                 { fontSize: "17.62px" }
@@ -256,24 +224,17 @@ const AgentRegisterForm = () => {
             onChange = { handleRegChange }
             borderRadius = { 50 }
             focusBorderColor = "nairagreen"
-            placeholder = "Full Name" /
-            >
-            <
-            /InputGroup> < /
-            FormControl > <
-            FormControl >
-            <
-            InputGroup bg = "white"
+            placeholder = "Full Name" />
+            </InputGroup> </FormControl> 
+            <FormControl>
+            <InputGroup bg = "white"
             borderRadius = { 50 } >
-            <
-            InputLeftElement mt = { "0.4rem" }
+            <InputLeftElement mt = { "0.4rem" }
             w = "3.6rem" >
-            <
-            HiOutlinePhone size = { 20 }
-            color = "gray" / >
-            <
-            /InputLeftElement> <
-            Input borderRadius = { 50 }
+            <HiOutlinePhone size = { 20 }
+            color = "gray" />
+            </InputLeftElement> 
+            <Input borderRadius = { 50 }
             placeholder = "Phone Number"
             h = "3.6rem"
             isRequired type = { "tel" }
@@ -283,283 +244,213 @@ const AgentRegisterForm = () => {
             focusBorderColor = "nairagreen"
             name = "phone_number"
             onChange = { handleRegChange }
-            /> < /
-            InputGroup > <
-            /FormControl> 
-            {
-            /* 
-                        <FormControl>
-                          <InputGroup bg="white" borderRadius={50}>
-                            <InputLeftElement mt={"0.4rem"} w="3.6rem">
-                              <HiOutlineMail size={20} color="gray" />
-                            </InputLeftElement>
-                            <Input
-                              placeholder="Email (this field is not compulsory)"
-                              w="100%"
-                              h="3.6rem"
-                              borderRadius={50}
-                              border={"none"}
-                              type={"email"}
-                              _placeholder={{ fontSize: "13.62px" }}
-                              focusBorderColor="nairagreen"
-                              name="email"
-                              onChange={handleRegChange}
-                            />
-                          </InputGroup>
-                        </FormControl> */
-        } {
-            /* <FormControl>
-                          <FormLabel
-                            px={5}
-                            color={"white"}
-                            fontWeight={500}
-                            display={"flex"}
-                          >
-                            Birthday{" "}
-                            <Text ml={"0.2rem"} color={"yellow"}>
-                              {" "}
-                              (Required for Birthday Boom)
-                            </Text>
-                          </FormLabel>
-                          <CustomDatePicker
-                            selected={selectedDate}
-                            onChange={(val) => {
-                              // setSelectedDate(val);
-                              const data = RegformData;
-                              data.dob = val;
-                              updateData({ ...data });
-                            }}
-                          />
-                        </FormControl> */
-        }
+            /> 
+            </InputGroup> 
+            </FormControl> 
 
-        <
-        FormControl >
-            <
-            InputGroup bg = "white"
-        borderRadius = { 50 } >
-            <
-            InputLeftElement mt = { "0.4rem" }
-        w = "3.6rem" >
-            <
-            HiOutlineLockClosed size = { 20 }
-        color = "gray" / >
-            <
-            /InputLeftElement> <
-        Input borderRadius = { 50 }
-        onChange = {
-            (e) => {
-                handleRegChange(e);
-                setPass(e.target.value);
-            }
-        }
-        placeholder = "Password"
-        w = "100%"
-        h = "3.6rem"
-        border = { "none" }
-        bgColor = "white"
-        type = { showRegPass ? "text" : "password" }
-        _placeholder = {
-            { fontSize: "17.62px" }
-        }
-        focusBorderColor = "nairagreen"
-        isRequired name = "password" /
-            >
-            <
-            InputRightElement w = "3rem"
-        mt = { "0.4rem" } > {
-                showRegPass ? ( <
-                    ViewIcon onClick = { handleClick1 }
-                    color = "gray" / >
-                ) : ( <
-                    ViewOffIcon onClick = { handleClick1 }
-                    color = "gray" / >
+        <FormControl>
+            <InputGroup bg = "white"
+                borderRadius = { 50 } >
+            <InputLeftElement mt = { "0.4rem" }
+                w = "3.6rem" >
+            <HiOutlineLockClosed size = { 20 }
+                color = "gray" />
+            </InputLeftElement> 
+            <Input borderRadius = { 50 }
+                onChange = {
+                    (e) => {
+                        handleRegChange(e);
+                        setPass(e.target.value);
+                    }
+                }
+                placeholder = "Password"
+                w = "100%"
+                h = "3.6rem"
+                border = { "none" }
+                bgColor = "white"
+                type = { showRegPass ? "text" : "password" }
+                _placeholder = {
+                    { fontSize: "17.62px" }
+                }
+                focusBorderColor = "nairagreen"
+                isRequired 
+                name = "password" 
+            />
+            <InputRightElement w = "3rem"
+                mt = { "0.4rem" } > {
+                showRegPass ? ( 
+                    <ViewIcon onClick = { handleClick1 }
+                    color = "gray" />
+                ) : ( 
+                    <ViewOffIcon onClick = { handleClick1 }
+                    color = "gray" />
                 )
-            } <
-            /InputRightElement> < /
-            InputGroup > <
-            /FormControl> {
-        RegformData.password ? .length < 8 && ( <
-            Text style = {
-                { marginTop: 8 }
+            } 
+            </InputRightElement> 
+            </InputGroup> 
+            </FormControl> 
+            {
+                RegformData.password?.length < 8 && ( 
+                    <Text style = {
+                        { marginTop: 8 }
+                    }
+                    mb = "1.5rem"
+                    color = { "#FF0000" }
+                    fontSize = ".8rem" 
+                    >
+                        Minimum of 8 characters 
+                    </Text>
+                )
+            } 
+        <FormControl>
+        <InputGroup bg = "white"
+            borderRadius = { 50 }>
+        <InputLeftElement mt = { "0.4rem" }
+        w = "3.6rem" >
+        <HiOutlineLockClosed size = { 20 }
+            color = "gray" />
+        </InputLeftElement> 
+        <Input type = { showRegConfirm ? "text" : "password" }
+            borderRadius = { 50 }
+            placeholder = "Password"
+            className = "passwordconfirm__input"
+            w = "100%"
+            h = "3.6rem"
+            _placeholder = {
+                { fontSize: "17.62px" }
             }
-            mb = "1.5rem"
-            color = { "#FF0000" }
-            fontSize = ".8rem" >
-            Minimum of 8 characters <
-            /Text>
+            focusBorderColor = "nairagreen"
+            isRequired 
+            name = "confirmPassword"
+            onChange = {
+                (e) => {
+                    setConfirmPassword(e.target.value);
+                }
+            }
+        /> 
+        <InputRightElement w = "3rem"
+        mt = { "0.4rem" } > {
+        showRegConfirm ? ( 
+            <ViewIcon onClick = { handleClick2 }
+            color = "gray" />
+        ) : ( 
+            <ViewOffIcon onClick = { handleClick2 }
+            color = "gray" />
         )
-    } <
-    FormControl >
-    <
-    InputGroup bg = "white"
-borderRadius = { 50 } >
-    <
-    InputLeftElement mt = { "0.4rem" }
-w = "3.6rem" >
-    <
-    HiOutlineLockClosed size = { 20 }
-color = "gray" / >
-    <
-    /InputLeftElement> <
-Input type = { showRegConfirm ? "text" : "password" }
-borderRadius = { 50 }
-placeholder = "Password"
-className = "passwordconfirm__input"
-w = "100%"
-h = "3.6rem"
-_placeholder = {
-    { fontSize: "17.62px" }
-}
-focusBorderColor = "nairagreen"
-isRequired name = "confirmPassword"
-onChange = {
-    (e) => {
-        setConfirmPassword(e.target.value);
+    } 
+    </InputRightElement> 
+    </InputGroup> 
+    </FormControl> 
+    <FormControl>
+    <InputGroup bg = "white"
+        borderRadius = { 50 } >
+    <Input textAlign = "center"
+    borderRadius = { 50 }
+    placeholder = "Super agent code"
+    w = "100%"
+    h = "3.6rem"
+    border = { "none" }
+    bgColor = "white"
+    type = { "text" }
+    _placeholder = {
+        { fontSize: "17.62px" }
     }
-}
-/> <
-InputRightElement w = "3rem"
-mt = { "0.4rem" } > {
-        showRegConfirm ? ( <
-            ViewIcon onClick = { handleClick2 }
-            color = "gray" / >
-        ) : ( <
-            ViewOffIcon onClick = { handleClick2 }
-            color = "gray" / >
-        )
-    } <
-    /InputRightElement> < /
-    InputGroup > <
-    /FormControl> {
-    /* {confirmPassword.length !== RegformData.password.length && (
-                  <Text mt=".3rem" mb="1.5rem" color={"red"} fontSize=".6rem">
-                    {confirmPassword.length !== RegformData.password.length
-                      ? "passwords must match"
-                      : ""}
-                  </Text>
-                )} */
-} <
-FormControl >
-    <
-    InputGroup bg = "white"
-borderRadius = { 50 } >
-    <
-    Input textAlign = "center"
-borderRadius = { 50 }
-placeholder = "Super agent code"
-w = "100%"
-h = "3.6rem"
-border = { "none" }
-bgColor = "white"
-type = { "text" }
-_placeholder = {
-    { fontSize: "17.62px" }
-}
-focusBorderColor = "nairagreen"
-name = "superagent_code"
-onChange = { handleRegChange }
-/> < /
-InputGroup > <
-    /FormControl> <
-Button w = "100%"
-colorScheme = "none"
-bg = "nairagreen"
-color = "white"
-h = "3.6rem"
-mt = { "5rem" }
-borderRadius = { 50 }
-pos = "relative"
-className = "submit__reg"
-border = { "none" }
-type = { "submit" }
-fontWeight = { 600 }
-fontSize = "lg"
-cursor = { "pointer" }
-_hover = {
-    { transform: "scale(1.05)" }
-}
-isDisabled = { checkValid() }
-onClick = {
+    focusBorderColor = "nairagreen"
+    name = "superagent_code"
+    onChange = { handleRegChange }
+    /> 
+    </InputGroup> 
+    </FormControl> 
+    <Button w = "100%"
+    colorScheme = "none"
+    bg = "nairagreen"
+    color = "white"
+    h = "3.6rem"
+    mt = { "5rem" }
+    borderRadius = { 50 }
+    pos = "relative"
+    className = "submit__reg"
+    border = { "none" }
+    type = { "submit" }
+    fontWeight = { 600 }
+    fontSize = "lg"
+    cursor = { "pointer" }
+    _hover = {
+        { transform: "scale(1.05)" }
+    }
+    isDisabled = { checkValid() }
+    onClick = {
         () => handleRegFormSubmit()
-    } > { /* SIGN UP */ } { isLoading === true ? < Spinner / > : "SIGN UP" } <
-    Box pos = "absolute"
-right = { 3 } >
-    <
-    BsArrowRightCircle size = { 24 }
-/> < /
-Box > <
-    /Button> <
-VStack spacing = { 1 } >
-    <
-    Text color = "white" > Already have an account ? < /Text> <
-Button variant = "outline"
-colorScheme = "green"
-color = "nairagreen"
-borderRadius = { 50 }
-borderWidth = { 2 }
-borderColor = "nairagreen"
-px = { 5 }
-h = "2rem"
-onClick = {
+    } > { /* SIGN UP */ } { isLoading === true ? <Spinner /> : "SIGN UP" } 
+    <Box pos = "absolute"
+    right = { 3 }>
+    <BsArrowRightCircle size = { 24 } /> 
+    </Box> 
+    </Button> 
+    <VStack spacing = { 1 } >
+    <Text color = "white" > Already have an account ? </Text> 
+    <Button variant = "outline"
+    colorScheme = "green"
+    color = "nairagreen"
+    borderRadius = { 50 }
+    borderWidth = { 2 }
+    borderColor = "nairagreen"
+    px = { 5 }
+    h = "2rem"
+    onClick = {
         () => router.push("/auth/agent")
     } >
-    Log in
-    <
-    /Button> < /
-    VStack > <
-    VStack w = "100%"
-py = {
-    { base: 4, md: 14 }
-}
-pos = {
-    { base: "absolute", md: "relative" }
-}
-bottom = { 0 }
-fontSize = {
-    { base: "0.8rem", md: "1rem" }
-}
-background = {
-    { base: "rgba( 255, 255, 255, 0.35 )", md: "none" }
-}
-boxShadow = {
-    {
-        base: "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )",
-        md: "none",
+        Log in
+    </Button> 
+    </VStack> 
+    <VStack w = "100%"
+    py = {
+        { base: 4, md: 14 }
     }
-}
-backdropFilter = {
-    { base: "blur( 12px )", md: "none" }
-}
-borderRadius = {
+    pos = {
+        { base: "absolute", md: "relative" }
+    }
+    bottom = { 0 }
+    fontSize = {
+        { base: "0.8rem", md: "1rem" }
+    }
+    background = {
+        { base: "rgba( 255, 255, 255, 0.35 )", md: "none" }
+    }
+    boxShadow = {
+        {
+            base: "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )",
+            md: "none",
+        }
+    }
+    backdropFilter = {
+        { base: "blur( 12px )", md: "none" }
+    }
+    borderRadius = {
         {
             base: "50% 50% 10% 10% / 40% 40% 0% 0%",
             md: "none",
         }
     } >
-    <
-    PlayResponsibly color = "white" / >
-    <
-    HStack >
-    <
-    Text textAlign = "center"
-color = "white"
-maxW = {
+    <PlayResponsibly color = "white" />
+    <HStack>
+    <Text textAlign = "center"
+    color = "white"
+    maxW = {
         { base: "18rem", md: "23rem" }
     } >
-    Nairaboom is licensed and regulated by the National Lottery Regulatory Commission(NLRC). { "" }
-License number 00000060 <
-    /Text> <
-Image w = "2rem"
-src = "/redesign/nlrclogo.png"
-alt = "" / >
-    <
-    /HStack> < /
-    VStack > <
-    /Stack> < /
-    Flex > <
-    /Stack> < /
-    >
+        Nairaboom is licensed and regulated by the National Lottery Regulatory Commission(NLRC). { "" }
+        License number 00000060 
+    </Text> 
+    <Image w = "2rem"
+    src = "/redesign/nlrclogo.png"
+    alt = "" />
+    </HStack> 
+    </VStack> 
+    </Stack> 
+    </Flex> 
+    </Stack> 
+    </>
 );
 };
 

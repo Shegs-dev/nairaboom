@@ -100,8 +100,12 @@ const ReferralLink = () => {
         console.warn("response", response);
         response.text();
       })
-      .then((result))
-      .catch((error));
+      .then((result) => {
+        console.warn("result", result);
+      })
+      .catch((error) => {
+        console.warn("error", error);
+      });
   }, [bearerToken]);
 
   // const bonus_data = [
@@ -243,7 +247,7 @@ const ReferralLink = () => {
           fontSize={{ base: "1.25rem", md: "1.5rem" }}
           color="nairablue"
         >
-          Rollover Wallet
+          Boom Coins Wallet
         </Text>
         <Box display={"flex"} alignItems="center" gap="1.6rem">
           <Box as={NextLink} href="/customer_dashboard/editprofile">
@@ -263,7 +267,7 @@ const ReferralLink = () => {
           fontWeight={700}
           fontSize={{ base: "1.05rem", md: "1.25rem" }}
         >
-          There are many activities that can steadily help you build your Rollover Wallet on Nairaboom. These activities include;
+          There are many activities that can steadily help you build your Boom Coins Wallet on Nairaboom. These activities include;
         </Text>
         {/* <Text
           color="nairablue"

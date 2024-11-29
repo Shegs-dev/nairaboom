@@ -42,44 +42,19 @@ import { useRouter } from "next/router";
 import React, { useRef } from "react";
 import { BsChevronLeft, BsPerson } from "react-icons/bs";
 import { ImInfo } from "react-icons/im";
-import { TbRating18Plus } from "react-icons/tb";
-
-import Wrapper from "../../components/Wrapper";
-import NextLink from "next/link";
 import useUser from "../../lib/hooks/useUser";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { AUTH_API_ROUTES } from "../../utils/routes";
-import { consumers } from "form-data";
-import { NumericFormat } from "react-number-format";
 import numeral from "numeral";
 import CurrencyInput from "react-currency-input-field";
 import Link from "next/link";
-
-const BASE_URL = AUTH_API_ROUTES.PRODUCTION_BASE_URL;
-const NAIRABOOM_KEY = AUTH_API_ROUTES.PRODUCTION_X_APP_KEY;
+import {
+  getBankLists,
+  playAgentStake,
+  getWalletBalance
+} from "../../src/apis/func";
 
 const PlayGameAgent = () => {
   const [isLargerThan768] = useMediaQuery("(max-width: 768px)");
-
-  // const handleChange = (e) => {
-  //   setCashback({
-  //     ...cashBack,
-  //     [e.target.name]: e.target.value.trim(),
-  //     stake_amount:
-  //       cashBack.amount > 1 && cashBack.amount < 20000
-  //         ? 200
-  //         : cashBack.amount >= 20000
-  //         ? 0.02 * cashBack.amount
-  //         : 0.0,
-  //     latitude: `${lat.current}`,
-  //     longitude: `${long.current}`,
-  //   });
-
-
-  //   const rawValue = e.target.value;
-  //   const formattedValue = numeral(rawValue).format("0,0");
-  // };
 
   const { user } = useUser();
   const router = useRouter();
@@ -106,17 +81,8 @@ const PlayGameAgent = () => {
     });
 
     const fetchBankData = async () => {
-      const bankconfig = {
-        method: "get",
-        url: `${BASE_URL}/api/bank_lists?start=0&len=209&paging=1`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-      };
-
       try {
-        const response = await axios(bankconfig);
+        const response = await getBankLists(bearerToken);
         setBankData(response.data?.payload.content);
       } catch (err) {
         toast({
@@ -129,18 +95,9 @@ const PlayGameAgent = () => {
       }
     };
     const fetchBalance = async () => {
-      const config = {
-        method: "get",
-        url: `${BASE_URL}/api/wallet_balance`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-      };
-
       try {
         setIsLoading(true);
-        const response = await axios(config);
+        const response = await getWalletBalance(bearerToken);
 
         setbalance(response?.data);
 
@@ -192,18 +149,6 @@ const PlayGameAgent = () => {
   const [cashBack, setCashback] = useState(initialCashback);
   const [referenceNo, setreferenceNo] = useState(true);
 
-  // const handleChange = (e) => {
-  //   if (bank === []) return;
-
-  //   setCashback({
-  //     ...cashBack,
-  //     [e.target.name]: e.target.value.trim(),
-  //     latitude: `${lat.current}`,
-  //     longitude: `${long.current}`,
-  // bank_lists_id: bank?.[0]?.split(",")[0],
-  // bank_code: bank[0]?.split(",")[1],
-  //   });
-  // };
   const handleChange = (e) => {
     setCashback({
       ...cashBack,
@@ -224,35 +169,23 @@ const PlayGameAgent = () => {
     const formattedValue = numeral(rawValue).format("0,0");
   };
 
-  const cashconfig = {
-    method: "post",
-    url: `${BASE_URL}/api/agent/play_stake`,
-    headers: {
-      "X-APP-KEY": NAIRABOOM_KEY,
-      Authorization: `Bearer ${bearerToken}`,
-    },
-    data: cashBack,
-  };
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleCashbackSubmit = async (e) => {
     try {
-      // e.preventDefault();
       setIsLoading(true);
       if (cashBack.stake_amount > Number(balance?.payload?.content[0].amount)) {
         toast({
           isClosable: true,
           duration: 3000,
           status: "error",
-          // title: response.data.message,
           title: "Insufficient Balance",
           position: "top",
         });
         router.push("/agent_dashboard/wallet");
         return;
       }
-      const response = await axios(cashconfig);
+      const response = await playAgentStake(bearerToken, cashBack);
       if (response?.data?.status === false) {
         toast({
           isClosable: true,
@@ -261,7 +194,6 @@ const PlayGameAgent = () => {
           title: response.data.message,
           position: "top",
         });
-        // router.push("/agent_dashboard/wallet");
         return;
       }
 
@@ -272,7 +204,6 @@ const PlayGameAgent = () => {
         title: response.data.message,
         position: "top",
       });
-      // router.push("/customer_dashboard/request_history");
       setgameRef(response.data.payload.game_ref);
       router.push({
         pathname: "/agent_dashboard/boomwheel",
@@ -385,7 +316,6 @@ const PlayGameAgent = () => {
                 borderRadius={50}
                 placeholder="Customer's Name"
                 name="cust_fullname"
-                // w={{ base: "100%", md: "20rem" }}
                 border={"none"}
                 bgColor="white"
                 _placeholder={{
@@ -475,22 +405,6 @@ const PlayGameAgent = () => {
                 />
               )}
             </FormControl>
-            {/* <FormControl>
-              <InputGroup>
-                <Input
-                  bg="white"
-                  px={8}
-                  h="3.25rem"
-                  type="text"
-                  color="gray"
-                  borderRadius={50}
-                  placeholder="Amount"
-                />
-                <InputRightElement color="gray" w="4rem">
-                  N0
-                </InputRightElement>
-              </InputGroup>
-            </FormControl> */}
             <FormControl>
               <FormLabel px={5} fontWeight={500}>
                 Alert Amount
@@ -566,38 +480,6 @@ const PlayGameAgent = () => {
                 </Select>
               </Box>
             </FormControl>
-            {/* <FormControl>
-              <FormLabel px={5} fontWeight={500}>
-                Bank Used To Receive Alert
-              </FormLabel>
-              <Box bg="white" borderRadius={50} overflow="hidden" px={3}>
-                <Select
-                  type="text"
-                  defaultValue=""
-                  h="3.25rem"
-                  borderWidth={0}
-                  w={{ base: "100%", md: "20rem" }}
-                  border={"none"}
-                  bgColor="white"
-                  placeholder="Bank"
-                  _placeholder={{ fontWeight: 500 }}
-                  // mb={{ base: "1.5rem", md: "2.5rem" }}
-                  color={"#A7A7A7"}
-                  focusBorderColor="nairagreen"
-                  isRequired
-                  onChange={bankchange}
-                >
-                  {bankData.map((bank, index) => (
-                    <option
-                      key={index}
-                      value={[`${bank.ID}`, `${bank.bank_code}`]}
-                    >
-                      {bank.name}
-                    </option>
-                  ))}
-                </Select>
-              </Box>
-            </FormControl> */}
             <FormControl>
               <FormLabel px={5} fontWeight={500}>
                 Bank Used To Receive Alert
@@ -618,15 +500,6 @@ const PlayGameAgent = () => {
                 isRequired
                 onChange={bankchange}
               >
-                {/* {bankData.map((bank, index) => (
-                  <option
-                    key={index}
-                    // value={bank.ID}
-                    value={[`${bank.ID}`, `${bank.bank_code}`]}
-                  >
-                    {bank.name}
-                  </option>
-                ))} */}
                 {bankData.map((bank, index) => (
                   <option key={index} value={bank.ID}>
                     {bank.name}
@@ -679,7 +552,6 @@ const PlayGameAgent = () => {
             <HStack
               h="3.25rem"
               w="100%"
-              // w={{ base: "100%", md: "28rem" }}
 
               px={8}
               bg="white"
@@ -695,7 +567,6 @@ const PlayGameAgent = () => {
                 <Text>₦35,000,000</Text>
               </Box>
             </HStack>
-            {/* <Checkbox colorScheme="nairagreen">I Agree to T & Cs</Checkbox> */}
             <Box
               mt={"1em"}
               display={"flex"}
@@ -712,7 +583,7 @@ const PlayGameAgent = () => {
                 value={isChecked}
                 onChange={setIschecked}
               >
-                {/* I Agree to T & Cs */}I Agree to{" "}
+               I Agree to{" "}
               </Checkbox>
               <Link
                 as={Link}
@@ -720,7 +591,6 @@ const PlayGameAgent = () => {
                 href="/terms_conditions"
                 color="blue.500"
                 legacyBehavior>
-                {/* T & Cs */}
                 <Text
                   color={"nairagreen"}
                   style={{ textDecoration: "underline" }}
@@ -743,7 +613,6 @@ const PlayGameAgent = () => {
                 type={"submit"}
                 fontWeight={700}
                 fontSize={"2xl"}
-                // mb={{ base: "2rem", md: "4rem" }}
                 cursor={"pointer"}
                 isDisabled={!isChecked}
                 _hover={{ transform: "scale(1.05)" }}
@@ -751,7 +620,6 @@ const PlayGameAgent = () => {
                   handleCashbackSubmit();
                 }}
               >
-                {/* {isLoading ? <Spinner /> : "Spin The Boomwheel"} */}
                 {isLoading ? <Spinner /> : "Rollover"}
               </Button>
 
@@ -761,7 +629,6 @@ const PlayGameAgent = () => {
                 }}
                 height={"3.25rem"}
                 w={{ base: "2.0rem", lg: "2.5rem" }}
-                // mt={{ base: "0.85rem", lg: "1px" }}
                 className="eightAtplaygame"
                 alignSelf={{ base: "flex-start", md: "center" }}
               >
@@ -769,7 +636,6 @@ const PlayGameAgent = () => {
               </Box>
             </HStack>
             <HStack color="nairagreen" py={5}>
-              {/* <Icon as={TbRating18Plus} /> */}
               <Image
                 src="/plus18.png"
                 w={{ base: "2.5rem", lg: "2.5rem" }}
@@ -789,22 +655,18 @@ const PlayGameAgent = () => {
         <ModalHeader>POSSIBLE WINNINGS</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {/* Your modal content goes here */}
           <TableContainer>
             <Table variant="simple">
               <TableCaption>Winning Table</TableCaption>
               <Thead>
                 <Tr>
                   <Th>GAME PLAY</Th>
-                  {/* <Th>DESCRIPTION</Th> */}
                   <Th ml={"2rem"}>WINNINGS</Th>
                 </Tr>
               </Thead>
               <Tbody>
                 <Tr>
                   <Td display={"flex"} flex flexDir={"row"}>
-                    {/* <Image width={30} mr={1} src={'/greencircle.svg'} alt=""/> */}
-                    {/* <ImInfo size={30} /> */}
                     <Image
                       width={30}
                       mr={1}
@@ -812,8 +674,7 @@ const PlayGameAgent = () => {
                       alt=""
                     />
                   </Td>
-                  {/* <Td fontSize={{ base: "sm", md: "md" }}>1 GREEN</Td> */}
-                  <Td>1,000 NAIRA IN ROLLOVER WALLET</Td>
+                  <Td>1,000 NAIRA IN BOOM COINS WALLET</Td>
                 </Tr>
                 <Tr>
                   <Td display={"flex"} flex flexDir={"row"}>
@@ -830,8 +691,7 @@ const PlayGameAgent = () => {
                       alt=""
                     />
                   </Td>
-                  {/* <Td fontSize={{ base: "sm", md: "md" }}>2 GREEN</Td> */}
-                  <Td>50% IN ROLLOVER WALLET</Td>
+                  <Td>50% IN BOOM COINS WALLET</Td>
                 </Tr>
                 <Tr>
                   <Td display={"flex"} flex flexDir={"row"}>
@@ -854,7 +714,6 @@ const PlayGameAgent = () => {
                       alt=""
                     />
                   </Td>
-                  {/* <Td fontSize={{ base: "sm", md: "md" }}>3 GREEN</Td> */}
                   <Td>CASHOUT</Td>
                 </Tr>
                 <Tr>
@@ -884,7 +743,6 @@ const PlayGameAgent = () => {
                       alt=""
                     />
                   </Td>
-                  {/* <Td fontSize={{ base: "sm", md: "md" }}>4 GREEN</Td> */}
                   <Td>JACKPOT</Td>
                 </Tr>
                 <Tr style={{justifyContent: 'space-between'}}>
@@ -894,7 +752,6 @@ const PlayGameAgent = () => {
                     <Image width={30} mr={1} src={"/bluecircle.svg"} alt="" />
                     <Image width={30} mr={1} src={"/yellow.svg"} alt="" />
                   </Td>
-                  {/* <Td fontSize={{ base: "sm", md: "md" }}>BOOM CODE</Td> */}
                   <Td>CASHOUT %</Td>
                 </Tr>
               </Tbody>

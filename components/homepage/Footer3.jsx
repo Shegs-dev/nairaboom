@@ -98,7 +98,7 @@ const Footer3 = () => {
               },
               {
                 image: "footer-tiktok.png",
-                link: "https://tiktok.com/@nairaboomng",
+                link: "https://www.tiktok.com/@nairaboom.ng?_t=8ouwtQ6j16L",
               },
               {
                 image: "footer-threads.png",

@@ -92,6 +92,33 @@ a {
   white-space: nowrap !important;
 }
 
+@font-face {
+  font-family: 'Changa One';
+  src: url('../public/mobile/fonts/Changa_One/ChangaOne.woff') format('woff'), url('../public/mobile/fonts/Changa_One/ChangaOne.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url('../public/mobile/fonts/Source_Code_Pro/SourceCodeRoman-ExtraLight.woff') format('woff'), url('../public/mobile/fonts/Source_Code_Pro/SourceCodeRoman-ExtraLight.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Changa';
+  src: url('../public/mobile/fonts/Changa/Changa-Regular.woff') format('woff'), url('../public/mobile/fonts/Changa/Changa-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('../public/mobile/fonts/Source_Sans_Pro/SourceSans3-Roman.woff') format('woff'), url('../public/mobile/fonts/Source_Sans_Pro/SourceSans3-Roman.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
 
 /* .img18 {
   top: 100vh !important;

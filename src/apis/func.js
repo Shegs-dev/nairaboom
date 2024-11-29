@@ -1,18 +1,18 @@
 import axios from "axios";
 import { AUTH_API_ROUTES } from "../../utils/routes";
 
-export const signIn = async (
+export const signInCall = async (
   signInformData
 ) => {
   try {
-    const signinconfig = {
+    const response = await axios({
       method: "post",
       url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/auth`,
       headers: {
         "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
       },
       data: signInformData,
-    };
+    });
 
     return response;
   } catch (error) {
@@ -270,6 +270,176 @@ export const getProfile = async (bearerToken) => {
         "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
         Authorization: `Bearer ${bearerToken}`,
       },
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getProfileRedirect = async (bearerToken) => {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/profile`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+        Authorization: `Bearer ${bearerToken}`,
+      },
+      redirect: "follow",
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const registerCustomer = async (requestData) => {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/signup`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+      },
+      data: {
+        requestData: requestData,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const registerAgent = async (
+  RegformData
+) => {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/signup`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+      },
+      data: RegformData,
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const validateGame = async (bearerToken, game_ref) => {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/validate_game`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+        Authorization: `Bearer ${bearerToken}`,
+      },
+      data: {
+        game_ref: game_ref,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const updateMyPlayStake = async (bearerToken, game_ref, colour_scheme, boom_box_number, cashback_number) => {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/update_play_stake`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      data: {
+        game_ref: game_ref,
+        colour_scheme: colour_scheme,
+        boom_box_number: boom_box_number,
+        cashback_number: cashback_number,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const autoGenerateNumbers = async (bearerToken) => {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/auto_generated_numbers`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getBankLists = async (bearerToken) => {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/bank_lists?start=0&len=209&paging=1`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const playMyStake = async (bearerToken, cashBack) => {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/play_stake`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+        Authorization: `Bearer ${bearerToken}`,
+      },
+      data: cashBack,
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const playAgentStake = async (bearerToken, cashBack) => {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/agent/play_stake`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+        Authorization: `Bearer ${bearerToken}`,
+      },
+      data: cashBack,
     });
 
     return response;

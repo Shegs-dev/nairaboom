@@ -2,7 +2,31 @@
 // import React from 'react'
 
 import { IoReorderThree } from "react-icons/io5";
-// import { IoMdInformationCircleOutline } from "react-icons/io";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Heading,
+  IconButton,
+  Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Portal,
+  Spacer,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { RiMenu3Fill } from "react-icons/ri";
+import { BsXLg } from "react-icons/bs";
+import Link from "next/link";
 import { HiSpeakerphone } from "react-icons/hi";
 import {
   FaInstagram,
@@ -14,6 +38,7 @@ import {
 } from "react-icons/fa6";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 // absolute inset-0
 
@@ -23,39 +48,44 @@ const Home = () => {
     {
       title: "RECEIVE A CREDIT OR DEBIT ALERT",
       description:
-        "Sign up or Login to your Nairaboom game profile anytime you get a valid credit or debit alert"
+        "Sign up or Log into your Nairaboom profile anytime you get a valid credit or debit alert."
     },
     {
       title: "FUND YOUR WALLET",
       description:
-        "Make your first deposit of ₦500 and receive 35,000 Boom Coins."
+        "Make your first deposit of ₦500 and receive 35,000 Boom Coin Tokens (BCT)."
     },
     {
-      title: "PLAY GAME",
+      title: "CONVERT YOUR BANK ALERT",
       description:
-        "Enter your alert details to rollover & accumulate every valid credit or debit alert you receive into Boom Coins."
+        "Enter your alert details to rollover, swap them to Boom Coin Tokens (BCT) & Play 3 Sure Cashout."
     },
     {
-      title: "SPIN TO CASHOUT",
+      title: "SELL BOOM COINS TOKENS (BCT)",
       description:
-        "Spin the wheel and match the cashout keys or 3 green balls to cashout your Boom Coins instantly."
+        "Accumulate your Boom Coin Tokens (BCT) and sell them."
+    },
+    {
+      title: "MONETIZE YOUR NAIRABOOM ACCOUNT",
+      description:
+        "Earn passive income three levels deep, from your Trybe."
     },
     {
       title: "WIN THE JACKPOT",
       description:
-        "Match all 4 Green balls when you spin To Cashout and Win The JACKPOT! "
+        "Match 4 Green balls when you rollover and Win The JACKPOT!"
     }
   ]);
   const HTPCards = ({ title, description, listing }) => {
     return (
-      <div className="gradient-div mt-2 flex space-x-4 items-center w-full rounded-md text-secondary ">
+      <div className="gradient-div mt-2 flex space-x-2 items-center w-full rounded-md text-secondary ">
         <img
           src="/mobile/assets/HalfWheel.png"
-          className="max-w-[55px] max-h-[97px] min-w-[49.20px] min-h-[97px]"
+          className="max-w-[55px] max-h-[85px] min-w-[49.20px] min-h-[85px]"
         />
         <div className="pr-4 py-2">
-          <p className=" font-changa-one text-lg leading-4">{`${listing}. ${title}`}</p>
-          <p className=" font-changa leading-4 font-semibold mt-1">
+          <p className=" text-[15px] leading-4" style={{ fontFamily: 'Changa One' }}>{listing}. &nbsp;&nbsp;{title}</p>
+          <p className=" leading-4 font-semibold mt-1 text-[13px]" style={{ fontFamily: 'Source Sans Pro' }}>
             {description}
           </p>
         </div>
@@ -64,18 +94,47 @@ const Home = () => {
   };
 
   return (
-    <div className="w-full" style={{ maxWidth: window.innerWidth }}>
+    <div className="w-full appearance-none bg-secondary text-white flex-1 overflow-y-auto">
       <div
         className="justify-center background-ribbon bg-cover bg-center bg-no-repeat  h-auto"
-        style={{ maxWidth: window.innerWidth }}
+        
       >
         <div className="w-full">
           <div className="flex py-10 w-full justify-center">
-            <img src="/mobile/assets/NairaBoomLogo.png" />
+            <img src="/mobile/assets/NairaBoomLogo.svg" />
           </div>
           <div className="px-6 mb-16 w-full flex justify-between">
             <div className="flex space-x-1 items-center">
-              <IoReorderThree size={40} />
+              <Menu>
+                {({ isOpen }) => (
+                  <>
+                  <MenuButton
+                    as={IconButton}
+                    colorScheme="none"
+                    isActive={isOpen}
+                    color="nairagreen"
+                  >
+                    {isOpen ? <BsXLg size={20} color={"fff"} /> : <GiHamburgerMenu size={25} color={"fff"} />}
+                  </MenuButton>
+                  <MenuList>
+                    <VStack
+                      color="#012647"
+                      py={3}
+                      spacing={5}
+                    >
+                      <Link
+                        href="/how-to-play"
+                        style={{ background: "transparent", fontWeight: "700" }}
+                      >
+                        How To Play
+                      </Link>
+                      <Link href="/winning">Winning Modalities</Link>
+                      <Link href="/contact">Contact Us</Link>
+                    </VStack>
+                  </MenuList>
+                  </>
+                )}
+              </Menu>
             </div>
             <div className="flex space-x-1 items-center">
               <button
@@ -92,56 +151,58 @@ const Home = () => {
               </button>
             </div>
           </div>
-          <div className="max-w-full flex space-x-4 scrollbar-hide mdd:justify-start">
+          <div className="max-w-full flex -mt-5 scrollbar-hide mdd:justify-start">
             <div
               className="flex justify-between w-full  home-card bg-cover bg-center bg-no-repeat  h-auto  p-4 text-secondary "
-              style={{ maxWidth: window.innerWidth }}
+              
             >
               {/* first text */}
-              <div className="text-3xl font-changa-one">
-                <p>THE</p>
-                <p className="-mt-3">GAME</p>
-                <p className="-mt-3">FOR</p>
-                <p className="-mt-3">YOUR</p>
-                <p className="-mt-3">BANK</p>
-                <p className="-mt-3">ALERT</p>
+              <div className="flex flex-col ml-2 -mt-1 text-3xl">
+                <p style={{ fontFamily: 'Changa One' }}>THE</p>
+                <p className="-mt-3" style={{ fontFamily: 'Changa One' }}>BOOM</p>
+                <p className="-mt-3" style={{ fontFamily: 'Changa One' }}>FOR</p>
+                <p className="-mt-3" style={{ fontFamily: 'Changa One' }}>YOUR</p>
+                <p className="-mt-3" style={{ fontFamily: 'Changa One' }}>BANK</p>
+                <p className="-mt-3" style={{ fontFamily: 'Changa One' }}>ALERT</p>
               </div>
-              {/* man and wheel */}
-              <div className="relative w-[153px] flex flex-col items-center text-secondary ">
+              <div className="relative w-[170px] -mt-2 flex flex-col justify-center items-center text-secondary ">
                 <img
-                  src="/mobile/assets/MoneyMan.png"
-                  className="absolute -mt-[100px] max-w-[165px] max-h-[192px] min-w-[165px] min-h-[192px]"
-                />
-                <img
-                  src="/mobile/assets/Wheel.png"
-                  className="absolute mt-[20px] cursor-pointer ml-[3px] max-w-[153px] max-h-[153px] min-w-[153px] min-h-[153px]"
+                  src="/mobile/assets/wheel.svg"
+                  className="absolute mt-[0px] cursor-pointer ml-[3px] max-w-[170px] max-h-[175px] min-w-[170px] min-h-[175px]"
                 />
               </div>
-              <div className="flex flex-col justify-center space-y-3">
-                <button className="py-[6px] px-6 text-primary bg-secondary rounded-full">
-                  ROLLOVER
+              <div className="flex flex-col mt-1 mr-2 justify-start items-center">
+                <button className="text-center text-[12px] text-[#1ED760] bg-secondary rounded-full max-w-[110px] max-h-[31px] min-w-[110px] min-h-[31px] mb-2" 
+                    style={{ fontFamily: 'Source Code Pro', fontWeight: '700' }}>
+                  <b>ROLLOVER</b>
                 </button>
-                <button className="py-[6px] px-6 text-primary bg-secondary rounded-full">
-                  ACCUMULATE
+                <button className="text-center text-[12px] text-[#1ED760] bg-secondary rounded-full max-w-[110px] max-h-[31px] min-w-[110px] min-h-[31px] mb-2" 
+                    style={{ fontFamily: 'Source Code Pro', fontWeight: '700' }}>
+                  <b>SWAP</b>
                 </button>
-                <button className="py-[6px] px-6 text-primary bg-secondary rounded-full">
-                  CASHOUT
+                <button className="text-center text-[12px] text-[#1ED760] bg-secondary rounded-full max-w-[110px] max-h-[31px] min-w-[110px] min-h-[31px] mb-2" 
+                    style={{ fontFamily: 'Source Code Pro', fontWeight: '700' }}>
+                  <b>SELL</b>
+                </button>
+                <button className="text-center text-[12px] text-[#1ED760] bg-secondary rounded-full max-w-[110px] max-h-[31px] min-w-[110px] min-h-[31px]" 
+                    style={{ fontFamily: 'Source Code Pro', fontWeight: '700' }}>
+                  <b>CASHOUT</b>
                 </button>
               </div>
             </div>
           </div>
         </div>
         {/* megaphone card */}
-        <div className="gradient-div mt-4 w-full flex items-center justify-between text-secondary ">
-          <div className="text-xs flex items-center p-[2px]">
-            <HiSpeakerphone
-              size={24}
-              className="ml-2 -rotate-45 inline-block"
+        <div className="gradient-div mt-1 w-full flex items-center justify-between text-secondary ">
+          <div className="text-xs flex items-center p-[2px] ml-2">
+            <img
+              src="/mobile/assets/Group.svg"
+              className="w-[25px] h-[25px]"
             />
             <div className="inline-block">
-              <span className="ml-1">rael won</span>{" "}
-              <span className=" text-base text-white">NGN 50,000</span>{" "}
-              <span className="">in 3 Sure Cashout</span>
+              <span className="ml-1 text-[13px] font-normal" style={{ fontFamily: 'Source Sans Pro' }}> r***l won</span>{" "}
+              <span className=" text-[13px] text-white font-bold" style={{ fontFamily: 'Source Sans Pro' }}>NGN 50,000.00 </span>{" "}
+              <span className="text-[13px] font-normal" style={{ fontFamily: 'Source Sans Pro' }}> in 3 Sure Cashout</span>
             </div>
           </div>
           <div className="flex items-center rounded-br-md rounded-tr-md justify-center aspect-video small-ribbon bg-cover bg-center bg-no-repeat  h-[32px]">
@@ -158,9 +219,9 @@ const Home = () => {
         </div>
       </div>
       {/* First Slide */}
-      <div className="justify-center  background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
+      <div className="justify-center mt-1 background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
         <div className="flex items-start space-x-4 pt-2 pb-1 overflow-y-clip overflow-x-scroll">
-          <div className="relative ">
+          {/* <div className="relative ">
             <img
               src="/mobile/assets/Slide1.png"
               className="max-w-[390px] max-h-[160px] min-w-[390px] min-h-[160px]"
@@ -170,16 +231,36 @@ const Home = () => {
               src="/mobile/assets/PlayNow4.png"
               className="absolute -mt-[65px] cursor-pointer ml-[3px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
             />
-          </div>
-          <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
+          </div> */}
+          <div className="gradient-div ml-1 min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-lg text-secondary h-auto">
             <div className="flex items-center justify-between">
               <div className="ribbon-left"></div>
               <div className="ribbon-right"></div>
             </div>
-            <div className="absolute ml-4 text-start font-changa-one text-3xl">
-              <p className="mt-2">GET 35,500 BOOM</p>
-              <p className="-mt-3">COINS ON YOUR</p>
-              <p className="-mt-3">FIRST DEPOSIT</p>
+            <div className="absolute ml-4 text-start text-3xl">
+              <p className="mt-2 mb-1 text-[33px]" style={{ fontFamily: 'Changa One' }}>WITHDRAW</p>
+              <p className="-mt-3 mb-1 text-[33px]" style={{ fontFamily: 'Changa One' }}>UP TO</p>
+              <p className="-mt-3 text-[33px]" style={{ fontFamily: 'Changa One' }}><b>₦</b>35,000,000</p>
+            </div>
+            <img
+              onClick={() => console.log("reload")}
+              src="/mobile/assets/PlayNow2.png"
+              className="absolute mt-[98px] cursor-pointer ml-[3px] max-w-[131px] max-h-[55.02px] min-w-[131px] min-h-[55.02px]"
+            />
+            <img
+              src="/mobile/assets/Coins.png"
+              className="absolute mt-[55px] cursor-pointer ml-[215px] max-w-[167px] max-h-[101px] min-w-[167px] min-h-[101px]"
+            />
+          </div>
+          <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-lg text-secondary h-auto">
+            <div className="flex items-center justify-between">
+              <div className="ribbon-left"></div>
+              <div className="ribbon-right"></div>
+            </div>
+            <div className="absolute ml-4 text-start text-3xl">
+              <p className="mt-2 mb-1 text-[30px]" style={{ fontFamily: 'Changa One' }}>GET 35,500 BOOM</p>
+              <p className="-mt-3 mb-1 text-[30px]" style={{ fontFamily: 'Changa One' }}>COIN TOKENS ON YOUR</p>
+              <p className="-mt-3 text-[30px]" style={{ fontFamily: 'Changa One' }}>FIRST DEPOSIT</p>
             </div>
             <img
               onClick={() => console.log("reload")}
@@ -196,54 +277,54 @@ const Home = () => {
               <div className="ribbon-left"></div>
               <div className="ribbon-right"></div>
             </div>
-            <div className="absolute ml-4 text-start font-changa-one text-3xl">
-              <p className="">CASHOUT YOUR CUMULATIVE </p>
-              <p className="-mt-3">WITH 3 SURE CASHOUT</p>
+            <div className="absolute ml-4 text-start text-3xl">
+              <p className=" mb-1 text-[30px]" style={{ fontFamily: 'Changa One' }}>CASHOUT YOUR CUMULATIVE </p>
+              <p className="-mt-3 text-[30px]" style={{ fontFamily: 'Changa One' }}>WITH 3 SURE CASHOUT</p>
             </div>
             <img
               src="/mobile/assets/GreenCheckGold.png"
-              className="absolute mt-[58px] cursor-pointer ml-[3px] max-w-[106.59px] max-h-[56.75px] min-w-[194px] min-h-[56.75px]"
+              className="absolute mt-[60px] cursor-pointer ml-4 max-w-[106.59px] max-h-[56.75px] min-w-[194px] min-h-[56.75px]"
             />
             <img
               onClick={() => console.log("reload")}
               src="/mobile/assets/PlayNow3.png"
               className="absolute mt-[115px] cursor-pointer ml-[50px] max-w-[194px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
             />
-            <img
+            {/* <img
               src="/mobile/assets/MoneyMan2.png"
               className="absolute mt-[10px] cursor-pointer ml-[240px] max-w-[142px] max-h-[152.31px] min-w-[142px] min-h-[152.31px]"
-            />
+            /> */}
           </div>
           <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
             <div className="flex items-center justify-between">
               <div className="ribbon-left"></div>
               <div className="ribbon-right"></div>
             </div>
-            <div className="absolute ml-4 text-start font-changa-one text-2xl">
-              <p className="mt-2">MONETIZE YOUR</p>
-              <p className="-mt-2">ACCOUNT & EARN</p>
-              <p className="-mt-2">FOR LIFE</p>
+            <div className="absolute ml-4 text-start text-2xl">
+              <p className="mt-2 text-[25px]" style={{ fontFamily: 'Changa One' }}>MONETIZE YOUR</p>
+              <p className="-mt-2 text-[25px]" style={{ fontFamily: 'Changa One' }}>ACCOUNT & EARN</p>
+              <p className="-mt-2 text-[25px]" style={{ fontFamily: 'Changa One' }}>FOR LIFE</p>
             </div>
             <img
               onClick={() => console.log("reload")}
               src="/mobile/assets/PlayNow3.png"
-              className="absolute mt-[85px] cursor-pointer ml-[3px] max-w-[173.64px] max-h-[73.3px] min-w-[173.64px] min-h-[73.3px]"
+              className="absolute mt-[85px] cursor-pointer ml-[3px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
             />
-            <img
+            {/* <img
               src="/mobile/assets/SuitMoneyMan.png"
               className="absolute mt-[0px] cursor-pointer ml-[170px] max-w-[213px] max-h-[161px] min-w-[213px] min-h-[161px]"
-            />
+            /> */}
           </div>
           <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
             <div className="flex items-center justify-between">
               <div className="ribbon-left"></div>
               <div className="ribbon-right"></div>
             </div>
-            <div className="absolute ml-4 text-start font-changa-one text-2xl">
-              <p className="mt-2">WIN QUICK CASH </p>
-              <p className="-mt-2">WITH</p>
-              <p className="-mt-2">FASTEST FINGERS</p>
-              <p className="-mt-2">GAMEPLAY</p>
+            <div className="absolute ml-4 text-start text-2xl">
+              <p className="mt-2 text-[25px]" style={{ fontFamily: 'Changa One' }}>WIN QUICK CASH </p>
+              <p className="-mt-2 text-[25px]" style={{ fontFamily: 'Changa One' }}>WITH</p>
+              <p className="-mt-2 text-[25px]" style={{ fontFamily: 'Changa One' }}>FASTEST FINGERS</p>
+              <p className="-mt-2 text-[25px]" style={{ fontFamily: 'Changa One' }}>GAMEPLAY</p>
             </div>
             <div className="absolute mt-[110px] ml-[10px] flex items-center space-x-1">
               <input
@@ -257,43 +338,43 @@ const Home = () => {
                 className="cursor-pointer ml-[3px] max-w-[106.59px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
               />
             </div>
-            <img
+            {/* <img
               src="/mobile/assets/Thousands.png"
               className="absolute mt-[30px] cursor-pointer ml-[200px] max-w-[190px] max-h-[129px] min-w-[190px] min-h-[129px]"
-            />
+            /> */}
           </div>
           <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
             <div className="flex items-center justify-between">
               <div className="ribbon-left"></div>
               <div className="ribbon-right"></div>
             </div>
-            <div className="absolute ml-4 text-start font-changa-one text-3xl">
-              <p className="mt-2">SELL YOUR</p>
-              <p className="-mt-3">BOOM COINS</p>
-              <p className="-mt-3">FOR COOL CASH</p>
+            <div className="absolute ml-4 text-start text-3xl">
+              <p className="mt-2 text-[35px]" style={{ fontFamily: 'Changa One' }}>SELL YOUR</p>
+              <p className="-mt-3 text-[35px]" style={{ fontFamily: 'Changa One' }}>BOOM COIN TOKENS</p>
+              <p className="-mt-3 text-[35px]" style={{ fontFamily: 'Changa One' }}>FOR CASH</p>
             </div>
             <img
               onClick={() => console.log("reload")}
               src="/mobile/assets/GetNow.png"
-              className="absolute mt-[88px] cursor-pointer ml-[10px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
+              className="absolute mt-[93px] cursor-pointer ml-[10px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
             />
             <img
               src="/mobile/assets/Coins2.png"
               className="absolute mt-[60px] cursor-pointer ml-[180px] max-w-[185px] max-h-[96px] min-w-[185px] min-h-[96px]"
             />
-            <img
+            {/* <img
               src="/mobile/assets/ThousandsInverse.png"
               className="absolute mt-[0px] cursor-pointer ml-[240px] max-w-[146px] max-h-[105px] min-w-[146px] min-h-[105px]"
-            />
+            /> */}
           </div>
         </div>
       </div>
       {/* Games */}
-      <div className="-mt-8  px-6">
-        <p className="">Games</p>
+      <div className="-mt-8  px-4">
         <div className=" justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
-          <div className="flex items-start space-x-4 pt-2 pb-1 overflow-y-clip overflow-x-scroll">
-            <div className="gradient-div min-h-[210px] max-h-[210px] relative mt-4 flex flex-col p-4 items-center w-full rounded-md text-secondary ">
+          <p className="mt-1 text-[15px]" style={{ fontFamily: 'Changa' }}><b>Games</b></p>
+          <div className="flex items-start space-x-4 pt-1 pb-1 overflow-y-clip overflow-x-scroll">
+            <div className="gradient-div min-h-[154.24px] max-h-[154.24px] relative mt-1 flex flex-col pt-1 pb-2 items-center max-w-[167px] min-w-[167px] rounded-md text-secondary ">
               <img
                 src="/mobile/assets/3SureCashout.png"
                 className="max-w-[157px] rounded-lg max-h-[115px] min-w-[157px] min-h-[115px]"
@@ -307,17 +388,17 @@ const Home = () => {
                 src="/mobile/assets/PlayNow1.png"
                 className="absolute mt-[91px] cursor-pointer ml-[3px] max-w-[58.92px] max-h-[25px] min-w-[58.92px] min-h-[25px]"
               />
-              <p className="w-full leading-3 mt-2 font-changa-one text-center text-xs">
-                GET ONE GREEN BALL IN 3
+              <p className="w-full leading-3 mt-1 text-center text-[8px]" style={{ fontFamily: 'Changa One' }}>
+                GET ONE GREEN BALL IN 3 CONSECUTIVE
               </p>
-              <p className="w-full leading-3 font-changa-one text-center text-xs">
-                CONSECUTIVE ROLLOVER GAMES
+              <p className="w-full leading-3 -mt-1 text-center text-[8px]" style={{ fontFamily: 'Changa One' }}>
+                ROLLOVER GAMES AND CASHOUT YOUR
               </p>
-              <p className="w-full leading-3 font-changa-one text-center text-xs">
-                AND CASHOUT YOUR CUMULATIVE
+              <p className="w-full leading-3 -mt-1 text-center text-[8px]" style={{ fontFamily: 'Changa One' }}>
+                CUMULATIVE
               </p>
             </div>
-            <div className="gradient-div min-h-[210px] max-h-[210px] relative mt-4 flex flex-col p-4 items-center w-full rounded-md text-secondary h-auto">
+            <div className="gradient-div min-h-[154.24px] max-h-[154.24px] relative mt-1 flex flex-col pt-1 pb-2 items-center max-w-[167px] min-w-[167px] rounded-md text-secondary h-auto">
               <img
                 src="/mobile/assets/Rollover.png"
                 className="rounded-lg max-w-[157.29px] max-h-[117.04px] min-w-[157.29px] min-h-[117.04px]"
@@ -327,14 +408,14 @@ const Home = () => {
                 src="/mobile/assets/PlayNow2.png"
                 className="absolute mt-[93px] cursor-pointer ml-[3px] max-w-[58.92px] max-h-[25px] min-w-[58.92px] min-h-[25px]"
               />
-              <p className="mt-2 leading-3 font-changa-one text-center text-xs">
-                TAP TO PLAY AND ROLLOVER YOUR
+              <p className="mt-2 leading-3 text-center text-[8px]" style={{ fontFamily: 'Changa One' }}>
+                TAP TO ROLLOVER AND SWAP YOUR BANK
               </p>
-              <p className="leading-3 font-changa-one text-center text-xs">
-                BANK ALERTS TO CASHOUT
+              <p className="leading-3 -mt-1 text-center text-[8px]" style={{ fontFamily: 'Changa One' }}>
+                ALERT
               </p>
             </div>
-            <div className="gradient-div min-h-[210px] max-h-[210px] relative mt-4 flex flex-col p-4 items-center w-full rounded-md text-secondary ">
+            <div className="gradient-div min-h-[154.24px] max-h-[154.24px] relative mt-1 flex flex-col pt-1 pb-2 items-center max-w-[167px] min-w-[167px] rounded-md text-secondary ">
               <img
                 src="/mobile/assets/FastestFingers.png"
                 className="rounded-lg max-w-[157.78px] max-h-[115.56px] min-w-[157.78px] min-h-[115.56px]"
@@ -349,10 +430,10 @@ const Home = () => {
                 src="/mobile/assets/Enter.png"
                 className="absolute mt-[90px] cursor-pointer ml-[3px] max-w-[58.92px] max-h-[25px] min-w-[58.92px] min-h-[25px]"
               />
-              <p className="mt-2 leading-3 font-changa-one text-center text-xs">
+              <p className="mt-2 leading-3 text-center text-[8px]" style={{ fontFamily: 'Changa One' }}>
                 ENTER THE MONEY WORD TO WIN
               </p>
-              <p className="leading-3 font-changa-one text-center text-xs">
+              <p className="leading-3 -mt-1 text-center text-[8px]" style={{ fontFamily: 'Changa One' }}>
                 QUICK CASH
               </p>
             </div>
@@ -362,8 +443,8 @@ const Home = () => {
       {/* How to play */}
       <div>
         <div className="lg:-mt-20 mb-4">
-          <div className=" px-6 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
-            <p className="my-4">How to play</p>
+          <div className=" px-4 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
+            <p className="mt-4 mb-1 text-[15px]" style={{ fontFamily: 'Changa' }}><b>How to play</b></p>
             {playGuide.map((each, index) => {
               return (
                 <HTPCards
@@ -380,10 +461,10 @@ const Home = () => {
       {/*  */}
       <div>
         <div className="lg:-mt-40 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
-          <div className="mt-8 relative flex flex-col items-center w-full rounded-md text-secondary ">
+          <div className="-mt-3 px-4 relative flex flex-col items-center w-full text-secondary ">
             <img
-              src="/mobile/assets/BigWin.png"
-              className="max-w-[350px] max-h-[344px] min-w-[344px] min-h-[350px]"
+              src="/mobile/assets/BigWin2.png"
+              className="max-w-[100%] max-h-[344px] min-w-[100%] min-h-[350px] rounded-lg"
             />
             <img
               onClick={() => console.log("reload")}
@@ -392,28 +473,39 @@ const Home = () => {
             />
           </div>
         </div>
-        <div className="lg:-mt-40 px-6 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
+        <div className="lg:-mt-40 px-4 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
           <div className="flex flex-col items-center w-full">
-            <p className="font-changa-one text-xl text-primary mt-8">
+            <p className="text-[15px] text-primary " style={{ fontFamily: 'Changa One' }}>
               About Nairaboom
             </p>
-            <p className="font-extralight font-sans text-center">
-              NairaBoom is the ultimate Play2Earn experience crafted around your
-              bank alerts! As a licensed, proprietary Alert Rollover Game,
-              NairaBoom transforms your credit and debit alerts into Boom
-              Coins—the key to unlocking massive wins. Rollover and accumulate
-              your alerts through gameplay, and once you hit the cashout
-              criteria, you convert your Boom Coins into instant cash rewards of
-              up to ₦35,000,000! But NairaBoom is more than just a game; it’s a
-              platform where your alerts become real, tangible earnings. Not
-              only can you cash out instantly, but you can also monetize your
-              account for ongoing earnings, securing a financial boost for life.
-              Ready to turn your alerts into cash? Dive into the world of
-              NairaBoom today and start stacking those Boom Coins!
+            <p className="font-light text-[9px]" style={{ fontFamily: 'Changa' }}>
+              NairaBoom is Nigeria's premier, most trusted Financial Transaction </p>
+              <p className="font-light text-[9px]" style={{ fontFamily: 'Changa' }}>
+              Notification (Bank Alert) Tokenization and Gamification platform. We bring </p>
+              <p className="font-light text-[9px]" style={{ fontFamily: 'Changa' }}>
+              you an unmatched Swap to Earn + Play to Earn experience, transforming your </p>
+              <p className="font-light text-[9px]" style={{ fontFamily: 'Changa' }}>
+              everyday bank alerts into valuable tokens you can sell and cash out. Plus, </p>
+              <p className="font-light text-[9px]" style={{ fontFamily: 'Changa' }}>
+              with our one-of-a-kind "3 Sure Cashout" game, you're guaranteed thrilling </p>
+              <p className="font-light text-[9px]" style={{ fontFamily: 'Changa' }}>
+              opportunities to earn big! </p>
+              <p className="font-light text-[9px]" style={{ fontFamily: 'Changa' }}>
+              Beyond a gamification platform, Nairaboom is your gateway to monetizing </p>
+              <p className="font-light text-[9px]" style={{ fontFamily: 'Changa' }}>
+              every bank alert, providing consistent financial gains and turning ordinary </p>
+              <p className="font-light text-[9px]" style={{ fontFamily: 'Changa' }}>
+              transactions into real income with fast cashouts of up to ₦35,000,000. </p>
+              <p className="font-light text-[9px]" style={{ fontFamily: 'Changa' }}>
+              So, are you ready to make every alert count? Jin Nairaboom today to Swap </p>
+              <p className="font-light text-[9px]" style={{ fontFamily: 'Changa' }}>
+              your Bank Alerts, Stack up Boom Coin Tokens, Sell and  Win.......& unleash the </p>
+              <p className="font-light text-[9px]" style={{ fontFamily: 'Changa' }}>
+              power of your Bank Alerts
             </p>
             <div
               onClick={() => console.log("reload")}
-              className="cursor-pointer my-4"
+              className="cursor-pointer mb-3"
             >
               <img
                 src="/mobile/assets/ViewMore.png"
@@ -421,8 +513,8 @@ const Home = () => {
               />
             </div>
             <img
-              src="/mobile/assets/NairaBoomLogo.png"
-              className="w-[64px] h-[37px] mt-4"
+              src="/mobile/assets/NairaBoomLogo.svg"
+              className="w-[64px] h-[37px]"
             />
           </div>
         </div>
@@ -431,37 +523,37 @@ const Home = () => {
       {/* Footer */}
       <div className="flex flex-col flex-1 px-6 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
         <div className="flex flex-col flex-1">
-          <div className="mt-8 flex flex-col text-center items-center w-full">
-            <div className="mb-4">
-              <span className="py-[4px] px-[7px] text-xl border-4 border-red-600 mr-2 rounded-full">
+          <div className="mt-4 flex flex-col text-center items-center w-full">
+            <div className="mb-1">
+              <span className="py-[2px] px-[2px] text-[10px] font-semibold border-2 border-red-600 mr-2 rounded-full" style={{ fontFamily: 'Source Sans Pro' }}>
                 18+
               </span>
-              <span className="text-xl">Play Responsibly</span>
+              <span className="text-[10px] font-semibold" style={{ fontFamily: 'Source Sans Pro' }}>Play Resposibly</span>
             </div>
-            <div className="font-extralight font-sans">
+            <div className="text-[10px] font-extralight" style={{ fontFamily: 'Changa' }}>
               <p>© 2024 Nairaboom. All Rights Reserved.</p>
               <p>Nairaboom is licensed and regulated by the National</p>
               <p>Lottery Regulatory</p>
-              <p>(NLRC). License number</p>
+              <p>(NLRC). License Number</p>
               <p>0000006</p>
             </div>
           </div>
-          <div className="flex flex-col flex-1 justify-end my-4">
-            <div className="my-4 flex justify-between items-end font-sans">
+          <div className="flex flex-col flex-1 justify-end mt-1 mb-20">
+            <div className="flex justify-between items-end font-extralight text-[10px]" style={{ fontFamily: 'Changa' }}>
               <div>
                 <div>
                   <p className="hover:border-b border-b-white inline-block">
-                    FAQS
+                    <Link href="/faq">FAQs</Link>
                   </p>
                 </div>
                 <div>
                   <p className="hover:border-b border-b-white inline-block">
-                    Terms & Conditions
+                    <Link href="/terms_conditions">Terms & Conditions</Link>
                   </p>
                 </div>
                 <div>
                   <p className="hover:border-b border-b-white inline-block">
-                    Privacy Policy
+                    <Link href="/privacy_policy">Privacy Policy</Link>
                   </p>
                 </div>
                 <div>
@@ -471,17 +563,17 @@ const Home = () => {
                 </div>
                 <div>
                   <p className="hover:border-b border-b-white inline-block">
-                    Responsible Gambling
+                    <Link href="/gamble_responsibly">Responsible Gambling</Link>
                   </p>
                 </div>
               </div>
               <div className="text-primary space-x-2">
-                <FaInstagram size={24} className="inline-block" />
-                <FaTiktok size={24} className="inline-block" />
-                <FaFacebook size={24} className="inline-block" />
-                <FaXTwitter size={24} className="inline-block" />
-                <FaYoutube size={24} className="inline-block" />
-                <FaThreads size={24} className="inline-block" />
+                <Link href="https://www.instagram.com/nairaboomng/"><FaInstagram size={15} className="inline-block" /></Link> 
+                <Link href="https://www.tiktok.com/@nairaboom.ng?_t=8ouwtQ6j16L&_r=1"><FaTiktok size={15} className="inline-block" /></Link> 
+                <Link href="https://www.facebook.com/profile.php?id=61554354321220&mibextid=ZbWKwL"><FaFacebook size={15} className="inline-block" /></Link> 
+                <Link href="https://twitter.com/nairaboomng"><FaXTwitter size={15} className="inline-block" /></Link> 
+                <Link href="https://youtube.com/@nairaboomng?si=SsQoitRoAbRc1EvK"><FaYoutube size={15} className="inline-block" /></Link> 
+                <Link href="https://www.threads.net/@nairaboomng"><FaThreads size={15} className="inline-block" /></Link>
               </div>
             </div>
           </div>
@@ -492,598 +584,3 @@ const Home = () => {
 };
 
 export default Home;
-
-// /* eslint-disable react/prop-types */
-// // import React from 'react'
-
-// import { IoReorderThree } from "react-icons/io5";
-// // import { IoMdInformationCircleOutline } from "react-icons/io";
-// import { HiSpeakerphone } from "react-icons/hi";
-// import {
-//   FaInstagram,
-//   FaTiktok,
-//   FaFacebook,
-//   FaXTwitter,
-//   FaYoutube,
-//   FaThreads
-// } from "react-icons/fa6";
-// import { useState } from "react";
-// import Image from "next/image";
-// // absolute inset-0
-
-// const Home = () => {
-//   const [playGuide, setPlayGuide] = useState([
-//     {
-//       title: "RECEIVE A CREDIT OR DEBIT ALERT",
-//       description:
-//         "Sign up or Login to your Nairaboom game profile anytime you get a valid credit or debit alert"
-//     },
-//     {
-//       title: "FUND YOUR WALLET",
-//       description:
-//         "Make your first deposit of ₦500 and receive 35,000 Boom Coins."
-//     },
-//     {
-//       title: "PLAY GAME",
-//       description:
-//         "Enter your alert details to rollover & accumulate every valid credit or debit alert you receive into Boom Coins."
-//     },
-//     {
-//       title: "SPIN TO CASHOUT",
-//       description:
-//         "Spin the wheel and match the cashout keys or 3 green balls to cashout your Boom Coins instantly."
-//     },
-//     {
-//       title: "WIN THE JACKPOT",
-//       description:
-//         "Match all 4 Green balls when you spin To Cashout and Win The JACKPOT! "
-//     }
-//   ]);
-//   const HTPCards = ({ title, description, listing }) => {
-//     return (
-//       <div className="gradient-div mt-2 flex space-x-4 items-center w-full rounded-md text-secondary ">
-//         <Image
-//           alt=""
-//           width={55}
-//           height={97}
-//           src="/mobile/assets/HalfWheel.png"
-//           className="max-w-[55px] max-h-[97px] min-w-[49.20px] min-h-[97px]"
-//         />
-//         <div className="pr-4 py-2">
-//           <p className=" font-changa-one text-lg leading-4">{`${listing}. ${title}`}</p>
-//           <p className=" font-changa leading-4 font-semibold mt-1">
-//             {description}
-//           </p>
-//         </div>
-//       </div>
-//     );
-//   };
-
-//   return (
-//     <div className="w-full" style={{ maxWidth: window.innerWidth }}>
-//       <div
-//         className="justify-center background-ribbon bg-cover bg-center bg-no-repeat h-auto"
-//         style={{ maxWidth: window.innerWidth }}
-//       >
-//         <div className="w-full">
-//           <div className="flex py-10 w-full justify-center">
-//             <Image
-//               alt="" // Added suitable alt text
-//               src="/redesign/logo.png"
-//               width={100}
-//               height={50}
-//             />
-//           </div>
-//           <div className="px-6 mb-16 w-full flex justify-between">
-//             <div className="flex space-x-1 items-center">
-//               <IoReorderThree size={40} />
-//             </div>
-//             <div className="flex space-x-1 items-center">
-//               <div
-//                 onClick={() => console.log("reload")}
-//                 className="cursor-pointer"
-//               >
-//                 <Image
-//                   alt="" // Added suitable alt text
-//                   src="/mobile/assets/Login.png"
-//                   width={150} // Set to min-width
-//                   height={150} // Set to min-height
-//                 />
-//               </div>
-//               <div
-//                 onClick={() => console.log("reload")}
-//                 className="cursor-pointer"
-//               >
-//                 <Image
-//                   alt="" // Added suitable alt text
-//                   src="/mobile/assets/Signup.png"
-//                   width={150} // Set to min-width
-//                   height={150} // Set to min-height
-//                 />
-//               </div>
-//             </div>
-//           </div>
-//           <div className="max-w-full flex space-x-4 scrollbar-hide mdd:justify-start">
-//             <div
-//               className="flex justify-between w-full home-card bg-cover bg-center bg-no-repeat h-auto p-4 text-secondary"
-//               style={{ maxWidth: window.innerWidth }}
-//             >
-//               {/* first text */}
-//               <div className="text-3xl font-changa-one">
-//                 <p>THE</p>
-//                 <p className="-mt-3">GAME</p>
-//                 <p className="-mt-3">FOR</p>
-//                 <p className="-mt-3">YOUR</p>
-//                 <p className="-mt-3">BANK</p>
-//                 <p className="-mt-3">ALERT</p>
-//               </div>
-//               {/* man and wheel */}
-//               <div className="relative w-[153px] flex flex-col items-center text-secondary">
-//                 <Image
-//                   alt="" // Added suitable alt text
-//                   src="/mobile/assets/MoneyMan.png"
-//                   width={165} // Set to min-width
-//                   height={192} // Set to min-height
-//                   className="absolute -mt-[100px] max-w-[165px] max-h-[192px]"
-//                 />
-//                 <Image
-//                   alt="" // Added suitable alt text
-//                   src="/mobile/assets/Wheel.png"
-//                   width={153} // Set to min-width
-//                   height={153} // Set to min-height
-//                   className="absolute mt-[20px] cursor-pointer ml-[3px] max-w-[153px] max-h-[153px]"
-//                 />
-//               </div>
-//               <div className="flex flex-col justify-center space-y-3">
-//                 <button className="py-[6px] px-6 text-primary bg-secondary rounded-full">
-//                   ROLLOVER
-//                 </button>
-//                 <button className="py-[6px] px-6 text-primary bg-secondary rounded-full">
-//                   ACCUMULATE
-//                 </button>
-//                 <button className="py-[6px] px-6 text-primary bg-secondary rounded-full">
-//                   CASHOUT
-//                 </button>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//         {/* megaphone card */}
-//         <div className="gradient-div mt-4 w-full flex items-center justify-between text-secondary">
-//           <div className="text-xs flex items-center p-[2px]">
-//             <HiSpeakerphone
-//               size={24}
-//               className="ml-2 -rotate-45 inline-block"
-//             />
-//             <div className="inline-block">
-//               <span className="ml-1">rael won</span>{" "}
-//               <span className=" text-base text-white">NGN 50,000</span>{" "}
-//               <span className="">in 3 Sure Cashout</span>
-//             </div>
-//           </div>
-//           <div className="flex items-center rounded-br-md rounded-tr-md justify-center aspect-video small-ribbon bg-cover bg-center bg-no-repeat h-[32px]">
-//             <div
-//               onClick={() => console.log("reload")}
-//               className="cursor-pointer"
-//             >
-//               <Image
-//                 alt="" // Added suitable alt text
-//                 src="/mobile/assets/PlayNow.png"
-//                 width={24} // Use appropriate width
-//                 height={24} // Use appropriate height
-//                 className="h-[24px] aspect-video"
-//               />
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       {/* First Slide */}
-//       <div className="justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
-//         <div className="flex items-start space-x-4 pt-2 pb-1 overflow-y-clip overflow-x-scroll">
-//           <div className="relative">
-//             <Image
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/Slide1.png"
-//               width={390} // Set to min-width
-//               height={160} // Set to min-height
-//               className="max-w-[390px] max-h-[160px] min-w-[390px] min-h-[160px]"
-//             />
-//             <Image
-//               onClick={() => console.log("reload")}
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/PlayNow4.png"
-//               width={153.97} // Set to min-width
-//               height={65} // Set to min-height
-//               className="absolute -mt-[65px] cursor-pointer ml-[3px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
-//             />
-//           </div>
-//           <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
-//             <div className="flex items-center justify-between">
-//               <div className="ribbon-left"></div>
-//               <div className="ribbon-right"></div>
-//             </div>
-//             <div className="absolute ml-4 text-start font-changa-one text-3xl">
-//               <p className="mt-2">GET 35,500 BOOM</p>
-//               <p className="-mt-3">COINS ON YOUR</p>
-//               <p className="-mt-3">FIRST DEPOSIT</p>
-//             </div>
-//             <Image
-//               onClick={() => console.log("reload")}
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/PlayNow3.png"
-//               width={173.64} // Set to min-width
-//               height={73.3} // Set to min-height
-//               className="absolute mt-[88px] cursor-pointer ml-[3px] max-w-[173.64px] max-h-[73.3px] min-w-[173.64px] min-h-[73.3px]"
-//             />
-//             <Image
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/Coins.png"
-//               width={167} // Set to min-width
-//               height={101} // Set to min-height
-//               className="absolute mt-[55px] cursor-pointer ml-[215px] max-w-[167px] max-h-[101px] min-w-[167px] min-h-[101px]"
-//             />
-//           </div>
-//           <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
-//             <div className="flex items-center justify-between">
-//               <div className="ribbon-left"></div>
-//               <div className="ribbon-right"></div>
-//             </div>
-//             <div className="absolute ml-4 text-start font-changa-one text-3xl">
-//               <p className="">CASHOUT YOUR CUMULATIVE </p>
-//               <p className="-mt-3">WITH 3 SURE CASHOUT</p>
-//             </div>
-//             <Image
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/GreenCheckGold.png"
-//               width={106.59} // Set to min-width
-//               height={56.75} // Set to min-height
-//               className="absolute mt-[58px] cursor-pointer ml-[3px] max-w-[106.59px] max-h-[56.75px] min-w-[194px] min-h-[56.75px]"
-//             />
-//             <Image
-//               onClick={() => console.log("reload")}
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/PlayNow3.png"
-//               width={106.59} // Set to min-width
-//               height={45} // Set to min-height
-//               className="absolute mt-[115px] cursor-pointer ml-[50px] max-w-[194px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
-//             />
-//             <Image
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/MoneyMan2.png"
-//               width={142} // Set to min-width
-//               height={152.31} // Set to min-height
-//               className="absolute mt-[10px] cursor-pointer ml-[240px] max-w-[142px] max-h-[152.31px] min-w-[142px] min-h-[152.31px]"
-//             />
-//           </div>
-//           <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
-//             <div className="flex items-center justify-between">
-//               <div className="ribbon-left"></div>
-//               <div className="ribbon-right"></div>
-//             </div>
-//             <div className="absolute ml-4 text-start font-changa-one text-2xl">
-//               <p className="mt-2">MONETIZE YOUR</p>
-//               <p className="-mt-2">ACCOUNT & EARN</p>
-//               <p className="-mt-2">FOR LIFE</p>
-//             </div>
-//             <Image
-//               onClick={() => console.log("reload")}
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/PlayNow3.png"
-//               width={173.64} // Set to min-width
-//               height={73.3} // Set to min-height
-//               className="absolute mt-[85px] cursor-pointer ml-[3px] max-w-[173.64px] max-h-[73.3px] min-w-[173.64px] min-h-[73.3px]"
-//             />
-//             <Image
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/SuitMoneyMan.png"
-//               width={213} // Set to min-width
-//               height={161} // Set to min-height
-//               className="absolute mt-[0px] cursor-pointer ml-[170px] max-w-[213px] max-h-[161px] min-w-[213px] min-h-[161px]"
-//             />
-//           </div>
-//           <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
-//             <div className="flex items-center justify-between">
-//               <div className="ribbon-left"></div>
-//               <div className="ribbon-right"></div>
-//             </div>
-//             <div className="absolute ml-4 text-start font-changa-one text-2xl">
-//               <p className="mt-2">WIN QUICK CASH </p>
-//               <p className="-mt-2">WITH</p>
-//               <p className="-mt-2">FASTEST FINGERS</p>
-//               <p className="-mt-2">GAMEPLAY</p>
-//             </div>
-//             <div className="absolute mt-[110px] ml-[10px] flex items-center space-x-1">
-//               <input
-//                 type="text"
-//                 placeholder="Type here..."
-//                 className="max-w-[125px] max-h-[33.48px] min-w-[125px] min-h-[33.48px] bg-white text-neutral-500 text-xs text-center border-4 border-secondary rounded-full"
-//               />
-//               <Image
-//                 onClick={() => console.log("reload")}
-//                 alt="" // Added suitable alt text
-//                 src="/mobile/assets/PlayNow3.png"
-//                 width={106.59} // Set to min-width
-//                 height={45} // Set to min-height
-//                 className="cursor-pointer ml-[3px] max-w-[106.59px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
-//               />
-//             </div>
-//             <Image
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/Thousands.png"
-//               width={190} // Set to min-width
-//               height={129} // Set to min-height
-//               className="absolute mt-[30px] cursor-pointer ml-[200px] max-w-[190px] max-h-[129px] min-w-[190px] min-h-[129px]"
-//             />
-//           </div>
-//           <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
-//             <div className="flex items-center justify-between">
-//               <div className="ribbon-left"></div>
-//               <div className="ribbon-right"></div>
-//             </div>
-//             <div className="absolute ml-4 text-start font-changa-one text-3xl">
-//               <p className="mt-2">SELL YOUR</p>
-//               <p className="-mt-3">BOOM COINS</p>
-//               <p className="-mt-3">FOR COOL CASH</p>
-//             </div>
-//             <Image
-//               onClick={() => console.log("reload")}
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/GetNow.png"
-//               width={153.97} // Set to min-width
-//               height={65} // Set to min-height
-//               className="absolute mt-[88px] cursor-pointer ml-[10px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
-//             />
-//             <Image
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/Coins2.png"
-//               width={185} // Set to min-width
-//               height={96} // Set to min-height
-//               className="absolute mt-[60px] cursor-pointer ml-[180px] max-w-[185px] max-h-[96px] min-w-[185px] min-h-[96px]"
-//             />
-//             <Image
-//               alt="" // Added suitable alt text
-//               src="/mobile/assets/ThousandsInverse.png"
-//               width={146} // Set to min-width
-//               height={105} // Set to min-height
-//               className="absolute mt-[0px] cursor-pointer ml-[240px] max-w-[146px] max-h-[105px] min-w-[146px] min-h-[105px]"
-//             />
-//           </div>
-//         </div>
-//       </div>
-//       {/* Games */}
-//       <div className="-mt-8 px-6">
-//         <p className="">Games</p>
-//         <div className="justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
-//           <div className="flex items-start space-x-4 pt-2 pb-1 overflow-y-clip overflow-x-scroll">
-//             <div className="gradient-div min-h-[210px] max-h-[210px] relative mt-4 flex flex-col p-4 items-center w-full rounded-md text-secondary">
-//               <Image
-//                 alt="" // Added alt text
-//                 src="/mobile/assets/3SureCashout.png"
-//                 width={157} // Set to min-width
-//                 height={115} // Set to min-height
-//                 className="max-w-[157px] rounded-lg max-h-[115px] min-w-[157px] min-h-[115px]"
-//               />
-//               <Image
-//                 alt="" // Added alt text
-//                 src="/mobile/assets/GreenCheck.png"
-//                 width={113.14} // Set to min-width
-//                 height={12.69} // Set to min-height
-//                 className="absolute mt-[65px] max-w-[113.14px] max-h-[12.69px] min-w-[113.14px] min-h-[12.69px]"
-//               />
-//               <Image
-//                 onClick={() => console.log("reload")}
-//                 alt="" // Added alt text
-//                 src="/mobile/assets/PlayNow1.png"
-//                 width={58.92} // Set to min-width
-//                 height={25} // Set to min-height
-//                 className="absolute mt-[91px] cursor-pointer ml-[3px] max-w-[58.92px] max-h-[25px] min-w-[58.92px] min-h-[25px]"
-//               />
-//               <p className="w-full leading-3 mt-2 font-changa-one text-center text-xs">
-//                 GET ONE GREEN BALL IN 3
-//               </p>
-//               <p className="w-full leading-3 font-changa-one text-center text-xs">
-//                 CONSECUTIVE ROLLOVER GAMES
-//               </p>
-//               <p className="w-full leading-3 font-changa-one text-center text-xs">
-//                 AND CASHOUT YOUR CUMULATIVE
-//               </p>
-//             </div>
-//             <div className="gradient-div min-h-[210px] max-h-[210px] relative mt-4 flex flex-col p-4 items-center w-full rounded-md text-secondary h-auto">
-//               <Image
-//                 alt="" // Added alt text
-//                 src="/mobile/assets/Rollover.png"
-//                 width={157.29} // Set to min-width
-//                 height={117.04} // Set to min-height
-//                 className="rounded-lg max-w-[157.29px] max-h-[117.04px] min-w-[157.29px] min-h-[117.04px]"
-//               />
-//               <Image
-//                 onClick={() => console.log("reload")}
-//                 alt="" // Added alt text
-//                 src="/mobile/assets/PlayNow2.png"
-//                 width={58.92} // Set to min-width
-//                 height={25} // Set to min-height
-//                 className="absolute mt-[93px] cursor-pointer ml-[3px] max-w-[58.92px] max-h-[25px] min-w-[58.92px] min-h-[25px]"
-//               />
-//               <p className="mt-2 leading-3 font-changa-one text-center text-xs">
-//                 TAP TO PLAY AND ROLLOVER YOUR
-//               </p>
-//               <p className="leading-3 font-changa-one text-center text-xs">
-//                 BANK ALERTS TO CASHOUT
-//               </p>
-//             </div>
-//             <div className="gradient-div min-h-[210px] max-h-[210px] relative mt-4 flex flex-col p-4 items-center w-full rounded-md text-secondary">
-//               <Image
-//                 alt="" // Added alt text
-//                 src="/mobile/assets/FastestFingers.png"
-//                 width={157.78} // Set to min-width
-//                 height={115.56} // Set to min-height
-//                 className="rounded-lg max-w-[157.78px] max-h-[115.56px] min-w-[157.78px] min-h-[115.56px]"
-//               />
-//               <input
-//                 type="text"
-//                 placeholder="Type here..."
-//                 className="absolute mt-[65px] max-w-[94px] max-h-[25.18px] min-w-[94px] min-h-[25.18px] bg-white text-neutral-500 text-sm text-center border-2 border-secondary rounded-full"
-//               />
-//               <Image
-//                 onClick={() => console.log("reload")}
-//                 alt="" // Added alt text
-//                 src="/mobile/assets/Enter.png"
-//                 width={58.92} // Set to min-width
-//                 height={25} // Set to min-height
-//                 className="absolute mt-[90px] cursor-pointer ml-[3px] max-w-[58.92px] max-h-[25px] min-w-[58.92px] min-h-[25px]"
-//               />
-//               <p className="mt-2 leading-3 font-changa-one text-center text-xs">
-//                 ENTER THE MONEY WORD TO WIN
-//               </p>
-//               <p className="leading-3 font-changa-one text-center text-xs">
-//                 QUICK CASH
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       {/* How to play */}
-//       <div>
-//         <div className="lg:-mt-20 mb-4">
-//           <div className=" px-6 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
-//             <p className="my-4">How to play</p>
-//             {playGuide.map((each, index) => {
-//               return (
-//                 <HTPCards
-//                   key={index}
-//                   listing={index + 1}
-//                   title={each.title}
-//                   description={each.description}
-//                 />
-//               );
-//             })}
-//           </div>
-//         </div>
-//       </div>
-//       {/*  */}
-//       <div>
-//         <div className="lg:-mt-40 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
-//           <div className="mt-8 relative flex flex-col items-center w-full rounded-md text-secondary ">
-//             <Image
-//               alt=""
-//               src="/mobile/assets/BigWin.png"
-//               className="max-w-[350px] max-h-[344px] min-w-[344px] min-h-[350px]"
-//               width={344} // Minimum width
-//               height={350} // Minimum height
-//             />
-//             <Image
-//               onClick={() => console.log("reload")}
-//               alt=""
-//               src="/mobile/assets/HowToPlay.png"
-//               className="absolute mt-[235px] cursor-pointer ml-[3px] max-w-[249.04px] max-h-[78.72px] min-w-[249.04px] min-h-[78.72px]"
-//               width={249} // Minimum width
-//               height={79} // Minimum height
-//             />
-//           </div>
-//         </div>
-//         <div className="lg:-mt-40 px-6 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
-//           <div className="flex flex-col items-center w-full">
-//             <p className="font-changa-one text-xl text-primary mt-8">
-//               About Nairaboom
-//             </p>
-//             <p className="font-extralight font-sans text-center">
-//               NairaBoom is the ultimate Play2Earn experience crafted around your
-//               bank alerts! As a licensed, proprietary Alert Rollover Game,
-//               NairaBoom transforms your credit and debit alerts into Boom
-//               Coins—the key to unlocking massive wins. Rollover and accumulate
-//               your alerts through gameplay, and once you hit the cashout
-//               criteria, you convert your Boom Coins into instant cash rewards of
-//               up to ₦35,000,000! But NairaBoom is more than just a game; it’s a
-//               platform where your alerts become real, tangible earnings. Not
-//               only can you cash out instantly, but you can also monetize your
-//               account for ongoing earnings, securing a financial boost for life.
-//               Ready to turn your alerts into cash? Dive into the world of
-//               NairaBoom today and start stacking those Boom Coins!
-//             </p>
-//             <div
-//               onClick={() => console.log("reload")}
-//               className="cursor-pointer my-4"
-//             >
-//               <Image
-//                 alt=""
-//                 src="/mobile/assets/ViewMore.png"
-//                 className="w-[78px] h-[29px]"
-//                 width={78} // Width specified
-//                 height={29} // Height specified
-//               />
-//             </div>
-//             <Image
-//               alt=""
-//               src="/mobile/assets/NairaBoomLogo.png"
-//               className="w-[64px] h-[37px] mt-4"
-//               width={64} // Width specified
-//               height={37} // Height specified
-//             />
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Footer */}
-//       <div className="flex flex-col flex-1 px-6 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
-//         <div className="flex flex-col flex-1">
-//           <div className="mt-8 flex flex-col text-center items-center w-full">
-//             <div className="mb-4">
-//               <span className="py-[4px] px-[7px] text-xl border-4 border-red-600 mr-2 rounded-full">
-//                 18+
-//               </span>
-//               <span className="text-xl">Play Responsibly</span>
-//             </div>
-//             <div className="font-extralight font-sans">
-//               <p>© 2024 Nairaboom. All Rights Reserved.</p>
-//               <p>Nairaboom is licensed and regulated by the National</p>
-//               <p>Lottery Regulatory</p>
-//               <p>(NLRC). License number</p>
-//               <p>0000006</p>
-//             </div>
-//           </div>
-//           <div className="flex flex-col flex-1 justify-end my-4">
-//             <div className="my-4 flex justify-between items-end font-sans">
-//               <div>
-//                 <div>
-//                   <p className="hover:border-b border-b-white inline-block">
-//                     FAQS
-//                   </p>
-//                 </div>
-//                 <div>
-//                   <p className="hover:border-b border-b-white inline-block">
-//                     Terms & Conditions
-//                   </p>
-//                 </div>
-//                 <div>
-//                   <p className="hover:border-b border-b-white inline-block">
-//                     Privacy Policy
-//                   </p>
-//                 </div>
-//                 <div>
-//                   <p className="hover:border-b border-b-white inline-block">
-//                     Blog
-//                   </p>
-//                 </div>
-//                 <div>
-//                   <p className="hover:border-b border-b-white inline-block">
-//                     Responsible Gambling
-//                   </p>
-//                 </div>
-//               </div>
-//               <div className="text-primary space-x-2">
-//                 <FaInstagram size={24} className="inline-block" />
-//                 <FaTiktok size={24} className="inline-block" />
-//                 <FaFacebook size={24} className="inline-block" />
-//                 <FaXTwitter size={24} className="inline-block" />
-//                 <FaYoutube size={24} className="inline-block" />
-//                 <FaThreads size={24} className="inline-block" />
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Home;

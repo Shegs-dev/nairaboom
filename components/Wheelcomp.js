@@ -24,17 +24,15 @@ import { useRouter } from "next/router";
 import BoomWheelComp from "../pages/customer_dashboard/BoomWheelComp";
 import { useWindowSize } from "react-use";
 import useUser from "../lib/hooks/useUser";
-import { AUTH_API_ROUTES } from "../utils/routes";
-import axios from "axios";
-const BASE_URL = AUTH_API_ROUTES.PRODUCTION_BASE_URL;
-const NAIRABOOM_KEY = AUTH_API_ROUTES.PRODUCTION_X_APP_KEY;
-// import jackpot from "../public/jackpot.jpg";
-// import alert from "../public/alert.jpg";
 import { BsChevronLeft } from "react-icons/bs";
-// import bmusic from '../public/Embrace.mp3'
 
 import jackpot from "../public/jackpot_.PNG";
 import alert from "../public/alert_.PNG";
+import {
+  validateGame,
+  updateMyPlayStake,
+  getWheelTracker
+} from "../../src/apis/func";
 
 const Wheelcomp = () => {
   const router = useRouter();
@@ -47,7 +45,6 @@ const Wheelcomp = () => {
   const [game_ref, setgame_ref] = useState(
     router.query.ref ? router?.query?.ref : router?.query?.ref
   );
-  const winList = ["7", "15", "23", "31"];
   const segments = [
     "1",
     "2",
@@ -136,18 +133,7 @@ const Wheelcomp = () => {
   useEffect(() => {
     if (!bearerToken) return;
     const verifyGameRef = async () => {
-      const config = {
-        method: "post",
-        url: `${BASE_URL}/api/validate_game`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-        data: {
-          game_ref: game_ref,
-        },
-      };
-      const response = await axios(config);
+      const response = await validateGame(bearerToken, game_ref);
       if (response?.data?.status === false) {
         if (response.data.message === "Please provide a valid game ticket") {
         } else {
@@ -370,94 +356,9 @@ const Wheelcomp = () => {
   }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const UpdatePlaystake = async () => {
-    try {
-      const config = {
-        method: "post",
-        url: `${BASE_URL}/api/update_play_stake`,
-        //url: "https://nairaboom.com.ng/api/update_play_stake",
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken || user?.token}`,
-          "Content-Type": "text/plain;charset=utf-8",
-        },
-        data: {
-          game_ref: game_ref || router?.query?.ref,
-          colour_scheme: getColourScheme(),
-          boom_box_number: getBoomNumber(),
-          cashback_number: padZeros(getCashbackNumber()),
-          // colour_scheme: `${
-          //   !isSettingMatched
-          //     ? segColors[winnerList[0] - 1]
-          //     : isSettingValue === ""
-          //     ? segColors[winnerList[0] - 1]
-          //     : isSettingValue === "Jackpot"
-          //     ? "green"
-          //     : segColors[winnerList[0] - 1]
-          // }:${
-          //   !isSettingMatched
-          //     ? segColors[winnerList[1] - 1]
-          //     : isSettingValue === ""
-          //     ? segColors[winnerList[1] - 1]
-          //     : isSettingValue === "Alertboom"
-          //     ? "green"
-          //     : isSettingValue === "Jackpot"
-          //     ? "green"
-          //     : segColors[winnerList[1] - 1]
-          // }:${
-          //   !isSettingMatched
-          //     ? segColors[winnerList[2] - 1]
-          //     : isSettingValue === ""
-          //     ? segColors[winnerList[2] - 1]
-          //     : isSettingValue === "Alertboom"
-          //     ? "green"
-          //     : isSettingValue === "Jackpot"
-          //     ? "green"
-          //     : segColors[winnerList[2] - 1]
-          // }:${
-          //   !isSettingMatched
-          //     ? segColors[winnerList[3] - 1]
-          //     : isSettingValue === ""
-          //     ? segColors[winnerList[3] - 1]
-          //     : isSettingValue === "Alertboom"
-          //     ? "green"
-          //     : isSettingValue === "Jackpot"
-          //     ? "green"
-          //     : segColors[winnerList[3] - 1]
-          // }`,
-          // cashback_number:
-          //   isSettingMatched && isSettingValue === "Boomcode"
-          //     ? padZeros(
-          //         `${boom_code?.[0]}:${boom_code?.[1]}:${boom_code?.[2]}:${boom_code?.[3]}`
-          //       )
-          //     : padZeros(
-          //         `${winnerList[0]}:${winnerList[1]}:${winnerList[2]}:${winnerList[3]}`
-          //       ),
-
-          // padZeros(`31:16:5:22`),
-          // `${winnerList[0]}:${winnerList[1]}:${winnerList[2]}:${winnerList[3]}`,
-          // boom_box_number: !isSettingMatched
-          //   ? settingsCheck(
-          //       winnerList[0],
-          //       winnerList[1],
-          //       winnerList[2],
-          //       winnerList[3]
-          //     )
-          //   : isSettingValue === ""
-          //   ? settingsCheck(
-          //       winnerList[0],
-          //       winnerList[1],
-          //       winnerList[2],
-          //       winnerList[3]
-          //     )
-          //   : isSettingValue === "Boomcode"
-          //   ? "7"
-          //   : isSettingValue === "Alertboom"
-          //   ? "1"
-          //   : "2",
-        },
-      };
-      
-      const response = await axios(config);
+    try {      
+      const response = await updateMyPlayStake(bearerToken, game_ref || router?.query?.ref, getColourScheme(), 
+      getBoomNumber(), padZeros(getCashbackNumber()));
       if (response?.data?.status === false) {
         if (expireCount < 1 || expireCount % 3 === 0) {
           toast({
@@ -503,30 +404,13 @@ const Wheelcomp = () => {
   }
 
   const getter2 = async () => {
-    const wheelconfig = {
-      method: "get",
-      url: `${BASE_URL}/api/wheel_tracker`,
-      headers: {
-        "X-APP-KEY": NAIRABOOM_KEY,
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    };
-    const response = await axios(wheelconfig);
-
+    const response = await getWheelTracker(bearerToken);
   };
 
   useEffect(() => {
     if (!bearerToken) return;
     const getter = async () => {
-      const wheelconfig = {
-        method: "get",
-        url: `${BASE_URL}/api/wheel_tracker`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-      };
-      const response = await axios(wheelconfig);
+      const response = await getWheelTracker(bearerToken);
 
       setsettings(response?.data?.payload);
       if (response?.data) {
@@ -592,16 +476,8 @@ const Wheelcomp = () => {
       }
     };
     async function fetchWishClock() {
-      const fetchWishConfig = {
-        method: "get",
-        url: `${BASE_URL}/api/boom_code`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${user?.token}`,
-        },
-      };
       try {
-        const res = await axios(fetchWishConfig);
+        const res = await getWheelTracker(user?.token);
         const codes = convertStringToArray(res.data?.payload?.code);
         
         setboom_code(codes);
@@ -618,9 +494,7 @@ const Wheelcomp = () => {
     getter();
     fetchWishClock();
   }, [bearerToken]);
-  // check if win
 
-  // "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
   const [play, { stop }] =
     // useSound(music)
     useSound(
@@ -783,36 +657,12 @@ const Wheelcomp = () => {
     }
     if (green_count === 2) {
       const d = checkDuplicateNumbers(winnerList);
-      // if (d[0] === true) {
-      //   if (d[1] === d[2]) {
-      //     if (isCustomer) {
-      //       return "6";
-      //     } else {
-      //       return "5";
-      //     }
-      //   }
-      // }
       return "4";
     }
     // Check for other conditions
     if (!color_array.includes("green")) {
       return "0";
     }
-    // const boom_checker = areArraysEqual(winnerList, boom_code);
-    // const boom_checker = areArraysEqual([31, 16, 5, 22], boom_code);
-    // if (boom_checker) {
-    //   return "7";
-    // }
-
-    // if (!color_array.includes("green")) {
-    //   return "0";
-    // }
-    // if (green_count === 3) {
-    //   return 1;
-    // }
-    // if (green_count === 4) {
-    //   return 2;
-    // }
   };
 
   function randomIntFromInterval(min, max) { // min and max included 
@@ -875,7 +725,6 @@ const Wheelcomp = () => {
                 w="3rem"
                 justifyContent="center"
                 alignItems="center"
-                // bg="#002047"
                 backgroundColor={
                   winnerList[0] === null || winnerList[0] === undefined
                     ? "#002047"
@@ -885,20 +734,6 @@ const Wheelcomp = () => {
                       : segColors[winnerList[0] - 1]
                     : segColors[winnerList[0] - 1]
                 }
-                // backgroundColor={
-                //   winnerList[0] === null || winnerList[0] === undefined
-                //     ? "#002047"
-                //     : isSettingMatched
-                //     ? // ? isSettingValue === "Jackpot"
-                //       //   ? "green"
-                //       //   : segColors[winnerList[0] - 1]
-                //       isSettingValue === "Jackpot"
-                //       ? "green"
-                //       : isSettingValue === "Boomcode"
-                //       ? segColors[winnerList[0] - 1]
-                //       : "green"
-                //     : segColors[winnerList[0] - 1]
-                // }
                 fontWeight={600}
                 borderRadius="100%"
               >
@@ -921,7 +756,6 @@ const Wheelcomp = () => {
                 w="3rem"
                 justifyContent="center"
                 alignItems="center"
-                // bg="#002047"
                 backgroundColor={
                   winnerList[1] === null || winnerList[1] === undefined
                     ? "#002047"
@@ -955,14 +789,11 @@ const Wheelcomp = () => {
                 w="3rem"
                 justifyContent="center"
                 alignItems="center"
-                // bg="#002047"
                 backgroundColor={
                   winnerList[2] === null || winnerList[2] === undefined
                     ? "#002047"
                     : isSettingMatched
-                    ? // ? isSettingValue === "Jackpot"
-                      //   ? "green"
-                      //   : "green"
+                    ? 
                       isSettingValue === "Jackpot"
                       ? "green"
                       : isSettingValue === "Boomcode"
@@ -973,10 +804,6 @@ const Wheelcomp = () => {
                 fontWeight={600}
                 borderRadius="100%"
               >
-                {/* {winnerList[2] === null || winnerList[2] === undefined
-                  ? winnerList[2]
-                  : winnerList[2]} */}
-
                 {isSettingMatched && isSettingValue === "Boomcode" ? (
                   <>
                     {winnerList[2] === null || winnerList[2] === undefined
@@ -996,14 +823,11 @@ const Wheelcomp = () => {
                 w="3rem"
                 justifyContent="center"
                 alignItems="center"
-                // bg="#002047"
                 backgroundColor={
                   winnerList[3] === null || winnerList[3] === undefined
                     ? "#002047"
                     : isSettingMatched
-                    ? // ? isSettingValue === "Jackpot"
-                      //   ? "green"
-                      //   : "green"
+                    ? 
                       isSettingValue === "Jackpot"
                       ? "green"
                       : isSettingValue === "Boomcode"
@@ -1014,9 +838,6 @@ const Wheelcomp = () => {
                 fontWeight={600}
                 borderRadius="100%"
               >
-                {/* {winnerList[3] === null || winnerList[3] === undefined
-                      ? winnerList[3] // If you want to render nothing when winnerList[3] is null or undefined
-                      : winnerList[3]} */}
 
                 {isSettingMatched && isSettingValue === "Boomcode" ? (
                   <>
@@ -1048,127 +869,6 @@ const Wheelcomp = () => {
           </VStack>
         </VStack>
       </VStack>
-      {/* <Box
-        display={"flex"}
-        gap={{ base: "0.8rem", lg: "1.25em" }}
-        my={{ base: "2em" }}
-        justifyContent={"center"}
-        alignContent={"center"}
-      >
-        <Text
-          fontWeight={700}
-          fontSize="1.5rem"
-          color="nairablue"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-          p={"1em"}
-          // backgroundColor={
-          //   winnerList[0] === null || winnerList[0] === undefined
-          //     ? "gray.500"
-          //     : (isSettingMatched && isSettingValue === 'Jackpot')
-          //     // Number(settings?.spin_cycle_counter + 1) ===
-          //     //     Number(settings?.spin_cycle_settings[0].ticket_cycle) + 1 ||
-          //     //   Number(settings?.spin_cycle_counter + 1) ===
-          //     //     Number(settings?.spin_cycle_settings[0].ticket_cycle) + 1
-          //     ? "green"
-          //     : segColors[winnerList[0] - 1]
-          // }
-          backgroundColor={
-            winnerList[0] === null || winnerList[0] === undefined
-              ? "gray.500"
-              : isSettingMatched
-              ? isSettingValue === "Jackpot"
-                ? "green"
-                : segColors[winnerList[0] - 1]
-              : segColors[winnerList[0] - 1]
-          }
-          borderRadius={"10px"}
-        >
-          {winnerList[0] === null || winnerList[0] === undefined
-            ? winnerList[0]
-            : winnerList[0]}
-        </Text>
-        <Text
-          fontWeight={700}
-          fontSize="1.5rem"
-          color="nairablue"
-          p={"1em"}
-          backgroundColor={
-            winnerList[1] === null || winnerList[1] === undefined
-              ? "gray.500"
-              : isSettingMatched
-              ? "green"
-              : segColors[winnerList[1] - 1]
-          }
-          borderRadius={"10px"}
-        >
-          {winnerList[1] === null || winnerList[1] === undefined
-            ? winnerList[1]
-            : winnerList[1]}
-        </Text>
-        <Text
-          fontWeight={700}
-          fontSize="1.5rem"
-          color="nairablue"
-          p={"1em"}
-          backgroundColor={
-            winnerList[2] === null || winnerList[2] === undefined
-              ? "gray.500"
-              : isSettingMatched
-              ? "green"
-              : segColors[winnerList[2] - 1]
-          }
-          borderRadius={"10px"}
-        >
-          {winnerList[2] === null || winnerList[2] === undefined
-            ? winnerList[2]
-            : winnerList[2]}
-        </Text>
-        <Text
-          fontWeight={700}
-          fontSize="1.5rem"
-          color="nairablue"
-          p={"1em"}
-          backgroundColor={
-            winnerList[3] === null || winnerList[3] === undefined
-              ? "gray.500"
-              : isSettingMatched
-              ? isSettingValue === "Jackpot"
-                ? "green"
-                : segColors[winnerList[3] - 1]
-              : segColors[winnerList[3] - 1]
-          }
-          borderRadius={"10px"}
-        >
-          {winnerList[3] === null || winnerList[3] === undefined
-            ? winnerList[3]
-            : winnerList[3]}
-        </Text>
-      </Box> */}
-      {/* <Button
-        className="submit__reg"
-        mt="2rem"
-        w="8.6rem"
-        border={"none"}
-        color="white"
-        bgGradient="linear(180deg, #02D95A 0%, #02B54C 100%)"
-        type={"submit"}
-        fontWeight={600}
-        fontSize=".8rem"
-        mb="2rem"
-        cursor={"pointer"}
-        _hover={{ transform: "scale(1.05)" }}
-        onClick={() => {
-          isCustomer
-            ? router.push("/customer_dashboard/cashback")
-            : router.push("/agent_dashboard/cashback");
-          getter2();
-        }}
-      >
-        Restart game
-      </Button> */}
 
       <Modal isCentered isOpen={iisOpen} onClose={someFunc}>
         <ModalOverlay />
@@ -1178,19 +878,6 @@ const Wheelcomp = () => {
           maxW={"95%"}
           p={{ base: "1rem", md: "3rem" }}
         >
-          {/* <ModalHeader textAlign={"center"} fontWeight={700} fontSize="1.5rem">
-            {winnerList?.length === 1
-              ? `You’ve got 3 more spins to go`
-              : winnerList?.length === 2
-              ? `Keep spinning!`
-              : winnerList?.length === 3
-              ? `One more spin.....`
-              : winnerList?.length === 4
-              ? `Sorry your colors didn’t match this time but you have
-              qualified for Bonus Draw via your giveaway code: `
-              : "Sorry Spin session has ended. Please restart game"}
-          </ModalHeader> */}
-
           <ModalHeader textAlign={"center"} fontWeight={700} fontSize="1.5rem">
             {winnerList?.length === 1 ? (
               `You’ve got 3 more spins to go`
@@ -1225,8 +912,7 @@ const Wheelcomp = () => {
                     fontWeight={700}
                     fontSize="1.5rem"
                   >
-                    YOU HAVE WON EVERY NAIRA IN YOUR Rollover WALLET
-                    {/* YOU HAVE WON YOUR ALERT-2 */}
+                    YOU HAVE WON EVERY NAIRA IN YOUR Boom Coins WALLET
                   </ModalHeader>
                 </>
               ) : Number(noOfGreens) === 4 ? (
@@ -1339,7 +1025,7 @@ const Wheelcomp = () => {
                     fontSize="1.2rem"
                   >
                     You have successfully rolled over your alert plus 1,000 Naira
-                    in your Rollover Wallet!
+                    in your Boom Coins Wallet!
                   </ModalHeader>
                 </>
               ) : settingsCheck(
@@ -1348,9 +1034,6 @@ const Wheelcomp = () => {
                   winnerList[2],
                   winnerList[3]
                 ) === "4" ? (
-                // "You Just Won 250 Naira in your Boom Wallet!!"
-                // "YOU HAVE WON 50% OF YOUR ALERT IN YOUR BOOM WALLET"
-
                 <>
                   <ModalHeader
                     textAlign={"center"}
@@ -1365,7 +1048,7 @@ const Wheelcomp = () => {
                     fontSize="1.2rem"
                   >
                     You have successfully rolled over your alert plus 50% in your
-                    Rollover Wallet!
+                    Boom Coins Wallet!
                   </ModalHeader>
                 </>
               ) : settingsCheck(
@@ -1374,7 +1057,6 @@ const Wheelcomp = () => {
                   winnerList[2],
                   winnerList[3]
                 ) === "5" ? (
-                // "You Just Won 250% of Your Stake"
                 <>
                   <ModalHeader
                     textAlign={"center"}
@@ -1397,9 +1079,6 @@ const Wheelcomp = () => {
                   winnerList[2],
                   winnerList[3]
                 ) === "7" ? (
-                // "You Just Won 250 Naira in your Boom Wallet!!"
-                // "YOU HAVE WON 50% OF YOUR ALERT IN YOUR BOOM WALLET"
-
                 <>
                   <ModalHeader
                     textAlign={"center"}
@@ -1417,7 +1096,7 @@ const Wheelcomp = () => {
                   </ModalHeader>
                 </>
               ) : (
-                `Sorry your cashout keys & color codes didn't match but you have rolled over your Alert. Keep building your Rollover wallet!.
+                `Sorry your cashout keys & color codes didn't match but you have rolled over your Alert. Keep building your Bom Coins wallet!.
                 `
               )
             ) : (
@@ -1446,8 +1125,6 @@ const Wheelcomp = () => {
           </div>
           <ModalCloseButton />
           <ModalBody>
-            {/* {winnerList?.length === 4 && checkWin() && "You won"}
-            {winnerList?.length === 4 && !checkWin() && "You Lost, try again"} */}
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -1468,27 +1145,6 @@ const Wheelcomp = () => {
           maxW={"95%"}
           p={{ base: "1rem", md: "3rem" }}
         >
-          {/* <ModalHeader textAlign={"center"} fontWeight={700} fontSize="1.5rem">
-            Hurrayyyy!
-          </ModalHeader>
-          <div style={{ marginHorizontal: "auto" }}>
-            <Text
-              fontWeight={700}
-              fontSize={{ base: "1.0rem", md: "1.25rem" }}
-              color="nairablue"
-              textAlign={"center"}
-            >
-              You won the {isSettingValue}
-              {Number(settings?.spin_cycle_counter + 1) ===
-              Number(settings?.spin_cycle_settings[0].ticket_cycle) + 1
-                ? "ALERTBOOM"
-                : Number(settings?.spin_cycle_counter + 1) ===
-                  Number(settings?.spin_cycle_settings[1].ticket_cycle) + 1
-                ? "JACKPOT"
-                : null} 
-               {isSettingValue}
-            </Text>
-          </div> */}
           {isSettingValue === "Alertboom" && (
             <>
               <ModalHeader
@@ -1496,7 +1152,6 @@ const Wheelcomp = () => {
                 fontWeight={700}
                 fontSize="1.2rem"
               >
-                {/* Congratulations */}
                 BOOM!
               </ModalHeader>
               <Box mx={"auto"} justifyContent={"center"} alignItems={"center"}>
@@ -1507,7 +1162,7 @@ const Wheelcomp = () => {
                 fontWeight={700}
                 fontSize="1.5rem"
               >
-                YOU HAVE WON YOUR ROLLOVER WALLET
+                YOU HAVE WON YOUR Boom Coins WALLET
               </ModalHeader>
             </>
           )}
@@ -1518,7 +1173,6 @@ const Wheelcomp = () => {
                 fontWeight={600}
                 fontSize="1.2rem"
               >
-                {/* Hurrayyyy...... It&apos;s your lucky day */}
                 Congratulations!
                 <br />
                 It’s your lucky day

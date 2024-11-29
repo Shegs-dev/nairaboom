@@ -174,7 +174,7 @@ const WinningModalities = () => {
             </GridItem>
             <GridItem colSpan={3}>
               <Text fontWeight={"semibold"} color={"#002047"}>
-                Win your Rollover Wallet
+                Win your Boom Coins Wallet
               </Text>
             </GridItem>
           </Grid>
@@ -227,7 +227,7 @@ const WinningModalities = () => {
             </GridItem>
             <GridItem colSpan={3}>
               <Text fontWeight={"semibold"} color={"#002047"}>
-                Win 50% of your Alert into your Rollover wallet
+                Win 50% of your Alert into your Boom Coins wallet
               </Text>
             </GridItem>
           </Grid>
@@ -394,7 +394,7 @@ const WinningModalities = () => {
             </GridItem>
             <GridItem colSpan={3}>
               <Text fontWeight={"semibold"} color={"#002047"}>
-                Win ₦1000.00 in your Rollover Wallet
+                Win ₦1000.00 in your Boom Coins Wallet
               </Text>
             </GridItem>
           </Grid>
@@ -454,7 +454,7 @@ const WinningModalities = () => {
             </GridItem>
             <GridItem colSpan={3}>
               <Text fontWeight={"semibold"} color={"#002047"}>
-                Cashout the Crossover Percentage from your Rollover Wallet.
+                Cashout the Crossover Percentage from your Boom Coins Wallet.
               </Text>
             </GridItem>
           </Grid>

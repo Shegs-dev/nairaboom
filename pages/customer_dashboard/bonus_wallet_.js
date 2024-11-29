@@ -193,7 +193,7 @@ const ReferralLink = () => {
         <UnorderedList spacing={3}>
           {/* <ListItem  color="nairablue">Win a game: All accumulated bonuses will be added to your winnings and paid out.</ListItem>
           <ListItem color="nairablue">Play 5 or more games in a month and qualify for the monthly Celebrity Bonus Draw via your Giveaway Codes.</ListItem> */}
-          <ListItem  color="nairablue">Get 2 Green Boxes with matching numbers in 1 spin cycle: You win N 2,000.00 from your Giveaway Wallet (Only when you have above 10,000 Naira in your Rollover Wallet).</ListItem>
+          <ListItem  color="nairablue">Get 2 Green Boxes with matching numbers in 1 spin cycle: You win N 2,000.00 from your Giveaway Wallet (Only when you have above 10,000 Naira in your Boom Coins Wallet).</ListItem>
           <ListItem color="nairablue">Play 5 or more games in a month and qualify for the monthly Giveaway Wallet Draw via your Giveaway Codes.</ListItem>
           <ListItem color="nairablue">Win a game: Accumulated bonuses will be added to your winnings.</ListItem>
         </UnorderedList>

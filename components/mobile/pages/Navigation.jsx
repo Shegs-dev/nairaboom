@@ -39,7 +39,7 @@ export default function Navigation({ children }) {
   return (
     <>
       {domLoaded && (
-        <div className="flex h-screen font-changa w-full overflow-hidden">
+        <div className="flex h-screen w-full overflow-hidden">
           <div
             className={`flex flex-col flex-1 transition-all duration-300 ${
               isMobile && sidebarOpen ? "blur-sm" : ""

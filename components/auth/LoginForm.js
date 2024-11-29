@@ -16,7 +16,6 @@ import {
   VStack,
   useToast
 } from "@chakra-ui/react";
-import axios from "axios";
 import FormData from "form-data";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -27,12 +26,10 @@ import {
   storeTokenInLocalStorage2,
 } from "../../lib/hooks/getAuthUser";
 import useUser from "../../lib/hooks/useUser";
-import { AUTH_API_ROUTES } from "../../utils/routes";
 import PlayResponsibly from "../general/PlayResponsibly";
-
-// secret credentials
-const BASE_URL = AUTH_API_ROUTES.PRODUCTION_BASE_URL;
-const NAIRABOOM_KEY = AUTH_API_ROUTES.PRODUCTION_X_APP_KEY;
+import {
+  signInCall
+} from "../../src/apis/func";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -74,22 +71,12 @@ const LoginForm = () => {
     });
   };
 
-  const signinconfig = {
-    method: "post",
-    url: `${BASE_URL}/api/auth`,
-    headers: {
-      "X-APP-KEY": NAIRABOOM_KEY,
-    },
-    data: signInformData,
-  };
-
   const handleSignInFormSubmit = async (e) => {
     formData.append("username", username); //append the values with key, value pair
     formData.append("passsword", password);
     try {
-      // e.preventDefault();
       setIsLoading(true);
-      const response = await axios(signinconfig);
+      const response = await signInCall(signInformData);
 
       if (response?.data?.status === false) {
         toast({
@@ -266,35 +253,6 @@ const LoginForm = () => {
                 </InputRightElement>
               </InputGroup>
             </FormControl>
-
-            {/* <FormControl>
-              <InputGroup bg="white" justifyItems={"center"} borderRadius={50}>
-                <Input
-                  textAlign="center"
-                  type={passwordVisible ? "text" : "password"}
-                  borderRadius={50}
-                  placeholder="Password"
-                  onChange={handleSignInChange}
-                  focusBorderColor="nairagreen"
-                  h="3.6rem"
-                  name="password"
-                  isRequired
-                />
-                <InputRightElement w="3rem">
-                  {passwordVisible ? (
-                    <ViewIcon
-                      onClick={handleTogglePasswordVisible}
-                      color="gray"
-                    />
-                  ) : (
-                    <ViewOffIcon
-                      onClick={handleTogglePasswordVisible}
-                      color="gray"
-                    />
-                  )}
-                </InputRightElement>
-              </InputGroup>
-            </FormControl> */}
             <HStack color="white" w="100%" px={4} pb={8}>
               <Checkbox
                 defaultChecked
@@ -311,10 +269,6 @@ const LoginForm = () => {
                 color="white"
                 fontWeight={400}
                 textDecor="underline"
-                // mb="6rem"
-                // float={"right"}
-                // as={Link}
-                // textDecoration={"underline"}
                 href="/forgot_password"
                 onClick={() => router.push("/forgot_password")}
               >
@@ -351,8 +305,6 @@ const LoginForm = () => {
               pos="absolute"
               aspectRatio={{base: 1, md: 0}}
               mr={{md: "2rem"}}
-              // bg={"red"}
-              // height={{ base: "20rem" }}
               bottom={{xs: "4.5rem", md: "0"}}
               left={{ base: "auto", md: -10 }}
               alt=""
@@ -387,29 +339,6 @@ const LoginForm = () => {
                 <Image w="2rem" src="/redesign/nlrclogo.png" alt="" />
               </HStack>
             </VStack>
-
-            {/* <Image
-              pos="absolute"
-              src="/redesign/auth/scoin.png"
-              h={{ base: "5.5rem", md: "12rem" }}
-              m="auto"
-              left={{ base: ".5rem", md: "0.5rem" }}
-              bottom="5rem"
-              right={{base: "35rem", md: "70vw", lg: "70vw"}}
-              alt={"coin3"}
-              zIndex={1}
-            />
-            <Image
-              pos="absolute"
-              src="/redesign/auth/scoin2.png"
-              h={{ base: "5rem", md: "12rem" }}
-              m="auto"
-              left={{ base: "55vw", md: 0 }}
-              bottom={{base: "13rem", md: "16rem"}}
-              right={{base: "35rem", md: "40vw", lg: "10vw"}}
-              alt={"coin3"}
-              zIndex={1}
-            /> */}
           </Stack>
         </Stack>
       </Stack>

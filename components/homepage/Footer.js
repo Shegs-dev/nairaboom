@@ -100,7 +100,7 @@ const Footer = () => {
               },
               {
                 image: "footer-tiktok.png",
-                link: `https://www.tiktok.com/@nairaboomngr`,
+                link: `https://www.tiktok.com/@nairaboom.ng?_t=8ouwtQ6j16L`,
               },
               {
                 image: "footer-threads.png",

@@ -222,10 +222,10 @@ const CheckInComp = () => {
         isClosable: true,
         duration: "5000",
         // title: response.data.message,
-        title: 'You have received a Check-In bonus in your Rollover Wallet',
+        title: 'You have received a Check-In bonus in your Boom Coins Wallet',
         // `You have received ${
         //   Number(cashBack?.amount) * 0.1
-        // } in your Rollover Wallet. `,
+        // } in your Boom Coins Wallet. `,
         position: "top",
       });
       setgameRef(response.data?.payload.game_ref);

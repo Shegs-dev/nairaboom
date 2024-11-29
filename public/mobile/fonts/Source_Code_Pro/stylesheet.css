@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Source Code Pro';
+    src: url('SourceCodeItalic-ExtraLightItalic.woff2') format('woff2'),
+        url('SourceCodeItalic-ExtraLightItalic.woff') format('woff');
+    font-weight: 200;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Source Code Pro';
+    src: url('SourceCodeRoman-ExtraLight.woff2') format('woff2'),
+        url('SourceCodeRoman-ExtraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+

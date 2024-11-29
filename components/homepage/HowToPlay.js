@@ -83,17 +83,17 @@ const HowToPlay = () => {
             {
               image: "/play-card-03.png",
               title: "2. Fund Your Wallet",
-              text: "Make your first wallet funding of ₦ 500 to receive ₦ 35,000 in your rollover wallet to start your rollover journey to breakthrough.",
+              text: "Make your first wallet funding of ₦ 500 to receive ₦ 35,000 in your boom coins wallet to start your rollover journey to breakthrough.",
             },
             {
               image: "/play-card-02.png",
               title: "3. Play Game",
-              text: `Enter your alert details to rollover & accumulate every valid credit or debit alert you receive into your rollover wallet.`,
+              text: `Enter your alert details to rollover & accumulate every valid credit or debit alert you receive into your boom coins wallet.`,
             },
             {
               image: "/play-card-05.png",
               title: "4. Spin To Cashout",
-              text: "Spin the rolloverwheel and match the cashout keys or 3 Green balls to cashout your rollover wallet instantly.",
+              text: "Spin the rolloverwheel and match the cashout keys or 3 Green balls to cashout your boom coins wallet instantly.",
             },
             {
               image: "/play-card-04.png",

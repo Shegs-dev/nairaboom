@@ -100,7 +100,7 @@ const HowToWin = () => {
             fontFamily={"Inter"}
             fontWeight={{ base: 800, md: 600 }}
           >
-            It’s so easy to Win on Nairaboom. Just Rollover Your Alerts, Build Your Rollover Wallet and Cashout.
+            It’s so easy to Win on Nairaboom. Just Rollover Your Alerts, Build Your Boom Coins Wallet and Cashout.
           </Text>
           <Text
             fontFamily={"Inter"}

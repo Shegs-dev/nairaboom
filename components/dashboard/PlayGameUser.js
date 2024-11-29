@@ -49,19 +49,18 @@ import Wrapper from "../../components/Wrapper";
 import NextLink from "next/link";
 import useUser from "../../lib/hooks/useUser";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { AUTH_API_ROUTES } from "../../utils/routes";
-import { consumers } from "form-data";
-import { NumericFormat } from "react-number-format";
 import numeral from "numeral";
 import CurrencyInput from "react-currency-input-field";
 import { useMediaQuery } from "@chakra-ui/react";
 import { ImInfo } from "react-icons/im";
 import Greencircle from "../../public/greencircle.svg";
-// import PlayEight from '/'
-
-const BASE_URL = AUTH_API_ROUTES.PRODUCTION_BASE_URL;
-const NAIRABOOM_KEY = AUTH_API_ROUTES.PRODUCTION_X_APP_KEY;
+import {
+  autoGenerateNumbers,
+  getBankLists,
+  getProfileRedirect,
+  playMyStake,
+  getWalletBalance
+} from "../../src/apis/func";
 
 const PlayGameUser = () => {
   const { user } = useUser();
@@ -86,18 +85,9 @@ const PlayGameUser = () => {
   let lat = useRef(0);
   let long = useRef(0);
 
-  const generateBoomConfig = {
-    method: "get",
-    url: `${BASE_URL}/api/auto_generated_numbers`,
-    headers: {
-      "X-APP-KEY": NAIRABOOM_KEY,
-      Authorization: `Bearer ${user?.token}`,
-    },
-  };
-
   const generate = async () => {
     try {
-      const res = await axios(generateBoomConfig);
+      const res = await autoGenerateNumbers(user?.token);
       setAsyncGenerated(res?.data?.payload);
     } catch (e) {
     }
@@ -126,36 +116,17 @@ const PlayGameUser = () => {
     });
 
     const fetchBankData = async () => {
-      const bankconfig = {
-        method: "get",
-        url: `${BASE_URL}/api/bank_lists?start=0&len=209&paging=1`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-      };
-
       try {
-        const response = await axios(bankconfig);
+        const response = await getBankLists(bearerToken);
         setBankData(response.data?.payload.content);
       } catch (err) {
       }
     };
 
     fetchBankData();
-    const winningConfig = {
-      method: "get",
-      url: `${BASE_URL}/api/profile`,
-      headers: {
-        "X-APP-KEY": NAIRABOOM_KEY,
-        Authorization: `Bearer ${bearerToken}`,
-      },
-      redirect: "follow",
-    };
-
     const winnings = async () => {
       try {
-        const res = await axios(winningConfig);
+        const res = await getProfileRedirect(bearerToken);
       } catch (e) {
       }
     };
@@ -203,27 +174,14 @@ const PlayGameUser = () => {
     const formattedValue = numeral(rawValue).format("0,0");
   };
 
-  const cashconfig = {
-    method: "post",
-    url: `${BASE_URL}/api/play_stake`,
-    headers: {
-      "X-APP-KEY": NAIRABOOM_KEY,
-      Authorization: `Bearer ${bearerToken}`,
-    },
-    data: cashBack,
-  };
-
   const handleCashbackSubmit = async () => {
     try {
-      // e.preventDefault();
       setIsLoading(true);
-      // if (cashBack.amount > Number(balance?.payload?.content[0].amount)) {
       if (cashBack.stake_amount > Number(balance?.payload?.content[0].amount)) {
         toast({
           isClosable: true,
           duration: 3000,
           status: "error",
-          // title: response.data.message,
           title: "Insufficient Balance",
           position: "top",
         });
@@ -231,7 +189,7 @@ const PlayGameUser = () => {
         return;
       }
 
-      const response = await axios(cashconfig);
+      const response = await playMyStake(bearerToken, cashBack);
       if (response?.data?.status === false) {
         toast({
           isClosable: true,
@@ -252,7 +210,6 @@ const PlayGameUser = () => {
         position: "top",
       });
       setgameRef(response.data?.payload.game_ref);
-      // router.push("/customer_dashboard/request_history");
       router.push({
         pathname: "/customer_dashboard/boomwheel",
         query: {
@@ -277,18 +234,9 @@ const PlayGameUser = () => {
   useEffect(() => {
     if (!bearerToken) return;
     const fetchBalance = async () => {
-      const config = {
-        method: "get",
-        url: `${BASE_URL}/api/wallet_balance`,
-        headers: {
-          "X-APP-KEY": NAIRABOOM_KEY,
-          Authorization: `Bearer ${bearerToken}`,
-        },
-      };
-
       try {
         setIsLoading(true);
-        const response = await axios(config);
+        const response = await getWalletBalance(bearerToken);
 
         setbalance(response?.data);
 
@@ -407,7 +355,6 @@ const PlayGameUser = () => {
               alignItems="flex-end"
               dispay={{base: 'none'}}
             >
-              {/* <Image src="/redesign/dashboard/play-game-mockup.png" alt={'play-game-image'}/> */}
               <Hide below='md'>
               <Image   ml={{base: '', lg:'-30rem'}} src="/redesign/dashboard/playgame2.png" alt={'play-game-image'}/> 
               </Hide>
@@ -463,18 +410,6 @@ const PlayGameUser = () => {
                     }
                   }}
                 />
-                {/* <Input
-                  bg="white"
-                  px={8}
-                  type="text"
-                  color={"nairablue"}
-                  borderRadius={50}
-                  placeholder="N0"
-                  w={{ base: "100%", md: "28rem" }}
-                     h="3.25rem"
-                  border={"none"}
-                  bgColor="white"
-                /> */}
               </FormControl>
               <FormControl>
                 <Box display={"flex"} flexDir={"row"} alignItems={"center"}>
@@ -584,14 +519,6 @@ const PlayGameUser = () => {
                 <FormLabel px={5} fontWeight={500}>
                   Date You Received Alert
                 </FormLabel>
-                {/* <Input
-                  px={8}
-                  bg="white"
-                  type="date"
-                           color={"nairablue"}
-                  borderRadius={50}
-                  
-                /> */}
                 <Input
                   name="date_received_alert"
                   w={{ base: "100%", md: "28rem" }}
@@ -633,7 +560,6 @@ const PlayGameUser = () => {
               <HStack
                 h="3.25rem"
                 w="100%"
-                // w={{ base: "100%", md: "28rem" }}
                 px={8}
                 bg="white"
                 type="number"
@@ -645,39 +571,12 @@ const PlayGameUser = () => {
                 <Text>Potential Winning</Text>
                 <Box display={"flex"} flexDir={"column"}>
                   <Text>₦{Number(cashBack.amount)?.toLocaleString()} -</Text>
-                  {/* <Text fontSize={{base: 10, md:12}}>-</Text> */}
-                  {/* <Spacer /> */}
                   <Text>₦35,000,000</Text>
                 </Box>
               </HStack>
-              {/* <Button
-                w="100%"
-                colorScheme="none"
-                bg="nairagreen"
-                color="white"
-                borderRadius={50}
-                pos="relative"
-
-                border={"none"}
-           
-                type={"submit"}
-                fontWeight={600}
-                fontSize="lg"
-                mb={{ base: "2rem", md: "4rem" }}
-                cursor={"pointer"}
-                // isDisabled={!isChecked}
-                isDisabled={false}
-                _hover={{ transform: "scale(1.05)" }}
-                onClick={()=>{
-                  handleCashbackSubmit()
-                }}
-              >
-                 {isLoading ? <Spinner /> : "Spin the boom wheel"}
-              </Button> */}
               <HStack
                 w="100%"
                 alignItems="center"
-                // w={{ base: "100%", md: "28rem" }}
 
                 mb={{ base: "2rem", md: "1rem" }}
               >
@@ -693,9 +592,7 @@ const PlayGameUser = () => {
                   type={"submit"}
                   fontWeight={700}
                   fontSize={"2xl"}
-                  // mb={{ base: "2rem", md: "1rem" }}
                   cursor={"pointer"}
-                  // isDisabled={!isChecked}
                   isDisabled={false}
                   _hover={{ transform: "scale(1.05)" }}
                   onClick={() => {
@@ -710,7 +607,6 @@ const PlayGameUser = () => {
                   }}
                   height={"3.25rem"}
                   w={{ base: "2.0rem", lg: "2.5rem" }}
-                  // mt={{ base: "0.85rem", lg: "1px" }}
                   className="eightAtplaygame"
                   alignSelf={{ base: "flex-start", md: "center" }}
                 >
@@ -732,7 +628,6 @@ const PlayGameUser = () => {
                 fontSize="lg"
                 mb={{ base: "2rem", md: "4rem" }}
                 cursor={"pointer"}
-                // isDisabled={!isChecked}
                 isDisabled={true}
                 _hover={{ transform: "scale(1.05)" }}
                 onClick={() => {
@@ -743,14 +638,12 @@ const PlayGameUser = () => {
               </Button>
 
               <HStack color="nairagreen" py={5}>
-                {/* <Icon as={TbRating18Plus} /> */}
                 <Image
                   src="/plus18.png"
                   w={{ base: "2.5rem", lg: "2.5rem" }}
                   alignSelf={{ base: "flex-start", md: "center" }}
                   alt=""
                 />
-                {/* <TbRating18Plus size={30}/> */}
                 <Text fontSize={"lg"}>Play Responsibly</Text>
               </HStack>
             </Stack>
@@ -763,22 +656,18 @@ const PlayGameUser = () => {
           <ModalHeader>POSSIBLE WINNINGS</ModalHeader>
           <ModalCloseButton />
           <ModalBody >
-            {/* Your modal content goes here */}
             <TableContainer >
               <Table variant="simple">
                 <TableCaption>Winning Table</TableCaption>
                 <Thead>
                   <Tr>
                     <Th>GAME PLAY </Th>
-                    {/* <Th>DESCRIPTION</Th> */}
                     <Th >WINNINGS</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   <Tr>
                     <Td display={"flex"} flex flexDir={"row"}>
-                      {/* <Image width={30} mr={1} src={'/greencircle.svg'} alt=""/> */}
-                      {/* <ImInfo size={30} /> */}
                       <Image
                         width={30}
                         mr={1}
@@ -786,8 +675,7 @@ const PlayGameUser = () => {
                         alt=""
                       />
                     </Td>
-                    {/* <Td fontSize={{ base: "sm", md: "md" }}>1 GREEN</Td> */}
-                    <Td>1,000 NAIRA IN ROLLOVER WALLET</Td>
+                    <Td>1,000 NAIRA IN BOOM COINS WALLET</Td>
                   </Tr>
                   <Tr>
                     <Td display={"flex"} flex flexDir={"row"}>
@@ -804,8 +692,7 @@ const PlayGameUser = () => {
                         alt=""
                       />
                     </Td>
-                    {/* <Td fontSize={{ base: "sm", md: "md" }}>2 GREEN</Td> */}
-                    <Td>50% IN ROLLOVER WALLET</Td>
+                    <Td>50% IN BOOM COINS WALLET</Td>
                   </Tr>
                   <Tr>
                     <Td display={"flex"} flex flexDir={"row"}>
@@ -828,7 +715,6 @@ const PlayGameUser = () => {
                         alt=""
                       />
                     </Td>
-                    {/* <Td fontSize={{ base: "sm", md: "md" }}>3 GREEN</Td> */}
                     <Td>CASHOUT</Td>
                   </Tr>
                   <Tr>
@@ -859,7 +745,6 @@ const PlayGameUser = () => {
                       />
                       
                     </Td>
-                    {/* <Td fontSize={{ base: "sm", md: "md" }}>4 GREEN</Td> */}
                     <Td>
                       <Text ml={'1rem'}>JACKPOT</Text>
                     </Td>
@@ -871,7 +756,6 @@ const PlayGameUser = () => {
                       <Image width={30} mr={1} src={"/bluecircle.svg"} alt="" />
                       <Image width={30} mr={1} src={"/yellow.svg"} alt="" />
                     </Td>
-                    {/* <Td fontSize={{ base: "sm", md: "md" }}>BOOM CODE</Td> */}
                     <Td>
                     <Text ml={'1rem'}>CASHOUT %</Text>
                     </Td>
