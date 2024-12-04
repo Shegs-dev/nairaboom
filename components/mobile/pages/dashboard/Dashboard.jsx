@@ -49,7 +49,7 @@ import {
   Spinner,
   Stack,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { RiMenu2Fill, RiProfileFill } from "react-icons/ri";
 import {
@@ -60,7 +60,7 @@ import {
   BsPerson,
   BsFillInfoCircleFill,
   BsShareFill,
-  BsWallet,
+  BsWallet
 } from "react-icons/bs";
 import { HiHome, HiOutlineCash } from "react-icons/hi";
 import { MdContentPaste, MdFileCopy, MdHelpCenter } from "react-icons/md";
@@ -71,7 +71,7 @@ import { SettingsIcon } from "@chakra-ui/icons";
 import {
   getAuthenticatedUser,
   removeTokenFromLocalStorage,
-  removeTokenFromLocalStorage2,
+  removeTokenFromLocalStorage2
 } from "../../../../lib/hooks/getAuthUser";
 import { formatAmount } from "../../../../src/utils";
 import Link from "next/link";
@@ -94,324 +94,335 @@ import {
 import { useRouter } from "next/router";
 import useUser from "../../../../lib/hooks/useUser";
 import { GiHamburgerMenu } from "react-icons/gi";
-// absolute inset-0 
+// absolute inset-0
 
 const Dashboard = () => {
   const toast = useToast();
-    const [data, setData] = useState("");
-    const [wheelsettings, setwheelsettings] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [walletBal_avaialable, setwalletBal_avaialable] = useState(false);
-    const router = useRouter();
-    const [insufficientModal, setinsufficientModal] = useState(false);
-    const [monetizeModal, setMonetizeModal] = useState(false);
-    const [agreeMonetizeModal, setAgreeMonetizeModal] = useState(false);
-    const [agreedMonetizeModal, setAgreedMonetizeModal] = useState(false);
-    const [allowMonetize, setAllowMonetize] = useState(false);
-    const [agreeMonetize, setAgreeMonetize] = useState(false);
-    const { user, error } = useUser();
-    const bearerToken = user?.token;
-    const [boomTimes, setBoomTimes] = useState();
-    const [playModal, setplayModal] = useState(false);
-    const [boom_code, setboom_code] = useState(null);
-  
-    const [noSell, setNoSell] = useState(false);
-    const [sell, setSell] = useState(false);
-    const [sellPayload, setSellPayload] = useState(null);
-    const [cashOut1, setCashOut1] = useState(0);
-    const [cashOut2, setCashOut2] = useState(0);
-    const [cashOut3, setCashOut3] = useState(0);
+  const [data, setData] = useState("");
+  const [wheelsettings, setwheelsettings] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [walletBal_avaialable, setwalletBal_avaialable] = useState(false);
+  const router = useRouter();
+  const [insufficientModal, setinsufficientModal] = useState(false);
+  const [monetizeModal, setMonetizeModal] = useState(false);
+  const [agreeMonetizeModal, setAgreeMonetizeModal] = useState(false);
+  const [agreedMonetizeModal, setAgreedMonetizeModal] = useState(false);
+  const [allowMonetize, setAllowMonetize] = useState(false);
+  const [agreeMonetize, setAgreeMonetize] = useState(false);
+  const { user, error } = useUser();
+  const bearerToken = user?.token;
+  const [boomTimes, setBoomTimes] = useState();
+  const [playModal, setplayModal] = useState(false);
+  const [boom_code, setboom_code] = useState(null);
 
-    const [seeMain, setSeeMain] = useState(true);
-    const [seeBoom, setSeeBoom] = useState(true);
-  
-    function parseJwt(token) {
-      if (!bearerToken) return;
-      var base64Url = token?.split(".")[1];
-      var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-      var jsonPayload = decodeURIComponent(
-        window
-          .atob(base64)
-          .split("")
-          .map(function (c) {
-            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-          })
-          .join("")
-      );
-      return JSON.parse(jsonPayload);
-    }
-  
-    //modal
-    const someFunc = () => {
-      setiisOpen(false);
-    };
+  const [noSell, setNoSell] = useState(false);
+  const [sell, setSell] = useState(false);
+  const [sellPayload, setSellPayload] = useState(null);
+  const [cashOut1, setCashOut1] = useState(0);
+  const [cashOut2, setCashOut2] = useState(0);
+  const [cashOut3, setCashOut3] = useState(0);
 
-    const toggleMain = () => {
-      if (seeMain) {
-        setSeeMain(false);
-      } else {
-        setSeeMain(true);
-      }
-    };
-  
-    const toggleBoom = () => {
-      if (seeBoom) {
-        setSeeBoom(false);
-      } else {
-        setSeeBoom(true);
-      }
-    };
-  
-    const [iisOpen, setiisOpen] = useState(false);
-    const [bonusBalance, setBonusBalance] = useState();
-    const [walletBalance, setWalletBalance] = useState();
-    const [gameSettings, setgameSettings] = useState();
-  
-    const boom = async () => {
-      const res = await getLatestCashbackTime(bearerToken);
-      if (res.status && (res.status === 200 || res.status === 201)) {
-        setBoomTimes(res?.data.payload);
-      } 
-    };
-  
-    const fetchBalance2 = async () => {
-      setIsLoading(true);
-      const response = await getWalletBalance(bearerToken);
-      const response2 = await getBonusWallet(bearerToken);
-      if (response.status && (response.status === 200 || response.status === 201)) {
-        setWalletBalance(response?.data);
-      } 
-      if (response2.status && (response2.status === 200 || response2.status === 201)) {
-        setBonusBalance(response2?.data);
-      }
-      
-      setIsLoading(false);
-      setwalletBal_avaialable(true);
-    };
-  
-    //check if wallet has been funded
-    useEffect(() => {
-      if (user?.details?.first_wallet_pay === 0) {
-        toast({
-          isClosable: true,
-          duration: 10000,
-          status: "info",
-          title:
-            "Make Your First Deposit and Get ₦35.000 Boom Coins to Start Cashing Out!",
-          position: "top",
-        });
-      }
-    }, [user]);
-    useEffect(() => {
-      if (!bearerToken) return;
-  
-      const redirectIfnotAuthenticated = async () => {
-        const isUserAuthenticated = await getAuthenticatedUser();
-        if (
-          isUserAuthenticated?.authenticated === false ||
-          isUserAuthenticated?.user?.details?.user_type === "agent"
-        ) {
-          router.push("/auth?p=login");
-        }
-      };
-      const destru = parseJwt(bearerToken);
-      redirectIfnotAuthenticated();
-      boom();
-      fetchBalance2();
-    }, [bearerToken, router]);
-  
-    function convertStringToArray(inputString) {
-      // Split the input string by "::" and convert substrings to integers
-      const array = inputString?.split("::").map(Number);
-      return array;
+  const [seeMain, setSeeMain] = useState(true);
+  const [seeBoom, setSeeBoom] = useState(true);
+
+  function parseJwt(token) {
+    if (!bearerToken) return;
+    var base64Url = token?.split(".")[1];
+    var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    var jsonPayload = decodeURIComponent(
+      window
+        .atob(base64)
+        .split("")
+        .map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  }
+
+  //modal
+  const someFunc = () => {
+    setiisOpen(false);
+  };
+
+  const toggleMain = () => {
+    if (seeMain) {
+      setSeeMain(false);
+    } else {
+      setSeeMain(true);
     }
-  
-    useEffect(() => {
-      if (!bearerToken) return;
-  
-      fetchRequestHistory();
-      fetchWheelTracker();
-      fetchWishClock();
-      fetchAppSettings();
-      checkThreeSureCashOutStatus();
-    }, [bearerToken, toast, user?.token]);
-  
-  
-    const fetchRequestHistory = async () => {
-      const res = await getRequestHistory(bearerToken);
-      if (res.status && (res.status === 200 || res.status === 201)) {
-        setData(res?.data);
-      } 
-    };
-  
-    const fetchWheelTracker = async () => {
-      const res = await getWheelTracker(bearerToken);
-      if (res.status && (res.status === 200 || res.status === 201)) {
-        setwheelsettings(res?.data);
-      } 
-    };
-  
-    const fetchWishClock = async () => {
-      const res = await getBoomCode(bearerToken);
-      if (res.status && (res.status === 200 || res.status === 201)) {
-        const codes = convertStringToArray(res.data?.payload?.code);
-        setboom_code(codes);
-        localStorage.setItem("boomCode", res.data?.payload?.code);
-      } 
-    };
-  
-    const fetchAppSettings = async () => {
-      const res = await getAppSettings(bearerToken);
-      if (res.status && (res.status === 200 || res.status === 201)) {
-        setgameSettings(res?.data.payload);
-      } 
-    };
-  
-    function formatNumberWithCommas(number) {
-      const formattedNumber = number
-        ?.toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      return formattedNumber?.replace(/\.00$/, ""); // Remove .00 if present at the end
+  };
+
+  const toggleBoom = () => {
+    if (seeBoom) {
+      setSeeBoom(false);
+    } else {
+      setSeeBoom(true);
     }
-  
-    const isCustomer = router.pathname.includes("customer_dashboard");
-    const modalRedirect = () => {
-      setiisOpen(true);
-    };
-  
-    const sendIAgreeForMonetization = async () => {
-      const res = await monetizationAgreement(bearerToken);
-      if (res?.data?.status) {
-        toast({
-          status: "success",
-          isClosable: true,
-          duration: "5000",
-          //title: res.data.message,
-          title: "Congratulations! Your Monetization has commenced.",
-          position: "top",
-        });
-        setAgreeMonetize(true);
-      } else {
-        toast({
-          status: "success",
-          isClosable: true,
-          duration: "5000",
-          title: res.data.message,
-          position: "top",
-        });
-        setAgreeMonetize(false);
-      }
-      
-      setAgreeMonetizeModal(false);
+  };
+
+  const [iisOpen, setiisOpen] = useState(false);
+  const [bonusBalance, setBonusBalance] = useState();
+  const [walletBalance, setWalletBalance] = useState();
+  const [gameSettings, setgameSettings] = useState();
+
+  const boom = async () => {
+    const res = await getLatestCashbackTime(bearerToken);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      setBoomTimes(res?.data.payload);
     }
-  
-    //check if monetize is active
-    useEffect(() => {
-      localStorage.setItem("referral_code", user?.details?.referral_code);
-      if (user?.details?.monetization_status === 0 || user?.details?.monetization_status === 2) {
-        setAllowMonetize(false);
-      } else if (user?.details?.monetization_status === 1) {
-        setAllowMonetize(true);
-        setAgreeMonetize(true);
-      } else if (user?.details?.monetization_status === 3) {
-        setAllowMonetize(true);
-        setAgreeMonetize(false);
-      } 
-  
-      if(bearerToken) {
-        checkMonetizationEligibility();
-      }
-    }, []);
-  
-    const allowedModalRedirect = () => {
-      if (agreeMonetize) {
-        setAgreedMonetizeModal(true);
-      } else if (!agreeMonetize) {
-        setAgreeMonetizeModal(true);
+  };
+
+  const fetchBalance2 = async () => {
+    setIsLoading(true);
+    const response = await getWalletBalance(bearerToken);
+    const response2 = await getBonusWallet(bearerToken);
+    if (
+      response.status &&
+      (response.status === 200 || response.status === 201)
+    ) {
+      setWalletBalance(response?.data);
+    }
+    if (
+      response2.status &&
+      (response2.status === 200 || response2.status === 201)
+    ) {
+      setBonusBalance(response2?.data);
+    }
+
+    setIsLoading(false);
+    setwalletBal_avaialable(true);
+  };
+
+  //check if wallet has been funded
+  useEffect(() => {
+    if (user?.details?.first_wallet_pay === 0) {
+      toast({
+        isClosable: true,
+        duration: 10000,
+        status: "info",
+        title:
+          "Make Your First Deposit and Get ₦35.000 Boom Coins to Start Cashing Out!",
+        position: "top"
+      });
+    }
+  }, [user]);
+  useEffect(() => {
+    if (!bearerToken) return;
+
+    const redirectIfnotAuthenticated = async () => {
+      const isUserAuthenticated = await getAuthenticatedUser();
+      if (
+        isUserAuthenticated?.authenticated === false ||
+        isUserAuthenticated?.user?.details?.user_type === "agent"
+      ) {
+        router.push("/auth?p=login");
       }
     };
-  
-    const checkMonetizationEligibility = async () => {
-      const res = await getMonetizationEligibility(bearerToken);
-      if (res?.data?.payload?.monetization_status === "0" || res?.data?.payload?.monetization_status === "2") {
-        setAllowMonetize(false);
-      } else if (res?.data?.payload?.monetization_status === "1") {
-        setAllowMonetize(true);
-        setAgreeMonetize(true);
-      } else if (res?.data?.payload?.monetization_status === "3") {
-        setAllowMonetize(true);
-        setAgreeMonetize(false);
-      }
-    };
-  
-    const checkThreeSureCashOutStatus = async () => {
-      const res = await getThreeSureCashOutStatus(bearerToken);
-  
-      if (res?.data?.payload?.games) {
-        let x = 1;
-        while (x <= res?.data?.payload?.games.length) {
-          let val = 2;
-          if (res?.data?.payload?.games[x-1].green_balls > 0) {
-            val = 1;
-          }
-  
-          if (x === 1) {
-            setCashOut1(val);
-          } else if (x === 2) {
-            setCashOut2(val);
-          } else if (x === 3) {
-            setCashOut3(val);
-          }
-  
-          x++;
+    const destru = parseJwt(bearerToken);
+    redirectIfnotAuthenticated();
+    boom();
+    fetchBalance2();
+  }, [bearerToken, router]);
+
+  function convertStringToArray(inputString) {
+    // Split the input string by "::" and convert substrings to integers
+    const array = inputString?.split("::").map(Number);
+    return array;
+  }
+
+  useEffect(() => {
+    if (!bearerToken) return;
+
+    fetchRequestHistory();
+    fetchWheelTracker();
+    fetchWishClock();
+    fetchAppSettings();
+    checkThreeSureCashOutStatus();
+  }, [bearerToken, toast, user?.token]);
+
+  const fetchRequestHistory = async () => {
+    const res = await getRequestHistory(bearerToken);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      setData(res?.data);
+    }
+  };
+
+  const fetchWheelTracker = async () => {
+    const res = await getWheelTracker(bearerToken);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      setwheelsettings(res?.data);
+    }
+  };
+
+  const fetchWishClock = async () => {
+    const res = await getBoomCode(bearerToken);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      const codes = convertStringToArray(res.data?.payload?.code);
+      setboom_code(codes);
+      localStorage.setItem("boomCode", res.data?.payload?.code);
+    }
+  };
+
+  const fetchAppSettings = async () => {
+    const res = await getAppSettings(bearerToken);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      setgameSettings(res?.data.payload);
+    }
+  };
+
+  function formatNumberWithCommas(number) {
+    const formattedNumber = number
+      ?.toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return formattedNumber?.replace(/\.00$/, ""); // Remove .00 if present at the end
+  }
+
+  const isCustomer = router.pathname.includes("customer_dashboard");
+  const modalRedirect = () => {
+    setiisOpen(true);
+  };
+
+  const sendIAgreeForMonetization = async () => {
+    const res = await monetizationAgreement(bearerToken);
+    if (res?.data?.status) {
+      toast({
+        status: "success",
+        isClosable: true,
+        duration: "5000",
+        //title: res.data.message,
+        title: "Congratulations! Your Monetization has commenced.",
+        position: "top"
+      });
+      setAgreeMonetize(true);
+    } else {
+      toast({
+        status: "success",
+        isClosable: true,
+        duration: "5000",
+        title: res.data.message,
+        position: "top"
+      });
+      setAgreeMonetize(false);
+    }
+
+    setAgreeMonetizeModal(false);
+  };
+
+  //check if monetize is active
+  useEffect(() => {
+    localStorage.setItem("referral_code", user?.details?.referral_code);
+    if (
+      user?.details?.monetization_status === 0 ||
+      user?.details?.monetization_status === 2
+    ) {
+      setAllowMonetize(false);
+    } else if (user?.details?.monetization_status === 1) {
+      setAllowMonetize(true);
+      setAgreeMonetize(true);
+    } else if (user?.details?.monetization_status === 3) {
+      setAllowMonetize(true);
+      setAgreeMonetize(false);
+    }
+
+    if (bearerToken) {
+      checkMonetizationEligibility();
+    }
+  }, []);
+
+  const allowedModalRedirect = () => {
+    if (agreeMonetize) {
+      setAgreedMonetizeModal(true);
+    } else if (!agreeMonetize) {
+      setAgreeMonetizeModal(true);
+    }
+  };
+
+  const checkMonetizationEligibility = async () => {
+    const res = await getMonetizationEligibility(bearerToken);
+    if (
+      res?.data?.payload?.monetization_status === "0" ||
+      res?.data?.payload?.monetization_status === "2"
+    ) {
+      setAllowMonetize(false);
+    } else if (res?.data?.payload?.monetization_status === "1") {
+      setAllowMonetize(true);
+      setAgreeMonetize(true);
+    } else if (res?.data?.payload?.monetization_status === "3") {
+      setAllowMonetize(true);
+      setAgreeMonetize(false);
+    }
+  };
+
+  const checkThreeSureCashOutStatus = async () => {
+    const res = await getThreeSureCashOutStatus(bearerToken);
+
+    if (res?.data?.payload?.games) {
+      let x = 1;
+      while (x <= res?.data?.payload?.games.length) {
+        let val = 2;
+        if (res?.data?.payload?.games[x - 1].green_balls > 0) {
+          val = 1;
         }
-      }
-    };
-  
-    const fetchSellEligibility = async () => {
-      setIsLoading(true);
-      const res = await sellEligibility(bearerToken);
-      setIsLoading(false);
-      if (res.status && (res.status === 200 || res.status === 201)) {
-        if (res?.data?.payload?.status === "ineligible") {
-          setSell(false);
-          setNoSell(true);
-        } else {
-          setSellPayload(res?.data?.payload);
-          setNoSell(false);
-          setSell(true);
+
+        if (x === 1) {
+          setCashOut1(val);
+        } else if (x === 2) {
+          setCashOut2(val);
+        } else if (x === 3) {
+          setCashOut3(val);
         }
-      } 
-    };
-  
-    const completeSellAcceptance = async () => {
-      setIsLoading(true);
-      const res = await sellAcceptance(bearerToken);
-      setIsLoading(false);
-      if (res?.data?.status) {
-        toast({
-          status: "success",
-          isClosable: true,
-          duration: "5000",
-          title: res?.data?.message,
-          position: "top",
-        });
+
+        x++;
+      }
+    }
+  };
+
+  const fetchSellEligibility = async () => {
+    setIsLoading(true);
+    const res = await sellEligibility(bearerToken);
+    setIsLoading(false);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      if (res?.data?.payload?.status === "ineligible") {
+        setSell(false);
+        setNoSell(true);
       } else {
-        toast({
-          status: "success",
-          isClosable: true,
-          duration: "5000",
-          title: res.data.message,
-          position: "top",
-        });
+        setSellPayload(res?.data?.payload);
+        setNoSell(false);
+        setSell(true);
       }
-    };
-    
+    }
+  };
+
+  const completeSellAcceptance = async () => {
+    setIsLoading(true);
+    const res = await sellAcceptance(bearerToken);
+    setIsLoading(false);
+    if (res?.data?.status) {
+      toast({
+        status: "success",
+        isClosable: true,
+        duration: "5000",
+        title: res?.data?.message,
+        position: "top"
+      });
+    } else {
+      toast({
+        status: "success",
+        isClosable: true,
+        duration: "5000",
+        title: res.data.message,
+        position: "top"
+      });
+    }
+  };
+
   const menuRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [openLogout, setopenLogout] = useState(false);
-  
+
   const handleLogout = async () => {
     try {
       setIsLoading(true);
@@ -422,7 +433,7 @@ const Dashboard = () => {
         duration: 5000,
         status: "success",
         title: "successfully logged out",
-        position: "top",
+        position: "top"
       });
       router.replace("/");
       return;
@@ -437,7 +448,7 @@ const Dashboard = () => {
   const handleRegChange = (e) => {
     setfastFinger(e.target.value.trim());
   };
-  
+
   const handleFastFinger = async () => {
     const Res = await playFastestFinger(bearerToken, fastFinger);
     if (Res?.data?.message) {
@@ -446,20 +457,17 @@ const Dashboard = () => {
         isClosable: true,
         duration: "5000",
         title: Res.data.message,
-        position: "top",
+        position: "top"
       });
     }
-  
+
     setfastFinger("");
     fetchBalance2();
   };
 
   return (
     <div className="w-full appearance-none bg-secondary text-white flex-1 overflow-y-auto">
-      <div
-        className=" px-4 justify-center background-ribbon bg-cover bg-center bg-no-repeat  h-auto"
-        
-      >
+      <div className=" px-4 justify-center background-ribbon bg-cover bg-center bg-no-repeat  h-auto">
         <div className="w-full">
           <div className="flex py-10 w-full justify-center">
             <img src="/mobile/assets/NairaBoomLogo.svg" />
@@ -476,8 +484,15 @@ const Dashboard = () => {
               >
                 <GiHamburgerMenu size={25} color={"fff"} />
               </Button>
-              <span className="flex -ml-3 text-[15px] mt-2" style={{ fontFamily: 'Changa' }}>Hi, {user?.details?.fullname?.split(" ")[0]}</span>
-              <div className="flex justify-bottom items-end mt-1"><LiaBellSolid size={15} color={"fff"} /></div>
+              <span
+                className="flex -ml-3 text-[15px] mt-2"
+                style={{ fontFamily: "Changa" }}
+              >
+                Hi, {user?.details?.fullname?.split(" ")[0]}
+              </span>
+              <div className="flex justify-bottom items-end mt-1">
+                <LiaBellSolid size={15} color={"fff"} />
+              </div>
               <Drawer
                 isOpen={isOpen}
                 placement="left"
@@ -500,33 +515,33 @@ const Dashboard = () => {
                         {
                           title: "Dashboard",
                           link: "customer_dashboard",
-                          icon: <HiHome />,
+                          icon: <HiHome />
                         },
                         {
                           title: "Play Game",
                           link: "customer_dashboard/cashback",
-                          icon: <HiOutlineCash />,
+                          icon: <HiOutlineCash />
                         },
                         {
                           title: "My Wallet",
                           link: "customer_dashboard/wallet",
-                          icon: <BsWallet />,
+                          icon: <BsWallet />
                         },
                         {
                           title: "Game history",
                           link: "customer_dashboard/request_history",
-                          icon: <MdContentPaste />,
+                          icon: <MdContentPaste />
                         },
                         {
                           title: "Refer & Monetize",
                           link: "customer_dashboard/referral_link",
-                          icon: <MdFileCopy />,
+                          icon: <MdFileCopy />
                         },
                         {
                           title: "Share & Earn",
                           link: "customer_dashboard/share_ads",
-                          icon: <BsShareFill />,
-                        },
+                          icon: <BsShareFill />
+                        }
                       ].map((item, index) => {
                         return (
                           <Button
@@ -536,7 +551,9 @@ const Dashboard = () => {
                               item.title === "Dashboard" ? "gray" : "none"
                             }
                             onClick={() => router.push(item.link)}
-                            color={item.title === "Dashboard" ? "#002047" : "gray"}
+                            color={
+                              item.title === "Dashboard" ? "#002047" : "gray"
+                            }
                             leftIcon={item.icon}
                           >
                             <Text as="span" flex="1" textAlign="left">
@@ -550,18 +567,18 @@ const Dashboard = () => {
                         {
                           title: "Need Help?",
                           link: "customer_dashboard/disputes",
-                          icon: <MdHelpCenter />,
+                          icon: <MdHelpCenter />
                         },
                         {
                           title: "Edit Profile",
                           link: "customer_dashboard/editprofile",
-                          icon: <RiProfileFill />,
+                          icon: <RiProfileFill />
                         },
                         {
                           title: "Change Password",
                           link: "customer_dashboard/change-password",
-                          icon: <SettingsIcon />,
-                        },
+                          icon: <SettingsIcon />
+                        }
                       ].map((item, index) => {
                         return (
                           <Button
@@ -571,7 +588,9 @@ const Dashboard = () => {
                               item.title === "Dashboard" ? "gray" : "none"
                             }
                             onClick={() => router.push(item.link)}
-                            color={item.title === "Dashboard" ? "#002047" : "gray"}
+                            color={
+                              item.title === "Dashboard" ? "#002047" : "gray"
+                            }
                             leftIcon={item.icon}
                           >
                             <Text as="span" flex="1" textAlign="left">
@@ -580,7 +599,7 @@ const Dashboard = () => {
                           </Button>
                         );
                       })}
-  
+
                       {user?.details?.kyc_approved === false && (
                         <Button
                           onClick={() =>
@@ -596,7 +615,7 @@ const Dashboard = () => {
                           Verify your Account
                         </Button>
                       )}
-  
+
                       <Box
                         _hover={{ textDecoration: "none" }}
                         gap="1.18rem"
@@ -620,41 +639,56 @@ const Dashboard = () => {
             <div className="flex space-x-1 items-center">
               {!allowMonetize ? (
                 <>
-                <div
-                  onClick={allowedModalRedirect}
-                  className="cursor-pointer"
-                >
-                  <img src="/mobile/assets/Monetize.png" />
-                </div>
+                  <div
+                    onClick={allowedModalRedirect}
+                    className="cursor-pointer"
+                  >
+                    <img src="/mobile/assets/Monetize.png" />
+                  </div>
                 </>
               ) : (
                 <>
-                <div>
-                  <img src="/mobile/assets/Monetize.png" />
-                </div>
+                  <div>
+                    <img src="/mobile/assets/Monetize.png" />
+                  </div>
                 </>
               )}
-              <IoMdInformationCircleOutline 
+              <IoMdInformationCircleOutline
                 onClick={() => {
                   setMonetizeModal(true);
                 }}
-              size={30} />
+                size={30}
+              />
             </div>
           </div>
-          <p className="mt-4 mb-1 text-[15px]" style={{ fontFamily: 'Changa' }}>Dashboard</p>
+          <p className="mt-4 mb-1 text-[15px]" style={{ fontFamily: "Changa" }}>
+            Dashboard
+          </p>
           <div className="max-w-full overflow-x-scroll flex space-x-2 scrollbar-hide mdd:justify-between">
             <div className="gradient-div max-w-[48%] min-w-[48%] rounded-lg p-4 text-secondary ">
               {/* first text */}
-              <div className="text-[20px] mb-4" style={{ fontFamily: 'Changa One' }}>
-                <p style={{ fontFamily: 'Changa One' }}>MAIN</p>
-                <p className="-mt-2" style={{ fontFamily: 'Changa One' }}>WALLET</p>
+              <div
+                className="text-[20px] mb-4"
+                style={{ fontFamily: "Changa One" }}
+              >
+                <p style={{ fontFamily: "Changa One" }}>MAIN</p>
+                <p className="-mt-2" style={{ fontFamily: "Changa One" }}>
+                  WALLET
+                </p>
               </div>
               {/* balance */}
               <div className="mb-2 mt-5">
-                <div className="-mb-2 flex gap-2 text-[6px]" style={{ fontFamily: 'Changa' }}>BALANCE 
+                <div
+                  className="-mb-2 flex gap-2 text-[6px]"
+                  style={{ fontFamily: "Changa" }}
+                >
+                  BALANCE
                 </div>
                 <div className="flex space-x-1 items-start">
-                  <p className="text-[15px]" style={{ fontFamily: 'Changa One' }}>
+                  <p
+                    className="text-[15px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
                     {isLoading ? (
                       <Bars
                         height="20"
@@ -680,7 +714,9 @@ const Dashboard = () => {
                       </>
                     )}
                   </p>
-                  <p className="text-[6px]" style={{ fontFamily: 'Changa' }}>NGN</p>
+                  <p className="text-[6px]" style={{ fontFamily: "Changa" }}>
+                    NGN
+                  </p>
                 </div>
               </div>
               {/* button */}
@@ -689,7 +725,7 @@ const Dashboard = () => {
                   router.push("/customer_dashboard/fund_account");
                 }}
                 className="bg-secondary cursor-pointer text-primary rounded-full py-2 px-4 w-fit text-[13px]"
-                style={{ fontFamily: 'Source Code Pro' }}
+                style={{ fontFamily: "Source Code Pro" }}
               >
                 <b>FUND</b>
               </div>
@@ -697,22 +733,35 @@ const Dashboard = () => {
             <div className="gradient-div max-w-[48%] min-w-[48%] rounded-lg p-4 text-secondary ">
               {/* first text */}
               <div className="flex justify-between">
-                <div className="text-[20px] mb-4" style={{ fontFamily: 'Changa One' }}>
-                  <p style={{ fontFamily: 'Changa One' }}>BOOM</p>
-                  <p className="-mt-2" style={{ fontFamily: 'Changa One' }}>WALLET</p>
+                <div
+                  className="text-[20px] mb-4"
+                  style={{ fontFamily: "Changa One" }}
+                >
+                  <p style={{ fontFamily: "Changa One" }}>BOOM</p>
+                  <p className="-mt-2" style={{ fontFamily: "Changa One" }}>
+                    WALLET
+                  </p>
                 </div>
                 <div className="-mt-2 -mr-2">
-                  <IoMdInformationCircleOutline 
+                  <IoMdInformationCircleOutline
                     onClick={() => modalRedirect()}
-                    size={20} />
+                    size={20}
+                  />
                 </div>
               </div>
               {/* balance */}
               <div className="mb-2 mt-1">
-                <div className="-mb-2 flex gap-2 text-[6px]" style={{ fontFamily: 'Changa' }}>BALANCE 
+                <div
+                  className="-mb-2 flex gap-2 text-[6px]"
+                  style={{ fontFamily: "Changa" }}
+                >
+                  BALANCE
                 </div>
                 <div className="flex space-x-1 items-start">
-                  <p className="text-[15px]" style={{ fontFamily: 'Changa One' }}>
+                  <p
+                    className="text-[15px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
                     {isLoading ? (
                       <Bars
                         height="20"
@@ -738,22 +787,24 @@ const Dashboard = () => {
                       </>
                     )}
                   </p>
-                  <p className="text-[6px]" style={{ fontFamily: 'Changa' }}>BCT</p>
+                  <p className="text-[6px]" style={{ fontFamily: "Changa" }}>
+                    BCT
+                  </p>
                 </div>
               </div>
               {/* button */}
-              <div className="flex justify-between items-center">
+              <div className="flex space-x-2 items-center">
                 <div
                   onClick={fetchSellEligibility}
                   className="bg-secondary cursor-pointer text-primary rounded-full py-2 px-4 w-fit text-[13px]"
-                  style={{ fontFamily: 'Source Code Pro' }}
+                  style={{ fontFamily: "Source Code Pro" }}
                 >
                   <b>SELL</b>
                 </div>
                 <div
                   // onClick={fetchSellEligibility}
                   className="bg-secondary cursor-pointer text-primary rounded-full py-2 px-4 w-fit text-[13px]"
-                  style={{ fontFamily: 'Source Code Pro' }}
+                  style={{ fontFamily: "Source Code Pro" }}
                 >
                   <b>BUY</b>
                 </div>
@@ -775,7 +826,13 @@ const Dashboard = () => {
             maxW={"95%"}
             p={{ base: "1rem", md: "3rem" }}
           >
-            <ModalHeader><Center><font size="5" color="brown">Boom Coins Wallet Sell Offer</font></Center></ModalHeader>
+            <ModalHeader>
+              <Center>
+                <font size="5" color="brown">
+                  Boom Coins Wallet Sell Offer
+                </font>
+              </Center>
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Center>
@@ -783,9 +840,11 @@ const Dashboard = () => {
               </Center>
               <br />
               <br />
-              To be eligible to sell, maintain a minimum balance of 500,000 Boom Coins in your wallet and stay active. 
-              Keep playing Rollover Games to accumulate your alerts and grow your coins!
-              <br /><br />
+              To be eligible to sell, maintain a minimum balance of 500,000 Boom
+              Coins in your wallet and stay active. Keep playing Rollover Games
+              to accumulate your alerts and grow your coins!
+              <br />
+              <br />
             </ModalBody>
           </ModalContent>
         </Modal>
@@ -803,7 +862,13 @@ const Dashboard = () => {
             maxW={"95%"}
             p={{ base: "1rem", md: "3rem" }}
           >
-            <ModalHeader><Center><font size="5" color="brown">Boom Coins Wallet Sell Offer</font></Center></ModalHeader>
+            <ModalHeader>
+              <Center>
+                <font size="5" color="brown">
+                  Boom Coins Wallet Sell Offer
+                </font>
+              </Center>
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               You've Received an Offer to Sell Your Boom Coins!
@@ -813,8 +878,9 @@ const Dashboard = () => {
               <br />
               Amount: ₦{sellPayload?.sell_amount_display}
               <p>
-                If you accept this offer, you agree to sell your Boom Coins at the specified rate and will receive 
-                the cash equivalent in your Main Wallet. Note: 5% Agency Fee applies.
+                If you accept this offer, you agree to sell your Boom Coins at
+                the specified rate and will receive the cash equivalent in your
+                Main Wallet. Note: 5% Agency Fee applies.
               </p>
             </ModalBody>
             <Box
@@ -877,7 +943,13 @@ const Dashboard = () => {
             maxW={"95%"}
             p={{ base: "1rem", md: "3rem" }}
           >
-            <ModalHeader><Center><font size="14" color="brown">MONETIZE</font></Center></ModalHeader>
+            <ModalHeader>
+              <Center>
+                <font size="14" color="brown">
+                  MONETIZE
+                </font>
+              </Center>
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               Hey Boomster, you can monetize your Nairaboom account and earn
@@ -886,7 +958,8 @@ const Dashboard = () => {
               <br />
               1. Use your referral{" "}
               <Link href="/customer_dashboard/editprofile">link </Link>
-              to invite 35 people to <b>Sign Up</b> and <b>Play Games</b> on Nairaboom
+              to invite 35 people to <b>Sign Up</b> and <b>Play Games</b> on
+              Nairaboom
               <br />
               2. Have a minimum of 200,000 in your Boom Coins Wallet
               <br />
@@ -894,7 +967,8 @@ const Dashboard = () => {
               Benefits of monetizing your Nairaboom account:
               <br />
               <br />
-              1. Create your POD and earn revenue daily from rollover gameplays and winnings of people in your POD.
+              1. Create your POD and earn revenue daily from rollover gameplays
+              and winnings of people in your POD.
               <br />
               2. Start your journey to becoming a Nairaboom partner.
               <br />
@@ -922,7 +996,8 @@ const Dashboard = () => {
                   OK
                 </Button>
               </Center>
-              <br /><br />
+              <br />
+              <br />
             </ModalBody>
           </ModalContent>
         </Modal>
@@ -940,13 +1015,20 @@ const Dashboard = () => {
             maxW={"95%"}
             p={{ base: "1rem", md: "3rem" }}
           >
-            <ModalHeader><Center><font size="14" color="brown">MONETIZE</font></Center></ModalHeader>
+            <ModalHeader>
+              <Center>
+                <font size="14" color="brown">
+                  MONETIZE
+                </font>
+              </Center>
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              Congratulations you have qualified for the Nairaboom Monetization Program.
+              Congratulations you have qualified for the Nairaboom Monetization
+              Program.
               <br />
               <br />
-              To continue, confirm that you agree to the T&Cs of the program 
+              To continue, confirm that you agree to the T&Cs of the program
               <br />
               <Center>
                 <Button
@@ -969,7 +1051,8 @@ const Dashboard = () => {
                   I Agree
                 </Button>
               </Center>
-              <br /><br />
+              <br />
+              <br />
             </ModalBody>
           </ModalContent>
         </Modal>
@@ -987,14 +1070,22 @@ const Dashboard = () => {
             maxW={"95%"}
             p={{ base: "1rem", md: "3rem" }}
           >
-            <ModalHeader><Center><font size="14" color="brown">MONETIZE</font></Center></ModalHeader>
+            <ModalHeader>
+              <Center>
+                <font size="14" color="brown">
+                  MONETIZE
+                </font>
+              </Center>
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Center>Your monetization status is active!</Center>
               <br />
               <br />
-              <Center>Did you know you can refer over 35 people? Keep referring more friends to expand your POD 
-              and boost your earnings!</Center>
+              <Center>
+                Did you know you can refer over 35 people? Keep referring more
+                friends to expand your POD and boost your earnings!
+              </Center>
               <br />
               <Center>
                 <Button
@@ -1019,7 +1110,8 @@ const Dashboard = () => {
                   OK
                 </Button>
               </Center>
-              <br /><br />
+              <br />
+              <br />
             </ModalBody>
           </ModalContent>
         </Modal>
@@ -1027,14 +1119,28 @@ const Dashboard = () => {
       {/* megaphone card */}
       <div className="gradient-div mt-2 w-full flex items-center justify-between text-secondary ">
         <div className="text-xs flex items-center py-[2px] pl-[5px]">
-          <img
-            src="/mobile/assets/Group.svg"
-            className="w-[25px] h-[25px]"
-          />
+          <img src="/mobile/assets/Group.svg" className="w-[25px] h-[25px]" />
           <div className="inline-block">
-            <span className="ml-1 text-[13px] font-normal" style={{ fontFamily: 'Source Sans Pro' }}> r***l won</span>{" "}
-            <span className=" text-[13px] text-white font-bold" style={{ fontFamily: 'Source Sans Pro' }}>NGN 50,000.00 </span>{" "}
-            <span className="text-[13px] font-normal" style={{ fontFamily: 'Source Sans Pro' }}> in 3 Sure Cashout</span>
+            <span
+              className="ml-1 text-[13px] font-normal"
+              style={{ fontFamily: "Source Sans Pro" }}
+            >
+              {" "}
+              Femi won
+            </span>{" "}
+            <span
+              className=" text-[13px] text-white font-bold"
+              style={{ fontFamily: "Source Sans Pro" }}
+            >
+              NGN 50,000.00{" "}
+            </span>{" "}
+            <span
+              className="text-[13px] font-normal"
+              style={{ fontFamily: "Source Sans Pro" }}
+            >
+              {" "}
+              in 3 Sure Cashout
+            </span>
           </div>
         </div>
         <div className="flex items-center rounded-br-md rounded-tr-md justify-center aspect-video small-ribbon bg-cover bg-center bg-no-repeat  h-[32px]">
@@ -1043,27 +1149,35 @@ const Dashboard = () => {
               if (isLoading) {
                 return;
               }
-                const content = walletBalance?.payload?.content;
-                if (content && content.length > 0) {
-                  const amount = content[0]?.amount;
-                  if (Number(amount) < 10) {
-                    setinsufficientModal(true);
-                  } else {
-                    router.push("/customer_dashboard/cashback");
-                  }
-                } else {
+              const content = walletBalance?.payload?.content;
+              if (content && content.length > 0) {
+                const amount = content[0]?.amount;
+                if (Number(amount) < 10) {
                   setinsufficientModal(true);
+                } else {
+                  router.push("/customer_dashboard/cashback");
                 }
-              }}
-              className="cursor-pointer"
-            >
-              <img src="/mobile/assets/PlayNow.png" className="h-[24px] aspect-video" />
-            </div>
+              } else {
+                setinsufficientModal(true);
+              }
+            }}
+            className="cursor-pointer"
+          >
+            <img
+              src="/mobile/assets/PlayNow.png"
+              className="h-[24px] aspect-video"
+            />
           </div>
         </div>
+      </div>
       {/* Games */}
       <div>
-        <p className="mt-4 -mb-2 px-4 font-bold text-[15px]" style={{ fontFamily: 'Changa' }}>Games</p>
+        <p
+          className="mt-4 -mb-2 px-4 font-bold text-[15px]"
+          style={{ fontFamily: "Changa" }}
+        >
+          Games
+        </p>
         <div className="lg:-mt-20 grid  grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
           <div className=" px-4 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
             <div className="gradient-div relative mt-4 flex flex-col p-4 items-center w-full rounded-md text-secondary ">
@@ -1095,13 +1209,22 @@ const Dashboard = () => {
                 src="/mobile/assets/PlayNow1.png"
                 className="absolute mt-[190px] cursor-pointer ml-[3px] max-w-[115.08px] max-h-[48.3px] min-w-[115.08px] min-h-[48.3px]"
               />
-              <p className="mt-2 text-center text-xl" style={{ fontFamily: 'Changa One' }}>
+              <p
+                className="mt-2 text-center text-xl"
+                style={{ fontFamily: "Changa One" }}
+              >
                 GET ONE GREEN BALL IN 3
               </p>
-              <p className="-mt-2 text-center text-xl" style={{ fontFamily: 'Changa One' }}>
+              <p
+                className="-mt-2 text-center text-xl"
+                style={{ fontFamily: "Changa One" }}
+              >
                 CONSECUTIVE ROLLOVER GAMES
               </p>
-              <p className="-mt-2 text-center text-xl" style={{ fontFamily: 'Changa One' }}>
+              <p
+                className="-mt-2 text-center text-xl"
+                style={{ fontFamily: "Changa One" }}
+              >
                 AND CASHOUT YOUR CUMULATIVE
               </p>
             </div>
@@ -1132,10 +1255,16 @@ const Dashboard = () => {
                 src="/mobile/assets/PlayNow2.png"
                 className="absolute mt-[191px] cursor-pointer ml-[3px] max-w-[115.08px] max-h-[48.3px] min-w-[115.08px] min-h-[48.3px]"
               />
-              <p className="mt-2 text-center text-xl" style={{ fontFamily: 'Changa One' }}>
+              <p
+                className="mt-2 text-center text-xl"
+                style={{ fontFamily: "Changa One" }}
+              >
                 TAP TO ROLLOVER AND SWAP YOUR
               </p>
-              <p className="-mt-2 text-center text-xl" style={{ fontFamily: 'Changa One' }}>
+              <p
+                className="-mt-2 text-center text-xl"
+                style={{ fontFamily: "Changa One" }}
+              >
                 BANK ALERT
               </p>
             </div>
@@ -1163,10 +1292,16 @@ const Dashboard = () => {
                 src="/mobile/assets/Enter.png"
                 className="absolute mt-[190px] cursor-pointer ml-[3px] max-w-[115.08px] max-h-[48.3px] min-w-[115.08px] min-h-[48.3px]"
               />
-              <p className="mt-2 text-center text-xl" style={{ fontFamily: 'Changa One' }}>
+              <p
+                className="mt-2 text-center text-xl"
+                style={{ fontFamily: "Changa One" }}
+              >
                 ENTER THE MONEY WORD TO WIN
               </p>
-              <p className="-mt-2 text-center text-xl" style={{ fontFamily: 'Changa One' }}>
+              <p
+                className="-mt-2 text-center text-xl"
+                style={{ fontFamily: "Changa One" }}
+              >
                 QUICK CASH
               </p>
             </div>
@@ -1176,12 +1311,40 @@ const Dashboard = () => {
           <div className="mt-2 relative flex flex-col items-center w-full rounded-md text-secondary ">
             <img
               src="/mobile/assets/CashoutKeys.png"
-              className="max-w-[326px] max-h-[344px] min-w-[326px] min-h-[344px]"
+              // className="max-w-[326px] max-h-[344px] min-w-[326px] min-h-[344px]"
+            />
+            <div className="absolute bottom-20 flex items-center justify-between">
+              <div className=" gold-container flex items-center justify-center text-secondary max-w-[76px] max-h-[66px] min-w-[76px] min-h-[66px]">
+                <p className="text-center font-changa-one text-2xl">20</p>
+              </div>
+              <div className=" gold-container flex items-center justify-center text-secondary max-w-[76px] max-h-[66px] min-w-[76px] min-h-[66px]">
+                <p className="text-center font-changa-one text-2xl">16</p>
+              </div>
+              <div className=" gold-container flex items-center justify-center text-secondary max-w-[76px] max-h-[66px] min-w-[76px] min-h-[66px]">
+                <p className="text-center font-changa-one text-2xl">28</p>
+              </div>
+              <div className=" gold-container flex items-center justify-center text-secondary max-w-[76px] max-h-[66px] min-w-[76px] min-h-[66px]">
+                <p className="text-center font-changa-one text-2xl">5</p>
+              </div>
+            </div>
+            <div className="absolute bottom-0 cashout-container flex items-center justify-center text-primary max-w-[189px] max-h-[57px] min-w-[189px] min-h-[57px]">
+              <p className="text-center  font-changa-one text-2xl">
+                ₦5,000,000
+              </p>
+            </div>
+          </div>
+          <div className="mt-2 relative flex flex-col items-center w-full rounded-md text-secondary ">
+            <img
+              onClick={() => {
+                console.log("how-to-play");
+              }}
+              src="/mobile/assets/Jackpot.png"
+              // className="max-w-[326px] max-h-[344px] min-w-[326px] min-h-[344px]"
             />
           </div>
         </div>
         <div className="lg:-mt-40 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
-          <div className="mt-2 relative flex flex-col items-center w-full rounded-md text-secondary ">
+          {/* <div className="mt-2 relative flex flex-col items-center w-full rounded-md text-secondary ">
             <img
               src="/mobile/assets/BigWin2.png"
               className="max-w-[350px] max-h-[344px] min-w-[344px] min-h-[350px]"
@@ -1193,6 +1356,23 @@ const Dashboard = () => {
               src="/mobile/assets/HowToPlay.png"
               className="absolute mt-[235px] cursor-pointer ml-[3px] max-w-[249.04px] max-h-[78.72px] min-w-[249.04px] min-h-[78.72px]"
             />
+          </div> */}
+          <div className="gradient-div relative mt-2 max-w-screen overflow-x-hidden flex flex-col items-center max-w-screen mx-4 rounded-md">
+            {/* <div className="-mt-3 mx-4 relative text-secondary justify-center background-ribbon1 bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto"> */}
+            <img
+              src="/mobile/assets/Group_246.png"
+              // className="max-w-[350px] max-h-[344px] min-w-[344px] min-h-[350px] rounded-lg"
+              className="w-full rounded-lg"
+            />
+            <img
+              onClick={() => {
+                router.push("/how-to-play");
+              }}
+              src="/mobile/assets/HowToPlay2.png"
+              className="absolute bottom-8 cursor-pointer "
+              // className="absolute bottom-0 cursor-pointer ml-[3px] max-w-[254.78px] max-h-[80.07px] min-w-[254.78px] min-h-[80.07px]"
+            />
+            {/* </div> */}
           </div>
         </div>
       </div>
@@ -1213,7 +1393,7 @@ const Dashboard = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
-  
+
       <Modal
         isCentered
         isOpen={openLogout}
@@ -1241,7 +1421,7 @@ const Dashboard = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-  
+
       <Modal isCentered isOpen={iisOpen} onClose={someFunc}>
         <ModalOverlay />
         <ModalContent
@@ -1309,12 +1489,23 @@ const Dashboard = () => {
         <div className="flex flex-col flex-1">
           <div className="mt-4 flex flex-col text-center items-center w-full">
             <div className="mb-1">
-              <span className="py-[2px] px-[2px] text-[10px] font-semibold border-2 border-red-600 mr-2 rounded-full" style={{ fontFamily: 'Source Sans Pro' }}>
+              <span
+                className="py-[2px] px-[2px] text-[10px] font-semibold border-2 border-red-600 mr-2 rounded-full"
+                style={{ fontFamily: "Source Sans Pro" }}
+              >
                 18+
               </span>
-              <span className="text-[10px] font-semibold" style={{ fontFamily: 'Source Sans Pro' }}>Play Resposibly</span>
+              <span
+                className="text-[10px] font-semibold"
+                style={{ fontFamily: "Source Sans Pro" }}
+              >
+                Play Resposibly
+              </span>
             </div>
-            <div className="text-[10px] font-extralight" style={{ fontFamily: 'Changa' }}>
+            <div
+              className="text-[10px] font-extralight"
+              style={{ fontFamily: "Changa" }}
+            >
               <p>© 2024 Nairaboom. All Rights Reserved.</p>
               <p>Nairaboom is licensed and regulated by the National</p>
               <p>Lottery Regulatory</p>
@@ -1323,7 +1514,10 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="flex flex-col flex-1 justify-end mt-1 mb-4">
-            <div className="flex justify-between items-end font-extralight text-[10px]" style={{ fontFamily: 'Changa' }}>
+            <div
+              className="flex justify-between items-end font-extralight text-[10px]"
+              style={{ fontFamily: "Changa" }}
+            >
               <div>
                 <div>
                   <p className="hover:border-b border-b-white inline-block">
@@ -1352,12 +1546,24 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="text-primary space-x-2">
-                <Link href="https://www.instagram.com/nairaboomng/"><FaInstagram size={15} className="inline-block" /></Link> 
-                <Link href="https://www.tiktok.com/@nairaboom.ng?_t=8ouwtQ6j16L&_r=1"><FaTiktok size={15} className="inline-block" /></Link> 
-                <Link href="https://www.facebook.com/profile.php?id=61554354321220&mibextid=ZbWKwL"><FaFacebook size={15} className="inline-block" /></Link> 
-                <Link href="https://twitter.com/nairaboomng"><FaXTwitter size={15} className="inline-block" /></Link> 
-                <Link href="https://youtube.com/@nairaboomng?si=SsQoitRoAbRc1EvK"><FaYoutube size={15} className="inline-block" /></Link> 
-                <Link href="https://www.threads.net/@nairaboomng"><FaThreads size={15} className="inline-block" /></Link>
+                <Link href="https://www.instagram.com/nairaboomng/">
+                  <FaInstagram size={15} className="inline-block" />
+                </Link>
+                <Link href="https://www.tiktok.com/@nairaboom.ng?_t=8ouwtQ6j16L&_r=1">
+                  <FaTiktok size={15} className="inline-block" />
+                </Link>
+                <Link href="https://www.facebook.com/profile.php?id=61554354321220&mibextid=ZbWKwL">
+                  <FaFacebook size={15} className="inline-block" />
+                </Link>
+                <Link href="https://twitter.com/nairaboomng">
+                  <FaXTwitter size={15} className="inline-block" />
+                </Link>
+                <Link href="https://youtube.com/@nairaboomng?si=SsQoitRoAbRc1EvK">
+                  <FaYoutube size={15} className="inline-block" />
+                </Link>
+                <Link href="https://www.threads.net/@nairaboomng">
+                  <FaThreads size={15} className="inline-block" />
+                </Link>
               </div>
             </div>
           </div>
