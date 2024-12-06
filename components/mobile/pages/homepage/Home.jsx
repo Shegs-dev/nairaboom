@@ -505,10 +505,10 @@ const Home = () => {
             <b>Games</b>
           </p>
           <div className="flex items-start space-x-4 pt-1 pb-1 overflow-y-clip overflow-x-scroll">
-            <div className="gradient-div min-h-[154.24px] max-h-[154.24px] relative mt-1 flex flex-col pt-1 pb-2 items-center max-w-[167px] min-w-[167px] rounded-md text-secondary ">
+            <div className="gradient-div min-h-[155.41px] max-h-[155.41px] relative mt-1 flex flex-col pt-1 pb-2 items-center max-w-[163.47px] min-w-[163.47px] rounded-md text-secondary ">
               <img
                 src="/mobile/assets/3SureCashoutSmall.png"
-                className="max-w-[157px] rounded-lg max-h-[115px] min-w-[157px] min-h-[115px]"
+                className="max-w-[170px] rounded-lg max-h-[124px] min-w-[170px] min-h-[124px]"
               />
               {/* <img
                 src="/mobile/assets/GreenCheck.png"
@@ -517,10 +517,10 @@ const Home = () => {
               <img
                 onClick={() => console.log("reload")}
                 src="/mobile/assets/PlayNow1.png"
-                className="absolute mt-[91px] cursor-pointer ml-[3px] max-w-[58.92px] max-h-[25px] min-w-[58.92px] min-h-[25px]"
+                className="absolute mt-[89px] cursor-pointer ml-[3px] max-w-[54.53px] max-h-[22.89px] min-w-[54.53px] min-h-[22.89px]"
               />
               <p
-                className="w-full leading-3 mt-1 text-center text-[8px]"
+                className="w-full leading-3 -mt-2 text-center text-[8px]"
                 style={{ fontFamily: "Changa One" }}
               >
                 GET ONE GREEN BALL IN 3 CONSECUTIVE
@@ -538,16 +538,16 @@ const Home = () => {
                 CUMULATIVE
               </p>
             </div>
-            <div className="gradient-div min-h-[154.24px] max-h-[154.24px] relative mt-1 flex flex-col pt-1 pb-2 items-center max-w-[167px] min-w-[167px] rounded-md text-secondary h-auto">
+            <div className="gradient-div min-h-[155.41px] max-h-[155.41px] relative mt-1 flex flex-col pt-1 pb-2 items-center max-w-[174.15px] min-w-[174.15px] rounded-md text-secondary h-auto">
               <img
                 src="/mobile/assets/RolloverSmall.png"
-                className="rounded-lg max-w-[157.29px] max-h-[117.04px] min-w-[157.29px] min-h-[117.04px]"
+                className="rounded-lg max-w-[172px] -ml-2 max-h-[112px] min-w-[172px] min-h-[112px]"
               />
-              <img
+              {/* <img
                 onClick={() => console.log("reload")}
                 src="/mobile/assets/PlayNow2.png"
                 className="absolute mt-[93px] cursor-pointer ml-[3px] max-w-[58.92px] max-h-[25px] min-w-[58.92px] min-h-[25px]"
-              />
+              /> */}
               <p
                 className="mt-2 leading-3 text-center text-[8px]"
                 style={{ fontFamily: "Changa One" }}
@@ -561,20 +561,20 @@ const Home = () => {
                 ALERT
               </p>
             </div>
-            <div className="gradient-div min-h-[154.24px] max-h-[154.24px] relative mt-1 flex flex-col pt-1 pb-2 items-center max-w-[167px] min-w-[167px] rounded-md text-secondary ">
+            <div className="gradient-div min-h-[155.41px] max-h-[155.41px] relative mt-1 flex flex-col pt-1 pb-2 items-center max-w-[174.15px] min-w-[174.15px] rounded-md text-secondary h-auto">
               <img
                 src="/mobile/assets/FastestFingersSmall.png"
-                className="rounded-lg max-w-[157.78px] max-h-[115.56px] min-w-[157.78px] min-h-[115.56px]"
+                className="rounded-lg ml-2 max-w-[185px] max-h-[121px] min-w-[185px] min-h-[121px]"
               />
               <input
                 type="text"
                 placeholder="Type here..."
-                className="absolute mt-[65px] max-w-[94px] max-h-[25.18px] min-w-[94px] min-h-[25.18px] bg-white text-neutral-500 text-sm text-center border-2 border-secondary rounded-full"
+                className="absolute mt-[65px] max-w-[82px] max-h-[19.29px] min-w-[82px] min-h-[19.29px] bg-white text-neutral-500 text-xs text-center border-2 border-secondary rounded-full"
               />
               <img
                 onClick={() => console.log("reload")}
                 src="/mobile/assets/Enter.png"
-                className="absolute mt-[90px] cursor-pointer ml-[3px] max-w-[58.92px] max-h-[25px] min-w-[58.92px] min-h-[25px]"
+                className="absolute mt-[85px] cursor-pointer ml-[3px] max-w-[56.17px] max-h-[21px] min-w-[56.17px] min-h-[21px]"
               />
               <p
                 className="mt-2 leading-3 text-center text-[8px]"

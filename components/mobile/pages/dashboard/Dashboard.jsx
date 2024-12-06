@@ -499,7 +499,7 @@ const Dashboard = () => {
             />
           )}
         </div>
-        <div className="gradient-div -mt-2 p-2 text-center rounded-full text-secondary ">
+        <div className="gradient-div font-changa font-semibold -mt-2 p-[2px] text-center rounded-full text-secondary ">
           ₦{item.price}
         </div>
       </div>
@@ -1228,13 +1228,13 @@ const Dashboard = () => {
             <div className="gradient-div relative mt-4 flex flex-col p-4 items-center w-full rounded-md text-secondary ">
               <img
                 src="/mobile/assets/3SureCashout.png"
-                className="max-w-[326px] max-h-[239px] min-w-[326px] min-h-[239px]"
+                className="max-w-[357px] -ml-3 max-h-[261px] min-w-[357px] min-h-[261px]"
               />
               <img
                 src="/mobile/assets/3SureCashoutText.png"
-                className="absolute top-0 max-w-[264px] max-h-[92px] min-w-[264px] min-h-[92px]"
+                className="absolute top-5 max-w-[264px] max-h-[92px] min-w-[264px] min-h-[92px]"
               />
-              <div className="absolute top-16 flex items-center justify-between">
+              <div className="absolute top-24 flex items-center space-x-2 justify-between">
                 {threeSureCashout.map((each) => {
                   return <TSCItems item={each} />;
                 })}
@@ -1260,7 +1260,7 @@ const Dashboard = () => {
                 className="absolute mt-[190px] cursor-pointer ml-[3px] max-w-[115.08px] max-h-[48.3px] min-w-[115.08px] min-h-[48.3px]"
               />
               <p
-                className="mt-2 text-center text-xl"
+                className="-mt-2 text-center text-xl"
                 style={{ fontFamily: "Changa One" }}
               >
                 GET ONE GREEN BALL IN 3
@@ -1283,9 +1283,9 @@ const Dashboard = () => {
             <div className="gradient-div relative -mt-1 flex flex-col p-4 items-center w-full rounded-md text-secondary h-auto">
               <img
                 src="/mobile/assets/Rollover.png"
-                className="max-w-[326px] max-h-[239px] min-w-[326px] min-h-[239px]"
+                className="max-w-[332px] max-h-[228px] min-w-[332px] min-h-[228px]"
               />
-              <img
+              {/* <img
                 onClick={() => {
                   if (isLoading) {
                     return;
@@ -1304,7 +1304,7 @@ const Dashboard = () => {
                 }}
                 src="/mobile/assets/PlayNow2.png"
                 className="absolute mt-[191px] cursor-pointer ml-[3px] max-w-[115.08px] max-h-[48.3px] min-w-[115.08px] min-h-[48.3px]"
-              />
+              /> */}
               <p
                 className="mt-2 text-center text-xl"
                 style={{ fontFamily: "Changa One" }}
@@ -1323,7 +1323,7 @@ const Dashboard = () => {
             <div className="gradient-div relative -mt-1 flex flex-col p-4 items-center w-full rounded-md text-secondary ">
               <img
                 src="/mobile/assets/FastestFingers.png"
-                className="max-w-[326px] max-h-[239px] min-w-[326px] min-h-[239px]"
+                className="max-w-[332px] max-h-[240px] min-w-[332px] min-h-[240px]"
               />
               <input
                 type="text"
