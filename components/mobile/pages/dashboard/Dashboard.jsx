@@ -94,6 +94,7 @@ import {
 import { useRouter } from "next/router";
 import useUser from "../../../../lib/hooks/useUser";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { IoClose } from "react-icons/io5";
 // absolute inset-0
 
 const Dashboard = () => {
@@ -125,6 +126,11 @@ const Dashboard = () => {
 
   const [seeMain, setSeeMain] = useState(true);
   const [seeBoom, setSeeBoom] = useState(true);
+  const [threeSureCashout, setThreeSureCashout] = useState([
+    { id: 1, price: "10,000", status: true },
+    { id: 2, price: "20,000", status: false },
+    { id: 3, price: "5,000", status: true }
+  ]);
 
   function parseJwt(token) {
     if (!bearerToken) return;
@@ -478,6 +484,26 @@ const Dashboard = () => {
 
     setfastFinger("");
     fetchBalance2();
+  };
+
+  const TSCItems = ({ item }) => {
+    return (
+      <div>
+        <div className="gold-ring-container bg-cover bg-center bg-no-repeat flex items-center justify-center max-w-[92px] max-h-[88px] min-w-[92px] min-h-[88px]">
+          {item.status === false ? (
+            <IoClose size={50} color={"red"} />
+          ) : (
+            <img
+              src="/mobile/assets/3SCCheck.png"
+              className="max-w-[43px] max-h-[27px] min-w-[43px] min-h-[27px]"
+            />
+          )}
+        </div>
+        <div className="gradient-div -mt-2 p-2 text-center rounded-full text-secondary ">
+          ₦{item.price}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -1205,9 +1231,14 @@ const Dashboard = () => {
                 className="max-w-[326px] max-h-[239px] min-w-[326px] min-h-[239px]"
               />
               <img
-                src="/mobile/assets/GreenCheck.png"
-                className="absolute mt-[135px] max-w-[230.33px] max-h-[26.78px] min-w-[230.33px] min-h-[26.78px]"
+                src="/mobile/assets/3SureCashoutText.png"
+                className="absolute top-0 max-w-[264px] max-h-[92px] min-w-[264px] min-h-[92px]"
               />
+              <div className="absolute top-16 flex items-center justify-between">
+                {threeSureCashout.map((each) => {
+                  return <TSCItems item={each} />;
+                })}
+              </div>
               <img
                 onClick={() => {
                   if (isLoading) {
@@ -1334,20 +1365,43 @@ const Dashboard = () => {
             />
             <div className="absolute bottom-20 flex items-center justify-between">
               <div className=" gold-container flex items-center justify-center text-secondary max-w-[76px] max-h-[66px] min-w-[76px] min-h-[66px]">
-                <p className="text-center text-[34px]" style={{ fontFamily: "Changa One" }}>{boom_code?.[0]}</p>
+                <p
+                  className="text-center text-[34px]"
+                  style={{ fontFamily: "Changa One" }}
+                >
+                  {boom_code?.[0]}
+                </p>
               </div>
               <div className=" gold-container flex items-center justify-center text-secondary max-w-[76px] max-h-[66px] min-w-[76px] min-h-[66px]">
-                <p className="text-center text-[34px]" style={{ fontFamily: "Changa One" }}>{boom_code?.[1]}</p>
+                <p
+                  className="text-center text-[34px]"
+                  style={{ fontFamily: "Changa One" }}
+                >
+                  {boom_code?.[1]}
+                </p>
               </div>
               <div className=" gold-container flex items-center justify-center text-secondary max-w-[76px] max-h-[66px] min-w-[76px] min-h-[66px]">
-                <p className="text-center text-[34px]" style={{ fontFamily: "Changa One" }}>{boom_code?.[2]}</p>
+                <p
+                  className="text-center text-[34px]"
+                  style={{ fontFamily: "Changa One" }}
+                >
+                  {boom_code?.[2]}
+                </p>
               </div>
               <div className=" gold-container flex items-center justify-center text-secondary max-w-[76px] max-h-[66px] min-w-[76px] min-h-[66px]">
-                <p className="text-center text-[34px]" style={{ fontFamily: "Changa One" }}>{boom_code?.[3]}</p>
+                <p
+                  className="text-center text-[34px]"
+                  style={{ fontFamily: "Changa One" }}
+                >
+                  {boom_code?.[3]}
+                </p>
               </div>
             </div>
             <div className="absolute bottom-0 cashout-container flex items-center justify-center text-primary max-w-[189px] max-h-[57px] min-w-[189px] min-h-[57px]">
-              <p className="text-center text-[24px]" style={{ fontFamily: "Changa One" }}>
+              <p
+                className="text-center text-[24px]"
+                style={{ fontFamily: "Changa One" }}
+              >
                 ₦5,000,000
               </p>
             </div>
@@ -1526,7 +1580,9 @@ const Dashboard = () => {
               style={{ fontFamily: "Changa" }}
             >
               <p className="mb-1">© 2024 Nairaboom. All Rights Reserved.</p>
-              <p className="mb-1">Nairaboom is licensed and regulated by the National</p>
+              <p className="mb-1">
+                Nairaboom is licensed and regulated by the National
+              </p>
               <p className="mb-1">Lottery Regulatory</p>
               <p className="mb-1">(NLRC). License Number</p>
               <p className="mb-1">0000006</p>

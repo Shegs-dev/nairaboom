@@ -51,6 +51,10 @@ input:-webkit-autofill:active {
   background-image: url("/mobile/assets/GoldGroup.png");
   /* aspect-ratio: 16 / 9; */
 }
+.gold-ring-container {
+  background-image: url("/mobile/assets/3SCRing.png");
+  /* aspect-ratio: 16 / 9; */
+}
 .small-ribbon {
   background-image: url("/mobile/assets/SmallRibbon.png");
 }

@@ -396,7 +396,7 @@ const Home = () => {
             </div>
             <img
               onClick={() => console.log("reload")}
-              src="/mobile/assets/PlayNow3.png"
+              src="/mobile/assets/StartNow.png"
               className="absolute mt-[85px] cursor-pointer ml-[3px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
             />
             <img
@@ -443,7 +443,7 @@ const Home = () => {
               />
               <img
                 onClick={() => console.log("reload")}
-                src="/mobile/assets/PlayNow3.png"
+                src="/mobile/assets/Enter.png"
                 className="cursor-pointer ml-[3px] max-w-[106.59px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
               />
             </div>
@@ -507,13 +507,13 @@ const Home = () => {
           <div className="flex items-start space-x-4 pt-1 pb-1 overflow-y-clip overflow-x-scroll">
             <div className="gradient-div min-h-[154.24px] max-h-[154.24px] relative mt-1 flex flex-col pt-1 pb-2 items-center max-w-[167px] min-w-[167px] rounded-md text-secondary ">
               <img
-                src="/mobile/assets/3SureCashout.png"
+                src="/mobile/assets/3SureCashoutSmall.png"
                 className="max-w-[157px] rounded-lg max-h-[115px] min-w-[157px] min-h-[115px]"
               />
-              <img
+              {/* <img
                 src="/mobile/assets/GreenCheck.png"
                 className="absolute mt-[65px] max-w-[113.14px] max-h-[12.69px] min-w-[113.14px] min-h-[12.69px]"
-              />
+              /> */}
               <img
                 onClick={() => console.log("reload")}
                 src="/mobile/assets/PlayNow1.png"
@@ -540,7 +540,7 @@ const Home = () => {
             </div>
             <div className="gradient-div min-h-[154.24px] max-h-[154.24px] relative mt-1 flex flex-col pt-1 pb-2 items-center max-w-[167px] min-w-[167px] rounded-md text-secondary h-auto">
               <img
-                src="/mobile/assets/Rollover.png"
+                src="/mobile/assets/RolloverSmall.png"
                 className="rounded-lg max-w-[157.29px] max-h-[117.04px] min-w-[157.29px] min-h-[117.04px]"
               />
               <img
@@ -563,7 +563,7 @@ const Home = () => {
             </div>
             <div className="gradient-div min-h-[154.24px] max-h-[154.24px] relative mt-1 flex flex-col pt-1 pb-2 items-center max-w-[167px] min-w-[167px] rounded-md text-secondary ">
               <img
-                src="/mobile/assets/FastestFingers.png"
+                src="/mobile/assets/FastestFingersSmall.png"
                 className="rounded-lg max-w-[157.78px] max-h-[115.56px] min-w-[157.78px] min-h-[115.56px]"
               />
               <input
@@ -763,7 +763,9 @@ const Home = () => {
               style={{ fontFamily: "Changa" }}
             >
               <p className="mb-1">© 2024 Nairaboom. All Rights Reserved.</p>
-              <p className="mb-1">Nairaboom is licensed and regulated by the National</p>
+              <p className="mb-1">
+                Nairaboom is licensed and regulated by the National
+              </p>
               <p className="mb-1">Lottery Regulatory</p>
               <p className="mb-1">(NLRC). License Number</p>
               <p>0000006</p>
