@@ -311,7 +311,7 @@ const Home = () => {
                 className="mt-2 mb-1 text-[30px]"
                 style={{ fontFamily: "Changa One" }}
               >
-                GET 35,500 BOOM
+                GET 35,000 BOOM
               </p>
               <p
                 className="-mt-3 mb-1 text-[30px]"
@@ -637,81 +637,81 @@ const Home = () => {
         <div className="lg:-mt-40 px-4 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
           <div className="flex flex-col items-center w-full">
             <p
-              className="text-[15px] text-primary "
+              className="text-[15px] text-primary mt-4 mb-1"
               style={{ fontFamily: "Changa One" }}
             >
               About Nairaboom
             </p>
             <p
-              className="font-light text-[9px]"
+              className="font-light text-[9px] mb-1"
               style={{ fontFamily: "Changa" }}
             >
               NairaBoom is Nigeria's premier, most trusted Financial Transaction{" "}
             </p>
             <p
-              className="font-light text-[9px]"
+              className="font-light text-[9px] mb-1"
               style={{ fontFamily: "Changa" }}
             >
               Notification (Bank Alert) Tokenization and Gamification platform.
               We bring{" "}
             </p>
             <p
-              className="font-light text-[9px]"
+              className="font-light text-[9px] mb-1"
               style={{ fontFamily: "Changa" }}
             >
               you an unmatched Swap to Earn + Play to Earn experience,
               transforming your{" "}
             </p>
             <p
-              className="font-light text-[9px]"
+              className="font-light text-[9px] mb-1"
               style={{ fontFamily: "Changa" }}
             >
               everyday bank alerts into valuable tokens you can sell and cash
               out. Plus,{" "}
             </p>
             <p
-              className="font-light text-[9px]"
+              className="font-light text-[9px] mb-1"
               style={{ fontFamily: "Changa" }}
             >
               with our one-of-a-kind "3 Sure Cashout" game, you're guaranteed
               thrilling{" "}
             </p>
             <p
-              className="font-light text-[9px]"
+              className="font-light text-[9px] mb-1"
               style={{ fontFamily: "Changa" }}
             >
               opportunities to earn big!{" "}
             </p>
             <p
-              className="font-light text-[9px]"
+              className="font-light text-[9px] mb-1"
               style={{ fontFamily: "Changa" }}
             >
               Beyond a gamification platform, Nairaboom is your gateway to
               monetizing{" "}
             </p>
             <p
-              className="font-light text-[9px]"
+              className="font-light text-[9px] mb-1"
               style={{ fontFamily: "Changa" }}
             >
               every bank alert, providing consistent financial gains and turning
               ordinary{" "}
             </p>
             <p
-              className="font-light text-[9px]"
+              className="font-light text-[9px] mb-1"
               style={{ fontFamily: "Changa" }}
             >
               transactions into real income with fast cashouts of up to
               ₦35,000,000.{" "}
             </p>
             <p
-              className="font-light text-[9px]"
+              className="font-light text-[9px] mb-1"
               style={{ fontFamily: "Changa" }}
             >
               So, are you ready to make every alert count? Jin Nairaboom today
               to Swap{" "}
             </p>
             <p
-              className="font-light text-[9px]"
+              className="font-light text-[9px] mb-1"
               style={{ fontFamily: "Changa" }}
             >
               your Bank Alerts, Stack up Boom Coin Tokens, Sell and Win.......&
@@ -762,41 +762,41 @@ const Home = () => {
               className="text-[10px] font-extralight"
               style={{ fontFamily: "Changa" }}
             >
-              <p>© 2024 Nairaboom. All Rights Reserved.</p>
-              <p>Nairaboom is licensed and regulated by the National</p>
-              <p>Lottery Regulatory</p>
-              <p>(NLRC). License Number</p>
+              <p className="mb-1">© 2024 Nairaboom. All Rights Reserved.</p>
+              <p className="mb-1">Nairaboom is licensed and regulated by the National</p>
+              <p className="mb-1">Lottery Regulatory</p>
+              <p className="mb-1">(NLRC). License Number</p>
               <p>0000006</p>
             </div>
           </div>
-          <div className="flex flex-col flex-1 justify-end mt-1 mb-20">
+          <div className="flex flex-col flex-1 justify-end mt-1 mb-4">
             <div
               className="flex justify-between items-end font-extralight text-[10px]"
               style={{ fontFamily: "Changa" }}
             >
               <div>
                 <div>
-                  <p className="hover:border-b border-b-white inline-block">
+                  <p className="hover:border-b border-b-white inline-block mb-1">
                     <Link href="/faq">FAQs</Link>
                   </p>
                 </div>
                 <div>
-                  <p className="hover:border-b border-b-white inline-block">
+                  <p className="hover:border-b border-b-white inline-block mb-1">
                     <Link href="/terms_conditions">Terms & Conditions</Link>
                   </p>
                 </div>
                 <div>
-                  <p className="hover:border-b border-b-white inline-block">
+                  <p className="hover:border-b border-b-white inline-block mb-1">
                     <Link href="/privacy_policy">Privacy Policy</Link>
                   </p>
                 </div>
                 <div>
-                  <p className="hover:border-b border-b-white inline-block">
+                  <p className="hover:border-b border-b-white inline-block mb-1">
                     Blog
                   </p>
                 </div>
                 <div>
-                  <p className="hover:border-b border-b-white inline-block">
+                  <p className="hover:border-b border-b-white inline-block mb-1">
                     <Link href="/gamble_responsibly">Responsible Gambling</Link>
                   </p>
                 </div>

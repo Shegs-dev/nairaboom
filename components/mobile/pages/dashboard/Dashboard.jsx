@@ -118,6 +118,7 @@ const Dashboard = () => {
   const [noSell, setNoSell] = useState(false);
   const [sell, setSell] = useState(false);
   const [sellPayload, setSellPayload] = useState(null);
+  const [sellButton, setSellButton] = useState(0);
   const [cashOut1, setCashOut1] = useState(0);
   const [cashOut2, setCashOut2] = useState(0);
   const [cashOut3, setCashOut3] = useState(0);
@@ -224,6 +225,7 @@ const Dashboard = () => {
     redirectIfnotAuthenticated();
     boom();
     fetchBalance2();
+    checkSellEligibility();
   }, [bearerToken, router]);
 
   function convertStringToArray(inputString) {
@@ -391,6 +393,19 @@ const Dashboard = () => {
         setSellPayload(res?.data?.payload);
         setNoSell(false);
         setSell(true);
+      }
+    }
+  };
+
+  const checkSellEligibility = async () => {
+    setIsLoading(true);
+    const res = await sellEligibility(bearerToken);
+    setIsLoading(false);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      if (res?.data?.payload?.status === "ineligible") {
+        setSellButton(0);
+      } else {
+        setSellButton(1);
       }
     }
   };
@@ -796,7 +811,11 @@ const Dashboard = () => {
               <div className="flex space-x-2 items-center">
                 <div
                   onClick={fetchSellEligibility}
-                  className="bg-secondary cursor-pointer text-primary rounded-full py-2 px-4 w-fit text-[13px]"
+                  className={`ccursor-pointer rounded-full py-2 px-4 w-fit text-[13px] ${
+                    sellButton == 0
+                      ? "bg-[#DD3215]"
+                      : " bg-secondary text-primary"
+                  }`}
                   style={{ fontFamily: "Source Code Pro" }}
                 >
                   <b>SELL</b>
@@ -1315,20 +1334,20 @@ const Dashboard = () => {
             />
             <div className="absolute bottom-20 flex items-center justify-between">
               <div className=" gold-container flex items-center justify-center text-secondary max-w-[76px] max-h-[66px] min-w-[76px] min-h-[66px]">
-                <p className="text-center font-changa-one text-2xl">20</p>
+                <p className="text-center text-[34px]" style={{ fontFamily: "Changa One" }}>{boom_code?.[0]}</p>
               </div>
               <div className=" gold-container flex items-center justify-center text-secondary max-w-[76px] max-h-[66px] min-w-[76px] min-h-[66px]">
-                <p className="text-center font-changa-one text-2xl">16</p>
+                <p className="text-center text-[34px]" style={{ fontFamily: "Changa One" }}>{boom_code?.[1]}</p>
               </div>
               <div className=" gold-container flex items-center justify-center text-secondary max-w-[76px] max-h-[66px] min-w-[76px] min-h-[66px]">
-                <p className="text-center font-changa-one text-2xl">28</p>
+                <p className="text-center text-[34px]" style={{ fontFamily: "Changa One" }}>{boom_code?.[2]}</p>
               </div>
               <div className=" gold-container flex items-center justify-center text-secondary max-w-[76px] max-h-[66px] min-w-[76px] min-h-[66px]">
-                <p className="text-center font-changa-one text-2xl">5</p>
+                <p className="text-center text-[34px]" style={{ fontFamily: "Changa One" }}>{boom_code?.[3]}</p>
               </div>
             </div>
             <div className="absolute bottom-0 cashout-container flex items-center justify-center text-primary max-w-[189px] max-h-[57px] min-w-[189px] min-h-[57px]">
-              <p className="text-center  font-changa-one text-2xl">
+              <p className="text-center text-[24px]" style={{ fontFamily: "Changa One" }}>
                 ₦5,000,000
               </p>
             </div>
@@ -1506,11 +1525,11 @@ const Dashboard = () => {
               className="text-[10px] font-extralight"
               style={{ fontFamily: "Changa" }}
             >
-              <p>© 2024 Nairaboom. All Rights Reserved.</p>
-              <p>Nairaboom is licensed and regulated by the National</p>
-              <p>Lottery Regulatory</p>
-              <p>(NLRC). License Number</p>
-              <p>0000006</p>
+              <p className="mb-1">© 2024 Nairaboom. All Rights Reserved.</p>
+              <p className="mb-1">Nairaboom is licensed and regulated by the National</p>
+              <p className="mb-1">Lottery Regulatory</p>
+              <p className="mb-1">(NLRC). License Number</p>
+              <p className="mb-1">0000006</p>
             </div>
           </div>
           <div className="flex flex-col flex-1 justify-end mt-1 mb-4">
@@ -1520,27 +1539,27 @@ const Dashboard = () => {
             >
               <div>
                 <div>
-                  <p className="hover:border-b border-b-white inline-block">
+                  <p className="hover:border-b border-b-white inline-block mb-1">
                     <Link href="/faq">FAQs</Link>
                   </p>
                 </div>
                 <div>
-                  <p className="hover:border-b border-b-white inline-block">
+                  <p className="hover:border-b border-b-white inline-block mb-1">
                     <Link href="/terms_conditions">Terms & Conditions</Link>
                   </p>
                 </div>
                 <div>
-                  <p className="hover:border-b border-b-white inline-block">
+                  <p className="hover:border-b border-b-white inline-block mb-1">
                     <Link href="/privacy_policy">Privacy Policy</Link>
                   </p>
                 </div>
                 <div>
-                  <p className="hover:border-b border-b-white inline-block">
+                  <p className="hover:border-b border-b-white inline-block mb-1">
                     Blog
                   </p>
                 </div>
                 <div>
-                  <p className="hover:border-b border-b-white inline-block">
+                  <p className="hover:border-b border-b-white inline-block mb-1">
                     <Link href="/gamble_responsibly">Responsible Gambling</Link>
                   </p>
                 </div>
