@@ -157,9 +157,9 @@ const Home = () => {
             </div>
           </div>
           <div className="max-w-full flex -mt-5 scrollbar-hide mdd:justify-start">
-            <div className="flex justify-between w-full  home-card bg-cover bg-center bg-no-repeat  h-auto  p-4 text-secondary ">
+            <div className="flex justify-between w-full home-card bg-cover bg-center bg-no-repeat  h-auto  p-3 text-secondary ">
               {/* first text */}
-              <div className="flex flex-col ml-2 -mt-1 text-3xl">
+              <div className="flex flex-col -mt-1 text-3xl">
                 <p style={{ fontFamily: "Changa One" }}>THE</p>
                 <p className="-mt-3" style={{ fontFamily: "Changa One" }}>
                   BOOM
@@ -180,10 +180,10 @@ const Home = () => {
               <div className="relative w-[170px] -mt-2 flex flex-col justify-center items-center text-secondary ">
                 <img
                   src="/mobile/assets/wheel.svg"
-                  className="absolute mt-[0px] cursor-pointer ml-[3px] max-w-[170px] max-h-[175px] min-w-[170px] min-h-[175px]"
+                  className="absolute mt-[0px] cursor-pointer ml-[3px] px-2 max-w-[170px] max-h-[175px] min-w-[170px] min-h-[175px]"
                 />
               </div>
-              <div className="flex flex-col mt-1 mr-2 justify-start items-center">
+              <div className="flex flex-col mt-1 mr-1 justify-start items-center">
                 <button
                   className="text-center text-[12px] text-[#1ED760] bg-secondary rounded-full max-w-[110px] max-h-[31px] min-w-[110px] min-h-[31px] mb-2"
                   style={{ fontFamily: "Source Code Pro", fontWeight: "700" }}
@@ -297,7 +297,7 @@ const Home = () => {
               className="absolute mt-[98px] cursor-pointer ml-[3px] max-w-[131px] max-h-[55.02px] min-w-[131px] min-h-[55.02px]"
             />
             <img
-              src="/mobile/assets/Group_247.png"
+              src="/mobile/assets/slide1.svg"
               className="absolute bottom-0 cursor-pointer right-0 max-w-[222px] max-h-[160px] min-w-[222px] min-h-[160px]"
             />
           </div>
@@ -332,7 +332,7 @@ const Home = () => {
               className="absolute mt-[88px] cursor-pointer ml-[3px] max-w-[173.64px] max-h-[73.3px] min-w-[173.64px] min-h-[73.3px]"
             />
             <img
-              src="/mobile/assets/Coins.png"
+              src="/mobile/assets/slide2.svg"
               className="absolute bottom-0 cursor-pointer right-2 max-w-[167px] max-h-[101px] min-w-[167px] min-h-[101px]"
             />
           </div>
@@ -365,7 +365,7 @@ const Home = () => {
               className="absolute mt-[115px] cursor-pointer ml-[50px] max-w-[194px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
             />
             <img
-              src="/mobile/assets/SmilingWoman.png"
+              src="/mobile/assets/slide3.svg"
               className="absolute bottom-0 cursor-pointer right-0 max-w-[97px] max-h-[131px] min-w-[97px] min-h-[131px]"
             />
           </div>
@@ -400,7 +400,7 @@ const Home = () => {
               className="absolute mt-[85px] cursor-pointer ml-[3px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
             />
             <img
-              src="/mobile/assets/SmilingMan.png"
+              src="/mobile/assets/slide4.svg"
               className="absolute cursor-pointer right-10 bottom-0 max-w-[153px] max-h-[151px] min-w-[153px] min-h-[151px]"
             />
           </div>
@@ -449,7 +449,7 @@ const Home = () => {
             </div>
 
             <img
-              src="/mobile/assets/SmilingManBlue.png"
+              src="/mobile/assets/slide5.svg"
               className="absolute mt-[0px] cursor-pointer right-0 max-w-[137px] max-h-[160px] min-w-[137px] min-h-[160px]"
             />
             {/* <img
@@ -488,7 +488,7 @@ const Home = () => {
               className="absolute mt-[93px] cursor-pointer ml-[10px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
             />
             <img
-              src="/mobile/assets/Coins.png"
+              src="/mobile/assets/slide2.svg"
               className="absolute bottom-0 right-6 max-w-[167px] max-h-[101px] min-w-[167px] min-h-[101px]"
             />
             {/* <img
@@ -616,7 +616,7 @@ const Home = () => {
         </div>
       </div>
       {/*  */}
-      <div>
+      <div className="appearance-none">
         <div className="lg:-mt-40 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
           <div className="gradient-div relative mt-2 max-w-screen overflow-x-hidden flex flex-col items-center max-w-screen mx-4 rounded-md">
             {/* <div className="-mt-3 mx-4 relative text-secondary justify-center background-ribbon1 bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto"> */}

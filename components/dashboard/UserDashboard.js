@@ -8,7 +8,7 @@ const UserDashboard = () => {
   return (
     <>
       <BrowserView>
-        <Dashboard />
+        <ErrorPage />
       </BrowserView>
       <MobileView>
         <Dashboard />

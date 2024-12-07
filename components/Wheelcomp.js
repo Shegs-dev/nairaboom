@@ -32,7 +32,7 @@ import {
   validateGame,
   updateMyPlayStake,
   getWheelTracker
-} from "../../src/apis/func";
+} from "../src/apis/func";
 
 const Wheelcomp = () => {
   const router = useRouter();
