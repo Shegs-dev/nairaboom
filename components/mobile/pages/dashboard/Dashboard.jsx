@@ -765,7 +765,7 @@ const Dashboard = () => {
                 onClick={() => {
                   router.push("/customer_dashboard/fund_account");
                 }}
-                className="bg-secondary cursor-pointer text-primary rounded-full py-2 px-4 w-fit text-[13px]"
+                className="bg-secondary cursor-pointer transition-transform transform active:scale-90 text-primary rounded-full py-2 px-4 w-fit text-[13px]"
                 style={{ fontFamily: "Source Code Pro" }}
               >
                 <b>FUND</b>
@@ -783,7 +783,7 @@ const Dashboard = () => {
                     WALLET
                   </p>
                 </div>
-                <div className="-mt-2 -mr-2">
+                <div className="-mt-2 -mr-2 cursor-pointer transition-transform transform active:scale-90">
                   <IoMdInformationCircleOutline
                     onClick={() => modalRedirect()}
                     size={20}
@@ -837,7 +837,7 @@ const Dashboard = () => {
               <div className="flex space-x-2 items-center">
                 <div
                   onClick={fetchSellEligibility}
-                  className={`ccursor-pointer rounded-full py-2 px-4 w-fit text-[13px] ${
+                  className={`ccursor-pointer transition-transform transform active:scale-90 rounded-full py-2 px-4 w-fit text-[13px] ${
                     sellButton == 0
                       ? "bg-[#DD3215]"
                       : " bg-secondary text-primary"
@@ -848,7 +848,7 @@ const Dashboard = () => {
                 </div>
                 <div
                   // onClick={fetchSellEligibility}
-                  className="bg-secondary cursor-pointer text-primary rounded-full py-2 px-4 w-fit text-[13px]"
+                  className="bg-secondary cursor-pointer transition-transform transform active:scale-90 text-primary rounded-full py-2 px-4 w-fit text-[13px]"
                   style={{ fontFamily: "Source Code Pro" }}
                 >
                   <b>BUY</b>
@@ -1283,9 +1283,9 @@ const Dashboard = () => {
             <div className="gradient-div relative -mt-1 flex flex-col p-4 items-center w-full rounded-md text-secondary h-auto">
               <img
                 src="/mobile/assets/Rollover.png"
-                className="max-w-[332px] max-h-[228px] min-w-[332px] min-h-[228px]"
+                className="max-w-[320px] max-h-[228px] min-w-[320px] min-h-[228px]"
               />
-              {/* <img
+              <img
                 onClick={() => {
                   if (isLoading) {
                     return;
@@ -1302,9 +1302,9 @@ const Dashboard = () => {
                     setinsufficientModal(true);
                   }
                 }}
-                src="/mobile/assets/PlayNow2.png"
-                className="absolute mt-[191px] cursor-pointer ml-[3px] max-w-[115.08px] max-h-[48.3px] min-w-[115.08px] min-h-[48.3px]"
-              /> */}
+                src="/mobile/assets/SwapNow.png"
+                className="absolute mt-[180px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[115.08px] max-h-[48.3px] min-w-[115.08px] min-h-[48.3px]"
+              />
               <p
                 className="mt-2 text-center text-xl"
                 style={{ fontFamily: "Changa One" }}
@@ -1323,7 +1323,7 @@ const Dashboard = () => {
             <div className="gradient-div relative -mt-1 flex flex-col p-4 items-center w-full rounded-md text-secondary ">
               <img
                 src="/mobile/assets/FastestFingers.png"
-                className="max-w-[332px] max-h-[240px] min-w-[332px] min-h-[240px]"
+                className="max-w-[320px] max-h-[240px] min-w-[320px] min-h-[240px]"
               />
               <input
                 type="text"
@@ -1340,7 +1340,7 @@ const Dashboard = () => {
                   handleFastFinger();
                 }}
                 src="/mobile/assets/Enter.png"
-                className="absolute mt-[190px] cursor-pointer ml-[3px] max-w-[115.08px] max-h-[48.3px] min-w-[115.08px] min-h-[48.3px]"
+                className="absolute mt-[190px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[115.08px] max-h-[48.3px] min-w-[115.08px] min-h-[48.3px]"
               />
               <p
                 className="mt-2 text-center text-xl"
@@ -1412,6 +1412,7 @@ const Dashboard = () => {
                 console.log("how-to-play");
               }}
               src="/mobile/assets/Jackpot.png"
+              className="cursor-pointer transition-transform transform active:scale-90 "
               // className="max-w-[326px] max-h-[344px] min-w-[326px] min-h-[344px]"
             />
           </div>
@@ -1427,7 +1428,7 @@ const Dashboard = () => {
                 router.push("/how-to-play");
               }}
               src="/mobile/assets/HowToPlay.png"
-              className="absolute mt-[235px] cursor-pointer ml-[3px] max-w-[249.04px] max-h-[78.72px] min-w-[249.04px] min-h-[78.72px]"
+              className="absolute mt-[235px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[249.04px] max-h-[78.72px] min-w-[249.04px] min-h-[78.72px]"
             />
           </div> */}
           <div className="gradient-div relative mt-2 max-w-screen overflow-x-hidden flex flex-col items-center max-w-screen mx-4 rounded-md">
@@ -1442,7 +1443,7 @@ const Dashboard = () => {
                 router.push("/how-to-play");
               }}
               src="/mobile/assets/HowToPlay2.png"
-              className="absolute bottom-8 cursor-pointer "
+              className="absolute bottom-8 cursor-pointer transition-transform transform active:scale-90"
               // className="absolute bottom-0 cursor-pointer ml-[3px] max-w-[254.78px] max-h-[80.07px] min-w-[254.78px] min-h-[80.07px]"
             />
             {/* </div> */}

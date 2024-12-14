@@ -4,7 +4,10 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        ></meta>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
         <link
@@ -91,7 +94,7 @@ export default function Document() {
               s1.setAttribute('crossorigin','*');
               s0.parentNode.insertBefore(s1,s0);
               })();
-            `,
+            `
           }}
         />
         <script
@@ -108,7 +111,7 @@ export default function Document() {
                 });
               };
               document.head.appendChild(s);
-            `,
+            `
           }}
         />
         {/* <script

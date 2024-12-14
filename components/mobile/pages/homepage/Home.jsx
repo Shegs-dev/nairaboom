@@ -144,20 +144,20 @@ const Home = () => {
             <div className="flex space-x-1 items-center">
               <button
                 onClick={() => router.push("/auth/login")}
-                className="cursor-pointer"
+                className="cursor-pointer transition-transform transform active:scale-90"
               >
                 <img src="/mobile/assets/Login.png" />
               </button>
               <button
                 onClick={() => router.push("/auth/signup/customer")}
-                className="cursor-pointer"
+                className="cursor-pointer transition-transform transform active:scale-90"
               >
                 <img src="/mobile/assets/Signup.png" />
               </button>
             </div>
           </div>
           <div className="max-w-full flex -mt-5 scrollbar-hide mdd:justify-start">
-            <div className="flex justify-between w-full home-card bg-cover bg-center bg-no-repeat  h-auto  p-3 text-secondary ">
+            <div className="flex justify-between items-center w-full home-card bg-cover bg-center bg-no-repeat  h-auto p-2 text-secondary ">
               {/* first text */}
               <div className="flex flex-col -mt-1 text-3xl">
                 <p style={{ fontFamily: "Changa One" }}>THE</p>
@@ -185,25 +185,25 @@ const Home = () => {
               </div>
               <div className="flex flex-col mt-1 mr-1 justify-start items-center">
                 <button
-                  className="text-center text-[12px] text-[#1ED760] bg-secondary rounded-full max-w-[110px] max-h-[31px] min-w-[110px] min-h-[31px] mb-2"
+                  className="text-center text-[11px] text-[#1ED760] bg-secondary rounded-full max-w-[100px] max-h-[30px] min-w-[100px] min-h-[30px] mb-2 transition-transform transform active:scale-90"
                   style={{ fontFamily: "Source Code Pro", fontWeight: "700" }}
                 >
                   <b>ROLLOVER</b>
                 </button>
                 <button
-                  className="text-center text-[12px] text-[#1ED760] bg-secondary rounded-full max-w-[110px] max-h-[31px] min-w-[110px] min-h-[31px] mb-2"
+                  className="text-center text-[11px] text-[#1ED760] bg-secondary rounded-full max-w-[100px] max-h-[30px] min-w-[100px] min-h-[30px] mb-2 transition-transform transform active:scale-90"
                   style={{ fontFamily: "Source Code Pro", fontWeight: "700" }}
                 >
                   <b>SWAP</b>
                 </button>
                 <button
-                  className="text-center text-[12px] text-[#1ED760] bg-secondary rounded-full max-w-[110px] max-h-[31px] min-w-[110px] min-h-[31px] mb-2"
+                  className="text-center text-[11px] text-[#1ED760] bg-secondary rounded-full max-w-[100px] max-h-[30px] min-w-[100px] min-h-[30px] mb-2 transition-transform transform active:scale-90"
                   style={{ fontFamily: "Source Code Pro", fontWeight: "700" }}
                 >
                   <b>SELL</b>
                 </button>
                 <button
-                  className="text-center text-[12px] text-[#1ED760] bg-secondary rounded-full max-w-[110px] max-h-[31px] min-w-[110px] min-h-[31px]"
+                  className="text-center text-[11px] text-[#1ED760] bg-secondary rounded-full max-w-[100px] max-h-[30px] min-w-[100px] min-h-[30px] transition-transform transform active:scale-90"
                   style={{ fontFamily: "Source Code Pro", fontWeight: "700" }}
                 >
                   <b>CASHOUT</b>
@@ -241,8 +241,8 @@ const Home = () => {
           </div>
           <div className="flex items-center rounded-br-md rounded-tr-md justify-center aspect-video small-ribbon bg-cover bg-center bg-no-repeat  h-[32px]">
             <div
-              onClick={() => console.log("reload")}
-              className="cursor-pointer"
+              onClick={() => router.push("/auth/signup/customer")}
+              className="cursor-pointer transition-transform transform active:scale-90"
             >
               <img
                 src="/mobile/assets/PlayNow.png"
@@ -261,7 +261,7 @@ const Home = () => {
               className="max-w-[390px] max-h-[160px] min-w-[390px] min-h-[160px]"
             />
             <img
-              onClick={() => console.log("reload")}
+              onClick={() => router.push("/auth/signup/customer")}
               src="/mobile/assets/PlayNow4.png"
               className="absolute -mt-[65px] cursor-pointer ml-[3px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
             />
@@ -292,9 +292,9 @@ const Home = () => {
               </p>
             </div>
             <img
-              onClick={() => console.log("reload")}
+              onClick={() => router.push("/auth/signup/customer")}
               src="/mobile/assets/PlayNow2.png"
-              className="absolute mt-[98px] cursor-pointer ml-[3px] max-w-[131px] max-h-[55.02px] min-w-[131px] min-h-[55.02px]"
+              className="absolute mt-[98px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[131px] max-h-[55.02px] min-w-[131px] min-h-[55.02px]"
             />
             <img
               src="/mobile/assets/slide1.svg"
@@ -327,9 +327,9 @@ const Home = () => {
               </p>
             </div>
             <img
-              onClick={() => console.log("reload")}
+              onClick={() => router.push("/auth/signup/customer")}
               src="/mobile/assets/SwapNow.png"
-              className="absolute mt-[88px] cursor-pointer ml-[3px] max-w-[173.64px] max-h-[73.3px] min-w-[173.64px] min-h-[73.3px]"
+              className="absolute mt-[88px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[173.64px] max-h-[73.3px] min-w-[173.64px] min-h-[73.3px]"
             />
             <img
               src="/mobile/assets/slide2.svg"
@@ -360,9 +360,9 @@ const Home = () => {
               className="absolute mt-[60px] cursor-pointer ml-4 max-w-[106.59px] max-h-[56.75px] min-w-[194px] min-h-[56.75px]"
             />
             <img
-              onClick={() => console.log("reload")}
+              onClick={() => router.push("/auth/signup/customer")}
               src="/mobile/assets/PlayNow3.png"
-              className="absolute mt-[115px] cursor-pointer ml-[50px] max-w-[194px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
+              className="absolute mt-[115px] cursor-pointer transition-transform transform active:scale-90 ml-[50px] max-w-[194px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
             />
             <img
               src="/mobile/assets/slide3.svg"
@@ -395,9 +395,9 @@ const Home = () => {
               </p>
             </div>
             <img
-              onClick={() => console.log("reload")}
+              onClick={() => router.push("/auth/signup/customer")}
               src="/mobile/assets/StartNow.png"
-              className="absolute mt-[85px] cursor-pointer ml-[3px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
+              className="absolute mt-[85px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
             />
             <img
               src="/mobile/assets/slide4.svg"
@@ -442,9 +442,9 @@ const Home = () => {
                 className="max-w-[125px] max-h-[33.48px] min-w-[125px] min-h-[33.48px] bg-white text-neutral-500 text-xs text-center border-4 border-secondary rounded-full"
               />
               <img
-                onClick={() => console.log("reload")}
+                onClick={() => router.push("/auth/signup/customer")}
                 src="/mobile/assets/Enter.png"
-                className="cursor-pointer ml-[3px] max-w-[106.59px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
+                className="cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[106.59px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
               />
             </div>
 
@@ -483,9 +483,9 @@ const Home = () => {
               </p>
             </div>
             <img
-              onClick={() => console.log("reload")}
+              onClick={() => router.push("/auth/signup/customer")}
               src="/mobile/assets/GetNow.png"
-              className="absolute mt-[93px] cursor-pointer ml-[10px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
+              className="absolute mt-[93px] cursor-pointer transition-transform transform active:scale-90 ml-[10px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
             />
             <img
               src="/mobile/assets/slide2.svg"
@@ -515,9 +515,9 @@ const Home = () => {
                 className="absolute mt-[65px] max-w-[113.14px] max-h-[12.69px] min-w-[113.14px] min-h-[12.69px]"
               /> */}
               <img
-                onClick={() => console.log("reload")}
+                onClick={() => router.push("/auth/signup/customer")}
                 src="/mobile/assets/PlayNow1.png"
-                className="absolute mt-[89px] cursor-pointer ml-[3px] max-w-[54.53px] max-h-[22.89px] min-w-[54.53px] min-h-[22.89px]"
+                className="absolute mt-[89px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[54.53px] max-h-[22.89px] min-w-[54.53px] min-h-[22.89px]"
               />
               <p
                 className="w-full leading-3 -mt-2 text-center text-[8px]"
@@ -543,11 +543,11 @@ const Home = () => {
                 src="/mobile/assets/RolloverSmall.png"
                 className="rounded-lg max-w-[172px] -ml-2 max-h-[112px] min-w-[172px] min-h-[112px]"
               />
-              {/* <img
-                onClick={() => console.log("reload")}
-                src="/mobile/assets/PlayNow2.png"
-                className="absolute mt-[93px] cursor-pointer ml-[3px] max-w-[58.92px] max-h-[25px] min-w-[58.92px] min-h-[25px]"
-              /> */}
+              <img
+                onClick={() => router.push("/auth/signup/customer")}
+                src="/mobile/assets/SwapNow.png"
+                className="absolute mt-[90px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[58.92px] max-h-[25px] min-w-[58.92px] min-h-[25px]"
+              />
               <p
                 className="mt-2 leading-3 text-center text-[8px]"
                 style={{ fontFamily: "Changa One" }}
@@ -572,9 +572,9 @@ const Home = () => {
                 className="absolute mt-[65px] max-w-[82px] max-h-[19.29px] min-w-[82px] min-h-[19.29px] bg-white text-neutral-500 text-xs text-center border-2 border-secondary rounded-full"
               />
               <img
-                onClick={() => console.log("reload")}
+                onClick={() => router.push("/auth/signup/customer")}
                 src="/mobile/assets/Enter.png"
-                className="absolute mt-[85px] cursor-pointer ml-[3px] max-w-[56.17px] max-h-[21px] min-w-[56.17px] min-h-[21px]"
+                className="absolute mt-[85px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[56.17px] max-h-[21px] min-w-[56.17px] min-h-[21px]"
               />
               <p
                 className="mt-2 leading-3 text-center text-[8px]"
@@ -626,9 +626,9 @@ const Home = () => {
               className="w-full rounded-lg"
             />
             <img
-              onClick={() => console.log("reload")}
+              onClick={() => router.push("/auth/signup/customer")}
               src="/mobile/assets/HowToPlay2.png"
-              className="absolute bottom-8 cursor-pointer "
+              className="absolute bottom-8 cursor-pointer transition-transform transform active:scale-90"
               // className="absolute bottom-0 cursor-pointer ml-[3px] max-w-[254.78px] max-h-[80.07px] min-w-[254.78px] min-h-[80.07px]"
             />
             {/* </div> */}
@@ -725,7 +725,7 @@ const Home = () => {
             </p>
             <div
               onClick={() => console.log("reload")}
-              className="cursor-pointer mb-3"
+              className="cursor-pointer mb-3 transition-transform transform active:scale-90"
             >
               <img
                 src="/mobile/assets/ViewMore.png"
