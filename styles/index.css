@@ -94,3 +94,26 @@ input:-webkit-autofill:active {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+.custom-dots {
+  position: absolute;
+  bottom: 20px; /* Adjust distance from the bottom */
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+.custom-dots li {
+  margin: 0, 1px;
+}
+.custom-dots li button:before {
+  color: #333; /* Dots color */
+  font-size: 20px;
+  opacity: 1;
+}
+.custom-dots li.slick-active button:before {
+  color: #1ed760; /* Active dot color */
+  opacity: 1;
+}

@@ -39,6 +39,9 @@ import {
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { GiHamburgerMenu } from "react-icons/gi";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 // absolute inset-0
 
@@ -96,6 +99,16 @@ const Home = () => {
         </div>
       </div>
     );
+  };
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    // arrows: false, // Optional: hides the arrows if not needed
+    dotsClass: "slick-dots custom-dots" // Custom class for dots
   };
 
   return (
@@ -254,7 +267,8 @@ const Home = () => {
       </div>
       {/* First Slide */}
       <div className="justify-center mt-1 background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
-        <div className="flex items-start space-x-4 pt-2 pb-1 overflow-y-clip overflow-x-scroll">
+        {/* <div className="flex items-start space-x-4 pt-2 pb-1 overflow-y-clip overflow-x-scroll"> */}
+        <div className="space-x-4 pt-2 pb-1 relative w-full">
           {/* <div className="relative ">
             <img
               src="/mobile/assets/Slide1.png"
@@ -266,236 +280,256 @@ const Home = () => {
               className="absolute -mt-[65px] cursor-pointer ml-[3px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
             />
           </div> */}
-          <div className="gradient-div ml-1 min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-lg text-secondary h-auto">
-            <div className="flex items-center justify-between">
-              <div className="ribbon-left"></div>
-              <div className="ribbon-right"></div>
+          <Slider {...settings}>
+            {/* slide-1 */}
+            <div className="w-full flex flex-col items-center">
+              <div className="gradient-div relative overflow-y-hidden flex flex-col w-full rounded-lg text-secondary h-auto">
+                <div className="flex items-center justify-between">
+                  <div className="ribbon-left"></div>
+                  <div className="ribbon-right"></div>
+                </div>
+                <div className="absolute ml-4 text-start text-3xl">
+                  <p
+                    className="mt-2 mb-1 text-[33px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    WITHDRAW
+                  </p>
+                  <p
+                    className="-mt-3 mb-1 text-[33px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    UP TO
+                  </p>
+                  <p
+                    className="-mt-3 text-[33px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    <b>₦</b>35,000,000
+                  </p>
+                </div>
+                <img
+                  onClick={() => router.push("/auth/signup/customer")}
+                  src="/mobile/assets/PlayNow2.png"
+                  className="absolute mt-[98px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[131px] max-h-[55.02px] min-w-[131px] min-h-[55.02px]"
+                />
+                <img
+                  src="/mobile/assets/slide1.svg"
+                  className="absolute bottom-0 cursor-pointer right-0 max-w-[222px] max-h-[160px] min-w-[222px] min-h-[160px]"
+                />
+              </div>
             </div>
-            <div className="absolute ml-4 text-start text-3xl">
-              <p
-                className="mt-2 mb-1 text-[33px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                WITHDRAW
-              </p>
-              <p
-                className="-mt-3 mb-1 text-[33px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                UP TO
-              </p>
-              <p
-                className="-mt-3 text-[33px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                <b>₦</b>35,000,000
-              </p>
+            {/* slide-2 */}
+            <div className="w-full flex flex-col items-center">
+              <div className="gradient-div relative overflow-y-hidden flex flex-col w-full rounded-lg text-secondary h-auto">
+                <div className="flex items-center justify-between">
+                  <div className="ribbon-left"></div>
+                  <div className="ribbon-right"></div>
+                </div>
+                <div className="absolute ml-4 text-start text-3xl">
+                  <p
+                    className="mt-2 mb-1 text-[30px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    GET 35,000 BOOM
+                  </p>
+                  <p
+                    className="-mt-3 mb-1 text-[30px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    COIN TOKENS ON YOUR
+                  </p>
+                  <p
+                    className="-mt-3 text-[30px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    FIRST DEPOSIT
+                  </p>
+                </div>
+                <img
+                  onClick={() => router.push("/auth/signup/customer")}
+                  src="/mobile/assets/SwapNow.png"
+                  className="absolute mt-[88px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[173.64px] max-h-[73.3px] min-w-[173.64px] min-h-[73.3px]"
+                />
+                <img
+                  src="/mobile/assets/slide2.svg"
+                  className="absolute bottom-0 cursor-pointer right-2 max-w-[167px] max-h-[101px] min-w-[167px] min-h-[101px]"
+                />
+              </div>
             </div>
-            <img
-              onClick={() => router.push("/auth/signup/customer")}
-              src="/mobile/assets/PlayNow2.png"
-              className="absolute mt-[98px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[131px] max-h-[55.02px] min-w-[131px] min-h-[55.02px]"
-            />
-            <img
-              src="/mobile/assets/slide1.svg"
-              className="absolute bottom-0 cursor-pointer right-0 max-w-[222px] max-h-[160px] min-w-[222px] min-h-[160px]"
-            />
-          </div>
-          <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-lg text-secondary h-auto">
-            <div className="flex items-center justify-between">
-              <div className="ribbon-left"></div>
-              <div className="ribbon-right"></div>
+            {/* slide-3 */}
+            <div className="w-full flex flex-col items-center">
+              <div className="gradient-div relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
+                <div className="flex items-center justify-between">
+                  <div className="ribbon-left"></div>
+                  <div className="ribbon-right"></div>
+                </div>
+                <div className="absolute ml-4 text-start text-3xl">
+                  <p
+                    className=" mb-1 text-[30px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    CASHOUT YOUR CUMULATIVE{" "}
+                  </p>
+                  <p
+                    className="-mt-3 text-[30px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    WITH 3 SURE CASHOUT
+                  </p>
+                </div>
+                <img
+                  src="/mobile/assets/GreenCheckGold.png"
+                  className="absolute mt-[60px] cursor-pointer ml-4 max-w-[106.59px] max-h-[56.75px] min-w-[194px] min-h-[56.75px]"
+                />
+                <img
+                  onClick={() => router.push("/auth/signup/customer")}
+                  src="/mobile/assets/PlayNow3.png"
+                  className="absolute mt-[115px] cursor-pointer transition-transform transform active:scale-90 ml-[50px] max-w-[194px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
+                />
+                <img
+                  src="/mobile/assets/slide3.svg"
+                  className="absolute bottom-0 cursor-pointer right-0 max-w-[97px] max-h-[131px] min-w-[97px] min-h-[131px]"
+                />
+              </div>
             </div>
-            <div className="absolute ml-4 text-start text-3xl">
-              <p
-                className="mt-2 mb-1 text-[30px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                GET 35,000 BOOM
-              </p>
-              <p
-                className="-mt-3 mb-1 text-[30px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                COIN TOKENS ON YOUR
-              </p>
-              <p
-                className="-mt-3 text-[30px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                FIRST DEPOSIT
-              </p>
+            {/* slide-4 */}
+            <div className="w-full flex flex-col items-center">
+              <div className="gradient-div relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
+                <div className="flex items-center justify-between">
+                  <div className="ribbon-left"></div>
+                  <div className="ribbon-right"></div>
+                </div>
+                <div className="absolute ml-4 text-start text-2xl">
+                  <p
+                    className="mt-2 text-[25px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    MONETIZE YOUR
+                  </p>
+                  <p
+                    className="-mt-2 text-[25px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    ACCOUNT & EARN
+                  </p>
+                  <p
+                    className="-mt-2 text-[25px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    FOR LIFE
+                  </p>
+                </div>
+                <img
+                  onClick={() => router.push("/auth/signup/customer")}
+                  src="/mobile/assets/StartNow.png"
+                  className="absolute mt-[85px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
+                />
+                <img
+                  src="/mobile/assets/slide4.svg"
+                  className="absolute cursor-pointer right-10 bottom-0 max-w-[153px] max-h-[151px] min-w-[153px] min-h-[151px]"
+                />
+              </div>
             </div>
-            <img
-              onClick={() => router.push("/auth/signup/customer")}
-              src="/mobile/assets/SwapNow.png"
-              className="absolute mt-[88px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[173.64px] max-h-[73.3px] min-w-[173.64px] min-h-[73.3px]"
-            />
-            <img
-              src="/mobile/assets/slide2.svg"
-              className="absolute bottom-0 cursor-pointer right-2 max-w-[167px] max-h-[101px] min-w-[167px] min-h-[101px]"
-            />
-          </div>
-          <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
-            <div className="flex items-center justify-between">
-              <div className="ribbon-left"></div>
-              <div className="ribbon-right"></div>
-            </div>
-            <div className="absolute ml-4 text-start text-3xl">
-              <p
-                className=" mb-1 text-[30px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                CASHOUT YOUR CUMULATIVE{" "}
-              </p>
-              <p
-                className="-mt-3 text-[30px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                WITH 3 SURE CASHOUT
-              </p>
-            </div>
-            <img
-              src="/mobile/assets/GreenCheckGold.png"
-              className="absolute mt-[60px] cursor-pointer ml-4 max-w-[106.59px] max-h-[56.75px] min-w-[194px] min-h-[56.75px]"
-            />
-            <img
-              onClick={() => router.push("/auth/signup/customer")}
-              src="/mobile/assets/PlayNow3.png"
-              className="absolute mt-[115px] cursor-pointer transition-transform transform active:scale-90 ml-[50px] max-w-[194px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
-            />
-            <img
-              src="/mobile/assets/slide3.svg"
-              className="absolute bottom-0 cursor-pointer right-0 max-w-[97px] max-h-[131px] min-w-[97px] min-h-[131px]"
-            />
-          </div>
-          <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
-            <div className="flex items-center justify-between">
-              <div className="ribbon-left"></div>
-              <div className="ribbon-right"></div>
-            </div>
-            <div className="absolute ml-4 text-start text-2xl">
-              <p
-                className="mt-2 text-[25px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                MONETIZE YOUR
-              </p>
-              <p
-                className="-mt-2 text-[25px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                ACCOUNT & EARN
-              </p>
-              <p
-                className="-mt-2 text-[25px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                FOR LIFE
-              </p>
-            </div>
-            <img
-              onClick={() => router.push("/auth/signup/customer")}
-              src="/mobile/assets/StartNow.png"
-              className="absolute mt-[85px] cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
-            />
-            <img
-              src="/mobile/assets/slide4.svg"
-              className="absolute cursor-pointer right-10 bottom-0 max-w-[153px] max-h-[151px] min-w-[153px] min-h-[151px]"
-            />
-          </div>
-          <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
-            <div className="flex items-center justify-between">
-              <div className="ribbon-left"></div>
-              <div className="ribbon-right"></div>
-            </div>
-            <div className="absolute ml-4 text-start text-2xl">
-              <p
-                className="mt-2 text-[25px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                WIN QUICK CASH{" "}
-              </p>
-              <p
-                className="-mt-2 text-[25px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                WITH
-              </p>
-              <p
-                className="-mt-2 text-[25px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                FASTEST FINGERS
-              </p>
-              <p
-                className="-mt-2 text-[25px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                GAMEPLAY
-              </p>
-            </div>
-            <div className="absolute mt-[110px] ml-[10px] flex items-center space-x-1">
-              <input
-                type="text"
-                placeholder="Type here..."
-                className="max-w-[125px] max-h-[33.48px] min-w-[125px] min-h-[33.48px] bg-white text-neutral-500 text-xs text-center border-4 border-secondary rounded-full"
-              />
-              <img
-                onClick={() => router.push("/auth/signup/customer")}
-                src="/mobile/assets/Enter.png"
-                className="cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[106.59px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
-              />
-            </div>
+            {/* slide-5 */}
+            <div className="w-full flex flex-col items-center">
+              <div className="gradient-div relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
+                <div className="flex items-center justify-between">
+                  <div className="ribbon-left"></div>
+                  <div className="ribbon-right"></div>
+                </div>
+                <div className="absolute ml-4 text-start text-2xl">
+                  <p
+                    className="mt-2 text-[25px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    WIN QUICK CASH{" "}
+                  </p>
+                  <p
+                    className="-mt-2 text-[25px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    WITH
+                  </p>
+                  <p
+                    className="-mt-2 text-[25px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    FASTEST FINGERS
+                  </p>
+                  <p
+                    className="-mt-2 text-[25px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    GAMEPLAY
+                  </p>
+                </div>
+                <div className="absolute mt-[110px] ml-[10px] flex items-center space-x-1">
+                  <input
+                    type="text"
+                    placeholder="Type here..."
+                    className="max-w-[125px] max-h-[33.48px] min-w-[125px] min-h-[33.48px] bg-white text-neutral-500 text-xs text-center border-4 border-secondary rounded-full"
+                  />
+                  <img
+                    onClick={() => router.push("/auth/signup/customer")}
+                    src="/mobile/assets/Enter.png"
+                    className="cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[106.59px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
+                  />
+                </div>
 
-            <img
-              src="/mobile/assets/slide5.svg"
-              className="absolute mt-[0px] cursor-pointer right-0 max-w-[137px] max-h-[160px] min-w-[137px] min-h-[160px]"
-            />
-            {/* <img
+                <img
+                  src="/mobile/assets/slide5.svg"
+                  className="absolute mt-[0px] cursor-pointer right-0 max-w-[137px] max-h-[160px] min-w-[137px] min-h-[160px]"
+                />
+                {/* <img
               src="/mobile/assets/Thousands.png"
               className="absolute mt-[30px] cursor-pointer ml-[200px] max-w-[190px] max-h-[129px] min-w-[190px] min-h-[129px]"
             /> */}
-          </div>
-          <div className="gradient-div min-w-[390px] max-w-[390px] relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
-            <div className="flex items-center justify-between">
-              <div className="ribbon-left"></div>
-              <div className="ribbon-right"></div>
+              </div>
             </div>
-            <div className="absolute ml-4 text-start text-3xl">
-              <p
-                className="mt-2 text-[35px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                SELL YOUR
-              </p>
-              <p
-                className="-mt-3 text-[35px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                BOOM COIN TOKENS
-              </p>
-              <p
-                className="-mt-3 text-[35px]"
-                style={{ fontFamily: "Changa One" }}
-              >
-                FOR CASH
-              </p>
-            </div>
-            <img
-              onClick={() => router.push("/auth/signup/customer")}
-              src="/mobile/assets/GetNow.png"
-              className="absolute mt-[93px] cursor-pointer transition-transform transform active:scale-90 ml-[10px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
-            />
-            <img
-              src="/mobile/assets/slide2.svg"
-              className="absolute bottom-0 right-6 max-w-[167px] max-h-[101px] min-w-[167px] min-h-[101px]"
-            />
-            {/* <img
+            {/* slide-6 */}
+            <div className="w-full flex flex-col items-center">
+              <div className="gradient-div relative overflow-y-hidden flex flex-col w-full rounded-md text-secondary h-auto">
+                <div className="flex items-center justify-between">
+                  <div className="ribbon-left"></div>
+                  <div className="ribbon-right"></div>
+                </div>
+                <div className="absolute ml-4 text-start text-3xl">
+                  <p
+                    className="mt-2 text-[35px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    SELL YOUR
+                  </p>
+                  <p
+                    className="-mt-3 text-[35px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    BOOM COIN TOKENS
+                  </p>
+                  <p
+                    className="-mt-3 text-[35px]"
+                    style={{ fontFamily: "Changa One" }}
+                  >
+                    FOR CASH
+                  </p>
+                </div>
+                <img
+                  onClick={() => router.push("/auth/signup/customer")}
+                  src="/mobile/assets/GetNow.png"
+                  className="absolute mt-[93px] cursor-pointer transition-transform transform active:scale-90 ml-[10px] max-w-[153.97px] max-h-[65px] min-w-[153.97px] min-h-[65px]"
+                />
+                <img
+                  src="/mobile/assets/slide2.svg"
+                  className="absolute bottom-0 right-6 max-w-[167px] max-h-[101px] min-w-[167px] min-h-[101px]"
+                />
+                {/* <img
               src="/mobile/assets/ThousandsInverse.png"
               className="absolute mt-[0px] cursor-pointer ml-[240px] max-w-[146px] max-h-[105px] min-w-[146px] min-h-[105px]"
             /> */}
-          </div>
+              </div>
+            </div>
+          </Slider>
         </div>
       </div>
       {/* Games */}
