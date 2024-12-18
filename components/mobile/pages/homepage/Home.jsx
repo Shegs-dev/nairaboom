@@ -105,12 +105,14 @@ const Home = () => {
   };
 
   const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    // arrows: false, // Optional: hides the arrows if not needed
+    dots: true, // Show indication dots
+    infinite: true, // Enable infinite looping
+    autoplay: true, // Enable autoplay
+    autoplaySpeed: 2000, // Time between slide transitions in milliseconds (2 seconds)
+    speed: 1000, // Transition speed for the slides
+    slidesToShow: 1, // Number of slides visible at a time
+    slidesToScroll: 1, // Number of slides to scroll per swipe/animation
+    arrows: false, // Hide navigation arrows
     dotsClass: "slick-dots custom-dots" // Custom class for dots
   };
 
