@@ -149,59 +149,54 @@ const ReferralLink = () => {
   const bonus_data = [
     {
       id: 1,
-      text: "NAIRABOOM SIGN UP",
-      amount: "₦15,000",
+      text: "FIRST WALLET DEPOSIT",
+      amount: "35,000 BOOM COIN TOKENS",
     },
     {
       id: 2,
-      text: "FIRST WALLET FUNDING",
-      amount: "₦20,000",
+      text: "SWAP AN ALERT",
+      amount: "ALERT AMOUNT IS SWAPPED TO BOOM COIN TOKENS",
     },
     {
       id: 3,
-      text: "NEW USER SIGN UP WITH YOUR REFERRAL CODE & PLAY A GAME",
-      amount: "₦500",
+      text: "WHEN A NEW USER SIGNS UP WITH YOUR REFERRAL LINK & PLAYS A ROLLOVER GAME",
+      amount: "₦100.00 cash and 500 BOOM COIN TOKENS",
     },
     {
       id: 4,
       text: "EVERY 5 GAMES YOU PLAY",
-      amount: "₦1,000",
+      amount: "1,000 BOOM COIN TOKENS",
     },
     {
       id: 41,
-      text: "SHARING NAIRABOOM ADS VIA SOCIAL MEDIA ",
-      amount: "₦100/ SHARE",
+      text: "SHARING NAIRABOOM AD VIA YOUR SOCIAL MEDIA ",
+      amount: "100 BOOM COIN TOKENS",
     },
-    // {
-    //   id: 5,
-    //   text: "TURN ON NOTIFICATIONS",
-    //   amount: "₦5000",
-    // },
     {
       id: 5,
-      text: "PLAY GAME",
-      amount: "100% OF ALERT AMOUNT",
+      text: "ALERT CHECK-IN",
+      amount: "0.1% OF ALERT AMOUNT CONVERTED TO BOOM COIN TOKENS (CAPPED AT 100 BCT)",
     },
-    {
-      id: 71,
-      text: "CHECK-IN OF ALERT",
-      amount: "10% OF ALERT AMOUNT",
-    },
-    {
-      id: 7,
-      text: "1 GREEN BALL IN GAME PLAY",
-      amount: "₦1,000",
-    },
-    {
-      id: 8,
-      text: "2 GREEN BALLS IN GAME PLAY",
-      amount: "50% OF ALERT AMOUNT",
-    },
-    {
-      id: 9,
-      text: "BIRTHDAY",
-      amount: "BIRTHDAY ROLLOVER",
-    },
+    // {
+    //   id: 71,
+    //   text: "CHECK-IN OF ALERT",
+    //   amount: "10% OF ALERT AMOUNT",
+    // },
+    // {
+    //   id: 7,
+    //   text: "1 GREEN BALL IN GAME PLAY",
+    //   amount: "₦1,000",
+    // },
+    // {
+    //   id: 8,
+    //   text: "2 GREEN BALLS IN GAME PLAY",
+    //   amount: "50% OF ALERT AMOUNT",
+    // },
+    // {
+    //   id: 9,
+    //   text: "BIRTHDAY",
+    //   amount: "BIRTHDAY ROLLOVER",
+    // },
     // {
     //   id: 9,
     //   text: "GET MONTHLY BOOM CODE",

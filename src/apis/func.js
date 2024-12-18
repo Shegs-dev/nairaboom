@@ -447,3 +447,36 @@ export const playAgentStake = async (bearerToken, cashBack) => {
     return error;
   }
 };
+
+export const getNotifications = async (bearerToken) => {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/notification?start=0&len=10&paging=1`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getDailyWinners = async () => {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/list_daily_winners?start=0&len=10&paging=1`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

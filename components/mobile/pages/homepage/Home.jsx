@@ -36,12 +36,15 @@ import {
   FaYoutube,
   FaThreads
 } from "react-icons/fa6";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import {
+  getDailyWinners
+} from "../../../../src/apis/func";
 
 // absolute inset-0
 
@@ -111,6 +114,19 @@ const Home = () => {
     dotsClass: "slick-dots custom-dots" // Custom class for dots
   };
 
+  const [dailyWinners, setDailyWinners] = useState([]);
+
+  useEffect(() => {
+    fetchTodayWinners();
+  }, []);
+
+  const fetchTodayWinners = async () => {
+    const res = await getDailyWinners();
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      setDailyWinners(res?.data?.payload?.content);
+    }
+  };
+
   return (
     <div className="w-full appearance-none bg-secondary text-white flex-1 overflow-y-auto">
       <div className="justify-center background-ribbon bg-cover bg-center bg-no-repeat  h-auto">
@@ -144,7 +160,7 @@ const Home = () => {
                             fontWeight: "700"
                           }}
                         >
-                          How To Play
+                          How To Cashout
                         </Link>
                         <Link href="/winning">Winning Modalities</Link>
                         <Link href="/contact">Contact Us</Link>
@@ -227,31 +243,34 @@ const Home = () => {
         </div>
         {/* megaphone card */}
         <div className="gradient-div mt-1 w-full flex items-center justify-between text-secondary ">
+          <marquee direction="left" loop="">
           <div className="text-xs flex items-center p-[2px] ml-2">
             <img src="/mobile/assets/Group.svg" className="w-[25px] h-[25px]" />
-            <div className="inline-block">
-              <span
-                className="ml-1 text-[13px] font-normal"
-                style={{ fontFamily: "Source Sans Pro" }}
-              >
-                {" "}
-                Femi won
-              </span>{" "}
-              <span
-                className=" text-[13px] text-white font-bold"
-                style={{ fontFamily: "Source Sans Pro" }}
-              >
-                NGN 50,000.00{" "}
-              </span>{" "}
-              <span
-                className="text-[13px] font-normal"
-                style={{ fontFamily: "Source Sans Pro" }}
-              >
-                {" "}
-                in 3 Sure Cashout
-              </span>
-            </div>
+            {dailyWinners.map((item, index) => (
+              // eslint-disable-next-line react/jsx-key
+              <div className="inline-block">
+                <span
+                  className="ml-1 text-[13px] font-normal"
+                  style={{ fontFamily: "Source Sans Pro" }}
+                >
+                  &nbsp;{item.fullname} won&nbsp;
+                </span>
+                <span
+                  className=" text-[13px] text-white font-bold"
+                  style={{ fontFamily: "Source Sans Pro" }}
+                >
+                  &nbsp;NGN {item.amount_won}&nbsp;
+                </span>
+                <span
+                  className="text-[13px] font-normal"
+                  style={{ fontFamily: "Source Sans Pro" }}
+                >
+                  &nbsp;in 3 Sure Cashout&nbsp;
+                </span>
+              </div>
+            ))}
           </div>
+          </marquee>
           <div className="flex items-center rounded-br-md rounded-tr-md justify-center aspect-video small-ribbon bg-cover bg-center bg-no-repeat  h-[32px]">
             <div
               onClick={() => router.push("/auth/signup/customer")}
@@ -660,7 +679,7 @@ const Home = () => {
               className="w-full rounded-lg"
             />
             <img
-              onClick={() => router.push("/auth/signup/customer")}
+              onClick={() => router.push("/how-to-play")}
               src="/mobile/assets/HowToPlay2.png"
               className="absolute bottom-8 cursor-pointer transition-transform transform active:scale-90"
               // className="absolute bottom-0 cursor-pointer ml-[3px] max-w-[254.78px] max-h-[80.07px] min-w-[254.78px] min-h-[80.07px]"
