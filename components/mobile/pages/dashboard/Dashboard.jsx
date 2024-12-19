@@ -91,7 +91,8 @@ import {
   playFastestFinger,
   getThreeSureCashOutStatus,
   getNotifications,
-  getDailyWinners
+  getDailyWinners,
+  sellDecline
 } from "../../../../src/apis/func";
 import { useRouter } from "next/router";
 import useUser from "../../../../lib/hooks/useUser";
@@ -314,7 +315,7 @@ const Dashboard = () => {
       setAgreeMonetize(true);
     } else {
       toast({
-        status: "success",
+        status: "error",
         isClosable: true,
         duration: "5000",
         title: res.data.message,
@@ -476,7 +477,32 @@ const Dashboard = () => {
       });
     } else {
       toast({
+        status: "error",
+        isClosable: true,
+        duration: "5000",
+        title: res.data.message,
+        position: "top"
+      });
+    }
+  };
+
+  const completeSellDecline = async () => {
+    setIsLoading(true);
+    const res = await sellDecline();
+    setIsLoading(false);
+    if (res?.data?.status) {
+      toast({
         status: "success",
+        isClosable: true,
+        duration: "5000",
+        title: res?.data?.message,
+        position: "top"
+      }).then(() => {
+        window.location.reload();
+      });
+    } else {
+      toast({
+        status: "error",
         isClosable: true,
         duration: "5000",
         title: res.data.message,
@@ -1105,9 +1131,7 @@ const Dashboard = () => {
                 fontSize={"2xl"}
                 cursor={"pointer"}
                 _hover={{ transform: "scale(1.05)" }}
-                onClick={() => {
-                  setSell(false);
-                }}
+                onClick={completeSellDecline}
               >
                 DECLINE
               </Button>

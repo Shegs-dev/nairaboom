@@ -100,7 +100,7 @@ const ReferralLink = () => {
         display={"flex"}
         justifyContent="space-between"
         alignItems={"center"}
-        pb={{ base: "2.5rem", md: "4rem" }}
+        pb={{ base: "0.5rem", md: "1rem" }}
       >
         <Text
           fontWeight={700}
@@ -121,9 +121,7 @@ const ReferralLink = () => {
         ) : (
           <>
           <Box display={"flex"} alignItems="center" gap="1.6rem">
-            <b>Current Earnings: <br />₦ {currentEarnings}</b>
-            <b>Lifetime Earnings: <br />₦ {totalEarnings}</b>
-            <b>Total Referred: <br />{referralCount}</b>
+            <b>Total Referred: {referralCount}</b>
             
             <Box as={NextLink} href="/customer_dashboard/editprofile">
               <Avatar
@@ -137,6 +135,16 @@ const ReferralLink = () => {
           </>
         )}
       </Box>
+      <div className="flex justify-between">
+        <div></div>
+        <div className="flex justify-around px-2">
+          <div><b>Earnings:</b></div>
+          <div className="px-2 pb-2">
+            <b>Current: ₦ {currentEarnings}</b><br/>
+            <b>Lifetime: ₦ {totalEarnings}</b>
+          </div>
+        </div>
+      </div>
       {isLoading || !data ? (
         <Box
           py="10rem"

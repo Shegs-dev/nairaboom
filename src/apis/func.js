@@ -480,3 +480,19 @@ export const getDailyWinners = async () => {
     return error;
   }
 };
+
+export const sellDecline = async () => {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/sell_over_decline`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
