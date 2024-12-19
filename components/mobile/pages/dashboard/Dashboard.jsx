@@ -731,14 +731,8 @@ const Dashboard = () => {
               </div>
               {/* balance */}
               <div className="mb-2 mt-5">
-                <div
-                  className="-mb-2 flex gap-2 text-[6px]"
-                  style={{ fontFamily: "Changa" }}
-                >
-                  BALANCE
-                </div>
-                <div className="flex space-x-1 items-start">
-                  <p className="text-[8px] font-changa">BALANCE</p>
+                <div className="flex space-x-1 font-changa items-center -mb-1 text-[10px]">
+                  <p className="">BALANCE</p>
                   <button
                     onClick={toggleBalance}
                     className="focus:outline-none"
@@ -819,14 +813,8 @@ const Dashboard = () => {
               </div>
               {/* balance */}
               <div className="mb-2 mt-1">
-                <div
-                  className="-mb-2 flex gap-2 text-[6px]"
-                  style={{ fontFamily: "Changa" }}
-                >
-                  BALANCE
-                </div>
-                <div className="flex space-x-1 items-start">
-                  <p className="text-[8px] font-changa">BALANCE</p>
+                <div className="flex space-x-1 font-changa items-center -mb-1 text-[10px]">
+                  <p className="">BALANCE</p>
                   <button
                     onClick={toggleBalance2}
                     className="focus:outline-none"
