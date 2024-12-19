@@ -156,15 +156,26 @@ const PlayGameUser = () => {
     return separateByComma(removeNonNumber(val));
   };
 
+  const stakeCalculator = (val) => {
+    if (val >= 1 && val <= 999) {
+      return 50;
+    } else if (val >= 1000 && val <= 1999) {
+      return 100;
+    } else if (val >= 2000 && val <= 9999) {
+      return 200;
+    }
+    return 0;
+  };
+
   const handleChange = (e) => {
     setCashback({
       ...cashBack,
       [e.target.name]: e.target.value.trim(),
       stake_amount:
-        cashBack.amount > 1 && cashBack.amount < 20000
-          ? 200
-          : cashBack.amount >= 20000
-          ? 0.02 * cashBack.amount
+        cashBack.amount > 1 && cashBack.amount < 10000
+          ? stakeCalculator(cashBack.amount)
+          : cashBack.amount >= 10000
+          ? 0.025 * cashBack.amount
           : 0.0,
       latitude: `${lat.current}`,
       longitude: `${long.current}`,
@@ -339,7 +350,7 @@ const PlayGameUser = () => {
               Play Game
             </Text>
           </HStack>
-          <Text>Got an alert, you want to rollover? Enter Details Below</Text>
+          <Text>Got an alert you want to swap? Enter Details Below</Text>
           <Flex
             justifyContent="center"
             w="100%"
@@ -399,10 +410,10 @@ const PlayGameUser = () => {
                         ...cashBack,
                         amount: value,
                         stake_amount:
-                          value > 1 && value < 20000
-                            ? 200
-                            : value >= 20000
-                            ? 0.01 * value
+                          value > 1 && value < 10000
+                          ? stakeCalculator(value)
+                          : value >= 10000
+                          ? 0.025 * value
                             : 0.0,
                         latitude: `${lat.current}`,
                         longitude: `${long.current}`,
@@ -546,7 +557,7 @@ const PlayGameUser = () => {
                 placeholder="Alert Amount"
                 color="gray"
               >
-                <Text>Stake Amount</Text>
+                <Text>Swap Fare</Text>
                 <Spacer />
                 <Text fontSize={"1.25rem"}>
                   ₦{" "}
@@ -599,7 +610,7 @@ const PlayGameUser = () => {
                     handleCashbackSubmit();
                   }}
                 >
-                  {isLoading ? <Spinner /> : "Rollover"}
+                  {isLoading ? <Spinner /> : "Rollover to Swap"}
                 </Button>
                 <Box
                   onClick={() => {

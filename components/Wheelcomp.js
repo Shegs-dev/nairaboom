@@ -970,8 +970,8 @@ const Wheelcomp = () => {
                     fontWeight={700}
                     fontSize="1.5rem"
                   >
-                    Wow! &#127881; You've earned an entry for 3 Sure Cashout! Play another game 
-                    for a chance to win your cumulative.
+                    Wow! &#127881; You've earned an entry in your 3 Sure Cashout Tracker! Spin again 
+                    for a chance to win your cumulative alert swaps.
                   </ModalHeader>
                 </>
               ) : Number(noOfGreens) === 1 ? (
@@ -1000,8 +1000,8 @@ const Wheelcomp = () => {
                     fontWeight={700}
                     fontSize="1.5rem"
                   >
-                    Wow! &#127881; You've earned an entry for 3 Sure Cashout! Play another game 
-                    for a chance to win your cumulative.
+                    Wow! &#127881; You've earned an entry in your 3 Sure Cashout Tracker! Spin again 
+                    for a chance to win your cumulative alert swaps.
                   </ModalHeader>
                 </>
               ) : settingsCheck(
@@ -1096,7 +1096,7 @@ const Wheelcomp = () => {
                   </ModalHeader>
                 </>
               ) : (
-                `Sorry your cashout keys & color codes didn't match but you have rolled over your Alert. Keep building your Bom Coins wallet!.
+                `Oops! You didn't win this time but your alert has been swapped to Boom Coin Tokens for bigger earnings!
                 `
               )
             ) : (

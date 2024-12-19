@@ -475,7 +475,7 @@ const AgentDashboard = () => {
                     },
                     // { title: "My Bonus", link: "agent_dashboard/request_history", icon: <BsWallet /> },
 
-                    // { title: "Refer & Monetize", link: "agent_dashboard", icon: <MdFileCopy /> },
+                    // { title: "Refer Your Trybe", link: "agent_dashboard", icon: <MdFileCopy /> },
                     // {
                     //   title: "Share & Earn",
                     //   link: "agent_dashboard/share_ads",

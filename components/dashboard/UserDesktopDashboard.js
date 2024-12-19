@@ -454,7 +454,7 @@ import {
                         icon: <MdContentPaste />,
                       },
                       {
-                        title: "Refer & Monetize",
+                        title: "Refer Your Trybe",
                         link: "customer_dashboard/referral_link",
                         icon: <MdFileCopy />,
                       },

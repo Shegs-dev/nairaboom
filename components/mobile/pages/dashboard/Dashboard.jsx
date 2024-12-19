@@ -89,7 +89,10 @@ import {
   monetizationAgreement,
   getMonetizationEligibility,
   playFastestFinger,
-  getThreeSureCashOutStatus
+  getThreeSureCashOutStatus,
+  getNotifications,
+  getDailyWinners,
+  sellDecline
 } from "../../../../src/apis/func";
 import { useRouter } from "next/router";
 import useUser from "../../../../lib/hooks/useUser";
@@ -118,19 +121,20 @@ const Dashboard = () => {
 
   const [noSell, setNoSell] = useState(false);
   const [sell, setSell] = useState(false);
+  const [noBuy, setNoBuy] = useState(false);
   const [sellPayload, setSellPayload] = useState(null);
   const [sellButton, setSellButton] = useState(0);
   const [cashOut1, setCashOut1] = useState(0);
   const [cashOut2, setCashOut2] = useState(0);
   const [cashOut3, setCashOut3] = useState(0);
 
+  const [notifications, setNotifications] = useState([]);
+  const [notificationModal, setNotificationModal] = useState(false);
+
   const [seeMain, setSeeMain] = useState(true);
   const [seeBoom, setSeeBoom] = useState(true);
-  const [threeSureCashout, setThreeSureCashout] = useState([
-    { id: 1, price: "10,000", status: true },
-    { id: 2, price: "20,000", status: false },
-    { id: 3, price: "5,000", status: true }
-  ]);
+  const [threeSureCashout, setThreeSureCashout] = useState([]);
+  const [dailyWinners, setDailyWinners] = useState([]);
 
   const [showBalance, setShowBalance] = useState(false); // State to toggle balance visibility
 
@@ -185,6 +189,7 @@ const Dashboard = () => {
   const [bonusBalance, setBonusBalance] = useState();
   const [walletBalance, setWalletBalance] = useState();
   const [gameSettings, setgameSettings] = useState();
+  const [jackpotString, setJackpotString] = useState();
 
   const boom = async () => {
     const res = await getLatestCashbackTime(bearerToken);
@@ -222,7 +227,7 @@ const Dashboard = () => {
         duration: 10000,
         status: "info",
         title:
-          "Make Your First Deposit and Get ₦35.000 Boom Coins to Start Cashing Out!",
+          "Make Your First Deposit Now and Get 35,000 Boom Coin Tokens (BCT)!",
         position: "top"
       });
     }
@@ -260,6 +265,7 @@ const Dashboard = () => {
     fetchWishClock();
     fetchAppSettings();
     checkThreeSureCashOutStatus();
+    fetchTodayWinners();
   }, [bearerToken, toast, user?.token]);
 
   const fetchRequestHistory = async () => {
@@ -289,6 +295,9 @@ const Dashboard = () => {
     const res = await getAppSettings(bearerToken);
     if (res.status && (res.status === 200 || res.status === 201)) {
       setgameSettings(res?.data.payload);
+      const currJackpot = res?.data.payload?.jackpot;
+      const valueBal = Number(currJackpot).toLocaleString();
+      setJackpotString(valueBal);
     }
   };
 
@@ -318,7 +327,7 @@ const Dashboard = () => {
       setAgreeMonetize(true);
     } else {
       toast({
-        status: "success",
+        status: "error",
         isClosable: true,
         duration: "5000",
         title: res.data.message,
@@ -380,22 +389,22 @@ const Dashboard = () => {
 
     if (res?.data?.payload?.games) {
       let x = 1;
+      let checkers = [];
       while (x <= res?.data?.payload?.games.length) {
-        let val = 2;
+        let val = false;
         if (res?.data?.payload?.games[x - 1].green_balls > 0) {
-          val = 1;
+          val = true;
         }
 
-        if (x === 1) {
-          setCashOut1(val);
-        } else if (x === 2) {
-          setCashOut2(val);
-        } else if (x === 3) {
-          setCashOut3(val);
-        }
+        let check = {};
+        check.id = x;
+        check.price = res?.data?.payload?.games[x - 1].stake_amount;
+        check.status = val;
+        checkers.push(check);
 
         x++;
       }
+      setThreeSureCashout(checkers);
     }
   };
 
@@ -415,6 +424,19 @@ const Dashboard = () => {
     }
   };
 
+  const fetchBuyAvailability = async () => {
+    setIsLoading(true);
+    const res = await sellEligibility(bearerToken);
+    setIsLoading(false);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      if (res?.data?.payload?.status === "ineligible") {
+        setNoBuy(true);
+      } else {
+        setNoBuy(false);
+      }
+    }
+  };
+
   const checkSellEligibility = async () => {
     setIsLoading(true);
     const res = await sellEligibility(bearerToken);
@@ -428,6 +450,29 @@ const Dashboard = () => {
     }
   };
 
+  const fetchTodayWinners = async () => {
+    setIsLoading(true);
+    const res = await getDailyWinners();
+    setIsLoading(false);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      setDailyWinners(res?.data?.payload?.content);
+    }
+  };
+
+  const fetchMyNotifications = async () => {
+    setIsLoading(true);
+    const res = await getNotifications(bearerToken);
+    setIsLoading(false);
+    if (res.status && (res.status === 200 || res.status === 201)) {
+      setNotifications(res?.data?.payload?.content);
+    }
+  };
+
+  const openNotification = async () => {
+    fetchMyNotifications();
+    setNotificationModal(true);
+  };
+
   const completeSellAcceptance = async () => {
     setIsLoading(true);
     const res = await sellAcceptance(bearerToken);
@@ -439,10 +484,37 @@ const Dashboard = () => {
         duration: "5000",
         title: res?.data?.message,
         position: "top"
+      }).then(() => {
+        window.location.reload();
       });
     } else {
       toast({
+        status: "error",
+        isClosable: true,
+        duration: "5000",
+        title: res.data.message,
+        position: "top"
+      });
+    }
+  };
+
+  const completeSellDecline = async () => {
+    setIsLoading(true);
+    const res = await sellDecline();
+    setIsLoading(false);
+    if (res?.data?.status) {
+      toast({
         status: "success",
+        isClosable: true,
+        duration: "5000",
+        title: res?.data?.message,
+        position: "top"
+      }).then(() => {
+        window.location.reload();
+      });
+    } else {
+      toast({
+        status: "error",
         isClosable: true,
         duration: "5000",
         title: res.data.message,
@@ -518,6 +590,19 @@ const Dashboard = () => {
     );
   };
 
+  const TSCItemsEmpty = () => {
+    return (
+      <div>
+        <div className="gold-ring-container bg-cover bg-center bg-no-repeat flex items-center justify-center max-w-[92px] max-h-[88px] min-w-[92px] min-h-[88px]">
+          
+        </div>
+        <div className="gradient-div font-changa font-semibold -mt-2 p-[2px] text-center rounded-full text-secondary ">
+          ₦0.00
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="w-full appearance-none bg-secondary text-white flex-1 overflow-y-auto">
       <div className=" px-4 justify-center background-ribbon bg-cover bg-center bg-no-repeat  h-auto">
@@ -543,7 +628,8 @@ const Dashboard = () => {
               >
                 Hi, {user?.details?.fullname?.split(" ")[0]}
               </span>
-              <div className="flex justify-bottom items-end mt-1">
+              <div className="flex justify-bottom items-end mt-1 ml-1 cursor-pointer" 
+                  onClick={openNotification}>
                 <LiaBellSolid size={15} color={"fff"} />
               </div>
               <Drawer
@@ -586,7 +672,7 @@ const Dashboard = () => {
                           icon: <MdContentPaste />
                         },
                         {
-                          title: "Refer & Monetize",
+                          title: "Refer Your Trybe",
                           link: "customer_dashboard/referral_link",
                           icon: <MdFileCopy />
                         },
@@ -877,8 +963,12 @@ const Dashboard = () => {
                   <b>SELL</b>
                 </div>
                 <div
-                  // onClick={fetchSellEligibility}
-                  className="bg-secondary cursor-pointer transition-transform transform active:scale-90 text-primary rounded-full py-2 px-4 w-fit text-[13px]"
+                  onClick={fetchBuyAvailability}
+                  className={`ccursor-pointer transition-transform transform active:scale-90 rounded-full py-2 px-4 w-fit text-[13px] ${
+                    sellButton == 0
+                      ? "bg-[#FFCF17]"
+                      : " bg-secondary text-primary"
+                  }`}
                   style={{ fontFamily: "Source Code Pro" }}
                 >
                   <b>BUY</b>
@@ -887,6 +977,73 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+        <Modal
+          isCentered
+          isOpen={notificationModal}
+          onClose={() => {
+            setNotificationModal(false);
+          }}
+        >
+          <ModalOverlay />
+          <ModalContent
+            fontFamily={"poppins"}
+            w={{ base: "90%", md: "45%" }}
+            maxW={"95%"}
+            p={{ base: "1rem", md: "3rem" }}
+          >
+            <ModalHeader>
+              <Center>
+                <font size="5" color="nairagreen">
+                  <b>Latest Updates</b>
+                </font>
+              </Center>
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <hr/>
+              {notifications.map((item, index) => (
+                <div>
+                <div className="py-3 px-1">
+                  <b>{item.title}</b>
+                  <br/>
+                  {item.desciption}
+                </div>
+                <hr/>
+                </div>
+              ))}
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+        <Modal
+          isCentered
+          isOpen={noBuy}
+          onClose={() => {
+            setNoBuy(false);
+          }}
+        >
+          <ModalOverlay />
+          <ModalContent
+            fontFamily={"poppins"}
+            w={{ base: "90%", md: "45%" }}
+            maxW={"95%"}
+            p={{ base: "1rem", md: "3rem" }}
+          >
+            <ModalHeader>
+              <Center>
+                <font size="5" color="nairagreen">
+                  <b>Buy Offer</b>
+                </font>
+              </Center>
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <br />
+              Boom Coin Tokens (BCT) are not available to buy at the moment. Please try again later.
+              <br />
+              <br />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
         <Modal
           isCentered
           isOpen={noSell}
@@ -903,8 +1060,8 @@ const Dashboard = () => {
           >
             <ModalHeader>
               <Center>
-                <font size="5" color="brown">
-                  Boom Coins Wallet Sell Offer
+                <font size="5" color="nairagreen">
+                  Sell Offer
                 </font>
               </Center>
             </ModalHeader>
@@ -914,10 +1071,9 @@ const Dashboard = () => {
                 <b>No Sell Offer Available!</b>
               </Center>
               <br />
-              <br />
               To be eligible to sell, maintain a minimum balance of 500,000 Boom
-              Coins in your wallet and stay active. Keep playing Rollover Games
-              to accumulate your alerts and grow your coins!
+              Coin Tokens in your wallet and stay active. Keep swapping your alerts 
+              to accumulate more BCT!
               <br />
               <br />
             </ModalBody>
@@ -939,8 +1095,8 @@ const Dashboard = () => {
           >
             <ModalHeader>
               <Center>
-                <font size="5" color="brown">
-                  Boom Coins Wallet Sell Offer
+                <font size="5" color="nairagreen">
+                  Sell Offer
                 </font>
               </Center>
             </ModalHeader>
@@ -948,12 +1104,22 @@ const Dashboard = () => {
             <ModalBody>
               You've Received an Offer to Sell Your Boom Coins!
               <br />
-              <br />
-              Sell Percentage: {sellPayload?.sell_percentage}
-              <br />
-              Amount: ₦{sellPayload?.sell_amount_display}
+              <Box
+                display={"flex"}
+                justifyContent="space-between"
+                alignItems={"center"}
+              >
+                <div>
+                  <b>Current Rate</b>
+                  <input size="5" value={sellPayload?.sell_percentage} disabled />
+                </div>
+                <div>
+                  <b>Amount</b>
+                  <input size="5" value={sellPayload?.sell_amount_display} disabled />
+                </div>
+              </Box>
               <p>
-                If you accept this offer, you agree to sell your Boom Coins at
+                If you accept this offer, you agree to sell your Boom Coin Tokens at
                 the specified rate and will receive the cash equivalent in your
                 Main Wallet. Note: 5% Agency Fee applies.
               </p>
@@ -995,9 +1161,7 @@ const Dashboard = () => {
                 fontSize={"2xl"}
                 cursor={"pointer"}
                 _hover={{ transform: "scale(1.05)" }}
-                onClick={() => {
-                  setSell(false);
-                }}
+                onClick={completeSellDecline}
               >
                 DECLINE
               </Button>
@@ -1020,32 +1184,32 @@ const Dashboard = () => {
           >
             <ModalHeader>
               <Center>
-                <font size="14" color="brown">
+                <font size="14" color="nairagreen">
                   MONETIZE
                 </font>
               </Center>
             </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              Hey Boomster, you can monetize your Nairaboom account and earn
-              regular passive income when you meet the following criteria:
+              Hey Boomster, you can monetize your NairaBoom account and earn 
+              passive income when you meet the following criteria:
               <br />
               <br />
               1. Use your referral{" "}
               <Link href="/customer_dashboard/editprofile">link </Link>
-              to invite 35 people to <b>Sign Up</b> and <b>Play Games</b> on
-              Nairaboom
+              to invite people to join your Trybe,
               <br />
-              2. Have a minimum of 200,000 in your Boom Coins Wallet
+              2. Have a minimum of 100,000 Boom Coin Tokens (BCT),
               <br />
               <br />
               Benefits of monetizing your Nairaboom account:
               <br />
               <br />
-              1. Create your POD and earn revenue daily from rollover gameplays
-              and winnings of people in your POD.
+              1. Receive commission on every referral you make.
               <br />
-              2. Start your journey to becoming a Nairaboom partner.
+              2. Earn revenue daily from rollover swaps and winnings of members of your Trybe.
+              <br />
+              3. Become a Nairaboom partner and earn performance bonuses. 
               <br />
               <br />
               <Center>
@@ -1053,7 +1217,7 @@ const Dashboard = () => {
                   w="100%"
                   h="3.25rem"
                   colorScheme="none"
-                  bg="brown"
+                  bg="nairagreen"
                   color="white"
                   borderRadius={50}
                   pos="relative"
@@ -1092,7 +1256,7 @@ const Dashboard = () => {
           >
             <ModalHeader>
               <Center>
-                <font size="14" color="brown">
+                <font size="14" color="nairagreen">
                   MONETIZE
                 </font>
               </Center>
@@ -1110,7 +1274,7 @@ const Dashboard = () => {
                   w="100%"
                   h="3.25rem"
                   colorScheme="none"
-                  bg="brown"
+                  bg="nairagreen"
                   color="white"
                   borderRadius={50}
                   pos="relative"
@@ -1147,7 +1311,7 @@ const Dashboard = () => {
           >
             <ModalHeader>
               <Center>
-                <font size="14" color="brown">
+                <font size="14" color="nairagreen">
                   MONETIZE
                 </font>
               </Center>
@@ -1158,8 +1322,9 @@ const Dashboard = () => {
               <br />
               <br />
               <Center>
-                Did you know you can refer over 35 people? Keep referring more
-                friends to expand your POD and boost your earnings!
+                Did you know that there's no limit to the number of people you can 
+                invite to join your Trybe on NairaBoom? Invite more people and earn 
+                more money!
               </Center>
               <br />
               <Center>
@@ -1167,7 +1332,7 @@ const Dashboard = () => {
                   w="40%"
                   h="3.25rem"
                   colorScheme="none"
-                  bg="brown"
+                  bg="nairagreen"
                   color="white"
                   borderRadius={50}
                   pos="relative"
@@ -1193,31 +1358,34 @@ const Dashboard = () => {
       </div>
       {/* megaphone card */}
       <div className="gradient-div mt-2 w-full flex items-center justify-between text-secondary ">
+        <marquee direction="left" loop="">
         <div className="text-xs flex items-center py-[2px] pl-[5px]">
           <img src="/mobile/assets/Group.svg" className="w-[25px] h-[25px]" />
-          <div className="inline-block">
-            <span
-              className="ml-1 text-[13px] font-normal"
-              style={{ fontFamily: "Source Sans Pro" }}
-            >
-              {" "}
-              Femi won
-            </span>{" "}
-            <span
-              className=" text-[13px] text-white font-bold"
-              style={{ fontFamily: "Source Sans Pro" }}
-            >
-              NGN 50,000.00{" "}
-            </span>{" "}
-            <span
-              className="text-[13px] font-normal"
-              style={{ fontFamily: "Source Sans Pro" }}
-            >
-              {" "}
-              in 3 Sure Cashout
-            </span>
-          </div>
+          {dailyWinners.map((item, index) => (
+            // eslint-disable-next-line react/jsx-key
+            <div className="inline-block">
+              <span
+                className="ml-1 text-[13px] font-normal"
+                style={{ fontFamily: "Source Sans Pro" }}
+              >
+                &nbsp;{item.fullname} won&nbsp;
+              </span>
+              <span
+                className=" text-[13px] text-white font-bold"
+                style={{ fontFamily: "Source Sans Pro" }}
+              >
+                &nbsp;NGN {item.amount_won}&nbsp;
+              </span>
+              <span
+                className="text-[13px] font-normal"
+                style={{ fontFamily: "Source Sans Pro" }}
+              >
+                &nbsp;in 3 Sure Cashout&nbsp;
+              </span>
+            </div>
+          ))}
         </div>
+        </marquee>
         <div className="flex items-center rounded-br-md rounded-tr-md justify-center aspect-video small-ribbon bg-cover bg-center bg-no-repeat  h-[32px]">
           <div
             onClick={() => {
@@ -1265,9 +1433,19 @@ const Dashboard = () => {
                 className="absolute top-5 max-w-[264px] max-h-[92px] min-w-[264px] min-h-[92px]"
               />
               <div className="absolute top-24 flex items-center space-x-2 justify-between">
-                {threeSureCashout.map((each) => {
-                  return <TSCItems item={each} />;
-                })}
+                {threeSureCashout.length === 0 ? (
+                  <>
+                  <TSCItemsEmpty />
+                  <TSCItemsEmpty />
+                  <TSCItemsEmpty />
+                  </>
+                ) : (
+                  <>
+                  {threeSureCashout.map((each) => {
+                    return <TSCItems item={each} />;
+                  })}
+                  </>
+                )}
               </div>
               <img
                 onClick={() => {
@@ -1432,7 +1610,7 @@ const Dashboard = () => {
                 className="text-center text-[24px]"
                 style={{ fontFamily: "Changa One" }}
               >
-                ₦5,000,000
+                ₦{jackpotString}
               </p>
             </div>
           </div>
@@ -1535,7 +1713,7 @@ const Dashboard = () => {
           p={{ base: "1rem", md: "3rem" }}
         >
           <ModalHeader textAlign={"center"} fontWeight={700} fontSize="1.5rem">
-            How To Build Your Boom Coins Wallet
+            How To Earn Boom Coin Tokens (BCT)
           </ModalHeader>
           <div style={{ marginHorizontal: "auto" }}>
             <Text
@@ -1554,8 +1732,9 @@ const Dashboard = () => {
               color="nairablue"
               textAlign={"center"}
             >
-              There are many ways to build your Boom Coins Wallet to Cashout
-              Millions on Nairaboom. Click the button below to see how
+              Unlock multiple ways to earn Boom Coin Tokens (BCT) 
+              on NairaBoom to boost your earnings. Tap the button 
+              below to discover all the opportunities waiting for you!
             </Text>
             <Box
               display={"flex"}

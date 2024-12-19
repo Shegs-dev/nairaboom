@@ -174,7 +174,7 @@ const WinningModalities = () => {
             </GridItem>
             <GridItem colSpan={3}>
               <Text fontWeight={"semibold"} color={"#002047"}>
-                Win your Boom Coins Wallet
+                Win your Boom Coin Tokens (BCT) as Cash.
               </Text>
             </GridItem>
           </Grid>
@@ -222,12 +222,12 @@ const WinningModalities = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Text fontWeight={"semibold"} color={"#002047"}>
-                50% Alert
+                3 SURE ENTRY
               </Text>
             </GridItem>
             <GridItem colSpan={3}>
               <Text fontWeight={"semibold"} color={"#002047"}>
-                Win 50% of your Alert into your Boom Coins wallet
+                Earn an entry for 3 Sure Cashout & a chance to win your cumulative swaps
               </Text>
             </GridItem>
           </Grid>
@@ -389,12 +389,12 @@ const WinningModalities = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Text fontWeight={"semibold"} color={"#002047"}>
-                ₦1000.00
+                3 SURE ENTRY
               </Text>
             </GridItem>
             <GridItem colSpan={3}>
               <Text fontWeight={"semibold"} color={"#002047"}>
-                Win ₦1000.00 in your Boom Coins Wallet
+                Earn an entry for 3 Sure Cashout & a chance to win your cumulative swaps
               </Text>
             </GridItem>
           </Grid>
@@ -454,7 +454,55 @@ const WinningModalities = () => {
             </GridItem>
             <GridItem colSpan={3}>
               <Text fontWeight={"semibold"} color={"#002047"}>
-                Cashout the Crossover Percentage from your Boom Coins Wallet.
+                Cashout a Percentage of your Boom Coin Tokens.
+              </Text>
+            </GridItem>
+          </Grid>
+          <Grid
+            gap={5}
+            templateColumns="repeat(8, 1fr)"
+            px={{ base: 5, md: 20 }}
+            py={3}
+            w={{ base: "50rem", md: "100%" }}
+            borderBottomWidth={1}
+          >
+            <GridItem colSpan={2}>
+              <Text fontWeight={"semibold"} color={"#002047"}>
+                3 Green Balls in 3 Consecutive Rollover Swaps
+              </Text>
+            </GridItem>
+            <GridItem
+              colSpan={2}
+              as={Flex}
+              justifyContent="center"
+              h="fit-content"
+            >
+              <Grid
+                templateColumns="repeat(3, 1fr)"
+                borderRadius={20}
+                w="fit-content"
+                gap="1px"
+                overflow="hidden"
+              >
+                <Center h="2.5rem" w="2.5rem" bg="nairagreen">
+                  <Text>15</Text>
+                </Center>
+                <Center h="2.5rem" w="2.5rem" bg="nairagreen">
+                  <Text>23</Text>
+                </Center>
+                <Center h="2.5rem" w="2.5rem" bg="nairagreen">
+                  <Text>7</Text>
+                </Center>
+              </Grid>
+            </GridItem>
+            <GridItem colSpan={1}>
+              <Text fontWeight={"semibold"} color={"#002047"}>
+                GAME CUMULATIVE %
+              </Text>
+            </GridItem>
+            <GridItem colSpan={3}>
+              <Text fontWeight={"semibold"} color={"#002047"}>
+                Win a percentage of the cumulative alert amounts of 3 consecutive rollover swaps.
               </Text>
             </GridItem>
           </Grid>

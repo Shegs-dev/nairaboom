@@ -139,7 +139,7 @@ const SideNav = () => {
       "21px",
     ],
     [
-      "Refer & Monetize",
+      "Refer Your Trybe",
       ["/customer_dashboard/referral_link", "/agent_dashboard/referral_link"],
       `${refer.src}`,
       `${greyrefer.src}`,

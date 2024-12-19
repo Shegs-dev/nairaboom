@@ -100,7 +100,7 @@ const ReferralLink = () => {
         display={"flex"}
         justifyContent="space-between"
         alignItems={"center"}
-        pb={{ base: "2.5rem", md: "4rem" }}
+        pb={{ base: "0.5rem", md: "1rem" }}
       >
         <Text
           fontWeight={700}
@@ -121,9 +121,7 @@ const ReferralLink = () => {
         ) : (
           <>
           <Box display={"flex"} alignItems="center" gap="1.6rem">
-            <b>Current Earnings: <br />₦ {currentEarnings}</b>
-            <b>Lifetime Earnings: <br />₦ {totalEarnings}</b>
-            <b>Total Referred: <br />{referralCount}</b>
+            <b>Total Referred: {referralCount}</b>
             
             <Box as={NextLink} href="/customer_dashboard/editprofile">
               <Avatar
@@ -137,6 +135,16 @@ const ReferralLink = () => {
           </>
         )}
       </Box>
+      <div className="flex justify-between">
+        <div></div>
+        <div className="flex justify-around px-2">
+          <div><b>Earnings:</b></div>
+          <div className="px-2 pb-2">
+            <b>Current: ₦ {currentEarnings}</b><br/>
+            <b>Lifetime: ₦ {totalEarnings}</b>
+          </div>
+        </div>
+      </div>
       {isLoading || !data ? (
         <Box
           py="10rem"
@@ -172,8 +180,8 @@ const ReferralLink = () => {
                     color="nairablue"
                     textAlign={"center"}
                   >
-                    Refer 35 people to create your POD and Monetize your account
-                    to start earning daily from your POD Rollovers & Winnings!
+                    Use this link to refer people to join your Trybe and earn up to 
+                    ₦100,000 in passive income monthly!
                   </Text>
                 </Box>
               </Box>
@@ -241,8 +249,8 @@ const ReferralLink = () => {
                     color="nairablue"
                     textAlign={"center"}
                   >
-                    Refer 35 people to create your POD and Monetize your account
-                    to start earning daily from your POD Rollovers & Winnings!
+                    Use this link to refer people to join your Trybe and earn up to 
+                    ₦100,000 in passive income monthly!
                   </Text>
                 </Box>
               </Box>
@@ -292,9 +300,8 @@ const ReferralLink = () => {
           >
             <RWebShare
               data={{
-                text: "Ready to make money? Join NairaBoom, the ultimate Play2Earn platform where you can use your alerts to play games and cashout. \
-                You can also Monetize your account to earn daily from gameplays & winnings on the platform and withdraw instantly! Sign up with my link \
-                now and receive 35,000 Boom Coins to start cashing out!",
+                text: "I swap my bank alerts to Boom Coin Tokens (BCT) on NairaBoom and earn daily income. Join me now to receive 35,000 \
+                Boom Coin Tokens (BCT) and start cashing out too!",
                 url: `https://nairaboom.ng/auth/signup/customer?r=${data?.referral_code}&type=normal&t=normal`,
                 title: "Nairaboom",
               }}
