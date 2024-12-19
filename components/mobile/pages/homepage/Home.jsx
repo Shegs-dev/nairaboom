@@ -105,7 +105,7 @@ const Home = () => {
     dots: true, // Show indication dots
     infinite: true, // Enable infinite looping
     autoplay: true, // Enable autoplay
-    autoplaySpeed: 2000, // Time between slide transitions in milliseconds (2 seconds)
+    autoplaySpeed: 5000, // Time between slide transitions in milliseconds (2 seconds)
     speed: 1000, // Transition speed for the slides
     slidesToShow: 1, // Number of slides visible at a time
     slidesToScroll: 1, // Number of slides to scroll per swipe/animation

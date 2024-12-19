@@ -132,6 +132,18 @@ const Dashboard = () => {
     { id: 3, price: "5,000", status: true }
   ]);
 
+  const [showBalance, setShowBalance] = useState(false); // State to toggle balance visibility
+
+  const toggleBalance = () => {
+    setShowBalance((prevState) => !prevState); // Toggle the state
+  };
+
+  const [showBalance2, setShowBalance2] = useState(false); // State to toggle balance visibility
+
+  const toggleBalance2 = () => {
+    setShowBalance2((prevState) => !prevState); // Toggle the state
+  };
+
   function parseJwt(token) {
     if (!bearerToken) return;
     var base64Url = token?.split(".")[1];
@@ -726,6 +738,15 @@ const Dashboard = () => {
                   BALANCE
                 </div>
                 <div className="flex space-x-1 items-start">
+                  <p className="text-[8px] font-changa">BALANCE</p>
+                  <button
+                    onClick={toggleBalance}
+                    className="focus:outline-none"
+                  >
+                    {showBalance ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+                <div className="flex space-x-1 items-start">
                   <p
                     className="text-[15px]"
                     style={{ fontFamily: "Changa One" }}
@@ -742,16 +763,22 @@ const Dashboard = () => {
                       />
                     ) : (
                       <>
-                        {walletBalance
-                          ? !walletBalance ||
-                            walletBalance?.payload?.totalLength === 0 ||
-                            walletBalance === null ||
-                            walletBalance === undefined
-                            ? 0
-                            : `${formatAmount(
-                                walletBalance.payload.content[0].amount
-                              )}`
-                          : 0}
+                        {showBalance ? (
+                          <>
+                            {walletBalance
+                              ? !walletBalance ||
+                                walletBalance?.payload?.totalLength === 0 ||
+                                walletBalance === null ||
+                                walletBalance === undefined
+                                ? 0
+                                : `${formatAmount(
+                                    walletBalance.payload.content[0].amount
+                                  )}`
+                              : 0}
+                          </>
+                        ) : (
+                          <>******</>
+                        )}
                       </>
                     )}
                   </p>
@@ -799,6 +826,15 @@ const Dashboard = () => {
                   BALANCE
                 </div>
                 <div className="flex space-x-1 items-start">
+                  <p className="text-[8px] font-changa">BALANCE</p>
+                  <button
+                    onClick={toggleBalance2}
+                    className="focus:outline-none"
+                  >
+                    {showBalance2 ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+                <div className="flex space-x-1 items-start">
                   <p
                     className="text-[15px]"
                     style={{ fontFamily: "Changa One" }}
@@ -815,16 +851,22 @@ const Dashboard = () => {
                       />
                     ) : (
                       <>
-                        {bonusBalance
-                          ? !bonusBalance ||
-                            bonusBalance?.payload?.totalLength === 0 ||
-                            bonusBalance === null ||
-                            bonusBalance === undefined
-                            ? `0`
-                            : `${formatAmount(
-                                bonusBalance.payload.content[0].amount
-                              )}`
-                          : `0`}
+                        {showBalance2 ? (
+                          <>
+                            {bonusBalance
+                              ? !bonusBalance ||
+                                bonusBalance?.payload?.totalLength === 0 ||
+                                bonusBalance === null ||
+                                bonusBalance === undefined
+                                ? `0`
+                                : `${formatAmount(
+                                    bonusBalance.payload.content[0].amount
+                                  )}`
+                              : `0`}
+                          </>
+                        ) : (
+                          <>******</>
+                        )}
                       </>
                     )}
                   </p>
