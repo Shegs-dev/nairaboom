@@ -37,6 +37,23 @@ export const UserReferralStats = async (bearerToken) => {
   }
 };
 
+export const sellVisibility = async (bearerToken) => {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${AUTH_API_ROUTES.PRODUCTION_BASE_URL}/api/sell_over_visibility`,
+      headers: {
+        "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const sellEligibility = async (bearerToken) => {
   try {
     const response = await axios({
@@ -304,9 +321,7 @@ export const registerCustomer = async (requestData) => {
       headers: {
         "X-APP-KEY": AUTH_API_ROUTES.PRODUCTION_X_APP_KEY,
       },
-      data: {
-        requestData: requestData,
-      },
+      data: requestData,
     });
 
     return response;

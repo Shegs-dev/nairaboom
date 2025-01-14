@@ -561,10 +561,10 @@ const PlayGameUser = () => {
                 <Spacer />
                 <Text fontSize={"1.25rem"}>
                   ₦{" "}
-                  {cashBack.amount > 1 && cashBack.amount < 20000
-                    ? 200
-                    : cashBack.amount >= 20000
-                    ? 0.02 * cashBack.amount
+                  {cashBack.amount > 1 && cashBack.amount < 10000
+                    ? stakeCalculator(cashBack.amount)
+                    : cashBack.amount >= 10000
+                    ? 0.025 * cashBack.amount
                     : 0.0}
                 </Text>
               </HStack>
@@ -686,7 +686,7 @@ const PlayGameUser = () => {
                         alt=""
                       />
                     </Td>
-                    <Td>1,000 NAIRA IN BOOM COINS WALLET</Td>
+                    <Td>3 SURE ENTRY</Td>
                   </Tr>
                   <Tr>
                     <Td display={"flex"} flex flexDir={"row"}>
@@ -703,7 +703,7 @@ const PlayGameUser = () => {
                         alt=""
                       />
                     </Td>
-                    <Td>50% IN BOOM COINS WALLET</Td>
+                    <Td>3 SURE ENTRY</Td>
                   </Tr>
                   <Tr>
                     <Td display={"flex"} flex flexDir={"row"}>

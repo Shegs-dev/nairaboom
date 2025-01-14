@@ -111,7 +111,7 @@ const ReferralLink = () => {
                   color="nairablue"
                   textAlign={"center"}
                 >
-                  Earn ₦100 in your Boom Coins wallet everytime you share Nairaboom with your friends via any social media platform
+                  Earn 100 Boom Coin Tokens (BCT) everytime you share Nairaboom with your friends via any social media platform.
                 </Text>
               </Box>
             </>

@@ -912,7 +912,7 @@ const Wheelcomp = () => {
                     fontWeight={700}
                     fontSize="1.5rem"
                   >
-                    YOU HAVE WON EVERY NAIRA IN YOUR Boom Coins WALLET
+                    YOU HAVE CASHED IN YOUR BOOM WALLET!
                   </ModalHeader>
                 </>
               ) : Number(noOfGreens) === 4 ? (
@@ -1024,8 +1024,8 @@ const Wheelcomp = () => {
                     fontWeight={600}
                     fontSize="1.2rem"
                   >
-                    You have successfully rolled over your alert plus 1,000 Naira
-                    in your Boom Coins Wallet!
+                    Wow! &#127881; You've earned an entry in your 3 Sure Cashout Tracker! Get 3 green 
+                    ticks in your tracker and cash your cumulative. Keep swapping you've got this!
                   </ModalHeader>
                 </>
               ) : settingsCheck(
@@ -1047,8 +1047,8 @@ const Wheelcomp = () => {
                     fontWeight={600}
                     fontSize="1.2rem"
                   >
-                    You have successfully rolled over your alert plus 50% in your
-                    Boom Coins Wallet!
+                    Wow! &#127881; You've earned an entry in your 3 Sure Cashout Tracker! Get 3 green 
+                    ticks in your tracker and cash your cumulative. Keep swapping you've got this!
                   </ModalHeader>
                 </>
               ) : settingsCheck(

@@ -93,32 +93,7 @@ const HowToPlay = () => {
         pt = { 10 }
         px = { 4 }
         pos = "relative" >
-        <Image
-        // src="/redesign/dashboard/coin01.png"
-        src = "/redesign/homepage/coin03.png"
-        pos = "absolute"
-        h = {
-            { base: "8rem", md: "10rem" } }
-        m = "auto"
-        insetY = { 0 }
-        right = {
-            { xs: 0, md: "3rem" } }
-        zIndex = { 0 }
-        alt = { "coin" }
-        /> 
-        <Image src = "/redesign/dashboard/coin02.png"
-        pos = "absolute"
-        h = {
-            { base: "8rem", md: "10rem" } }
-        bottom = "-2rem"
-        m = "auto"
-        left = { 0 }
-        right = {
-            { base: "13rem", md: "25rem" } }
-        zIndex = { 0 }
-        alt = { "coin" }
-        />
-
+        
         {
             /* <Image
                          src="/redesign/homepage/coin03.png"
@@ -133,69 +108,10 @@ const HowToPlay = () => {
                         alt={'coin'}
                       /> */
         } {
-            [{
-                    image: "/play-card-01.png",
-                    title: "1. Receive a Credit or Debit Alert",
-                    text: "Signup or Login to your Nairaboom game profile anytime you get a valid credit or debit alert.",
-                },
-                {
-                    image: "/play-card-04.png",
-                    title: "2. Win The Jackpot",
-                    text: "Match all 4 Green balls when you Spin To Cashout and Win The Jackpot!!!",
-                },
-            ].map((item, index) => ( 
-                <Stack key = { index }
-                pos = "relative"
-                py = { 5 }
-                px = {
-                    { base: 2, md: 5 } }
-                w = {
-                    { base: "45%", md: "30%", lg: "20%" } }
-                h = {
-                    { xs: "15rem", sm: "16rem", md: "initial" } }
-                borderRadius = { 20 }
-                borderWidth = { 1 }
-                borderColor = "white"
-                boxShadow = "4px -4px 30px -1px rgba(255,255,255,0.4) inset"
-                background = "radial-gradient(231% 135.8% at 0.9% 2.98%, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.00) 100%)"
-                backdropFilter = "blur(21px)" >
-                <Box bgImage = "/redesign/homepage/play-card-bg.png"
-                bgSize = "cover"
-                bgPos = "center"
-                pos = "absolute"
-                zIndex = { 30 }
-                top = "-1.2rem"
-                left = "0"
-                right = "0"
-                m = "auto"
-                w = "fit-content"
-                borderRadius = { "full" } >
-                <Image m = { 3 }
-                w = "1.75rem"
-                src = { "/redesign/homepage/" + item.image }
-                alt = "" />
-                </Box> 
-                <Text pt = {
-                    { base: 2, md: 4 } }
-                color = "nairagreen"
-                fontSize = {
-                    { xs: "0.7em", sm: "1rem", md: "1.5rem" } }
-                fontWeight = { 600 } >
-                { item.title } 
-                </Text> 
-                <Text color = "white"
-                fontSize = {
-                    { xs: "0.7em", sm: "0.9rem", md: "1rem" } }
-                fontWeight = {
-                    { md: 600 } } >
-                { item.text } 
-                </Text> 
-                </Stack>
-            ))
+            
         } 
         </Flex>
 
-        <br/><br/>
         <Text
           w="90%"
           margin="auto"
@@ -216,10 +132,11 @@ const HowToPlay = () => {
           <Text fontWeight={700}>
           I. SWAP YOUR BANK ALERT
           </Text>
+          <br/>
           You can turn your everyday bank alerts into value by swapping them on NairaBoom.<br/>
           <br/>
           <b>How To Swap Your Alert:</b>
-          <br/> 
+          <br/> <br/> 
           1. <b>Sign Up:</b> Create your account. <br/>
           2. <b>Log In:</b> Access your dashboard by logging in.<br/>
           3. <b>Make a Deposit:</b> Fund your wallet with the minimum deposit. <br/>
@@ -229,7 +146,7 @@ const HowToPlay = () => {
           <br/>
           <br/>
           <b>How to Cashout from Swapping your Bank Alerts:</b>
-          <br/> 
+          <br/> <br/> 
           1. <b>Cashout Keys:</b> Match the Cashout Keys 🔑 in the exact order as seen on your dashboard 
           in one spin cycle to win a percentage of your Boom Coin Tokens (BCT) as cash. <br/>
           2. <b>3 Green Balls :</b> Win your accumulated Boom Coin Tokens (BCT) as cash when you get 
@@ -240,6 +157,7 @@ const HowToPlay = () => {
           <Text fontWeight={700}>
             II. 3 SURE CASHOUT
           </Text>
+          <br/> 
           Boost your cashout chances with 3 Sure Cashout which offers a cumulative win across three consecutive 
           rollovers (alert swaps), ensuring higher odds of cashing out💸 !
           <br/>
@@ -273,43 +191,46 @@ const HowToPlay = () => {
           color={"white"}
         >
           <Text fontWeight={700}>III. FASTEST FINGERS</Text>
+          <br/>
           This is a gameplay where if you are the quickest to type in the Money Word in the Fastest Fingers field, you win a quick 
           cash reward.<br/><br/>
           <Text fontWeight={700}>How to Play:</Text>
           <br/> 
           1. <b>Word Announcement:</b> Watch out for the Money Word announcement on the NairaBoom Telegram Channel or 
-          any of the participating social media handles or mass media stations (as pre-announced). <br/>
-          2. <b>Wait for Time Slot:</b> Be ready during the specified time slot pre-announced.<br/>
+          any of the participating social media handles or mass media stations (as pre-announced). <br/><br/> 
+          2. <b>Wait for Time Slot:</b> Be ready during the specified time slot pre-announced.<br/><br/> 
           3. <b>Enter the Money Word:</b> Quickly type the Money Word into the Fastest Fingers field. The winning 
           time could be any moment within the time slot.
-          <br/>
+          <br/><br/> 
           4. <b>Winner Selection:</b> The fastest entry at the exact winning moment wins the quick cash for that time slot!<br/>
           <br/>
           <Text fontWeight={700}>IV. MONETIZATION 💸</Text>
+          <br/> 
           Unlock the power of NairaBoom's Monetization Program and earn lifetime commissions by growing the NairaBoom community.
           <br/><br/>
           <Text fontWeight={700}>How It Works:</Text>
           <br/> 
           1. <b>Grow Your Trybe:</b> Share your unique referral link and earn ₦100.000 for every successful referral when 
           they complete their first rollover (alert swap). Once you hit the required referral count (minimum of 5 referrals), 
-          your Monetization Status will be unlocked, opening the door to even more earnings. <br/>
+          your Monetization Status will be unlocked, opening the door to even more earnings. <br/><br/> 
           2. <b>Earn Big:</b> After activation of your monetization status, you will start earning up to 40% on all swap fares 
-          and cashouts from your Trybe.<br/>
+          and cashouts from your Trybe.<br/><br/> 
           3. <b>Lifetime Earnings:</b> With no cap on referrals or earnings, you can keep growing your Trybe and boost your income for life.
           <br/><br/>
           <Text fontWeight={700}>Steps to Grow Your Trybe & Earn:</Text>
           <br/> 
           1. <b>Access Your Referral Link:</b> Head to your dashboard menu and tap on <b>'Refer Your Trybe'</b> to find your unique referral 
-          link. <br/>
+          link. <br/><br/> 
           2. <b>Share Your Referral Link:</b> Click "Share My Link To Refer" and send it to your contacts via social media or by copying 
-          and pasting your link directly.<br/>
+          and pasting your link directly.<br/><br/> 
           3. <b>Expand Your Trybe:</b> There’s no cap on the number of referrals or your potential earnings because the more people you refer 
           to join your Trybe, the more you earn on the platform.
-          <br/>
+          <br/><br/> 
           4. <b>Earn for Life:</b> Get up to 40% on swap fares and cashouts of your Trybe credited to your wallet, which you can withdraw to 
           your bank account anytime.
-          <br/>
+          <br/><br/> 
           <Text fontWeight={700}>Multi-Level Trybe Earnings:</Text>
+          <br/> 
           Your earnings go beyond your direct referrals in your Trybe. When your referrals bring in their own referrals, you continue earning 
           across three levels of referrals. This means your income grows not only from your direct referrals but also from those they bring 
           into NairaBoom. The bigger your “Trybe”, the more you earn!<br/>
@@ -325,11 +246,12 @@ const HowToPlay = () => {
           Turn your referral efforts into a lifetime earning opportunity with NairaBoom’s Monetization Program! 🌟
           <br/><br/><br/>
           <Text fontWeight={700}>V. BOOM COIN TOKENS (BCT) SELL OFFER</Text>
+          <br/> 
           Convert your Boom Coin Tokens (BCT) into cash through random sell offers!
           <br/>
           <br/>
           <b>How It Works</b>
-          <br/>
+          <br/><br/> 
           When your Boom Coin Tokens (BCT) hit a certain value, you’ll get a random sell offer.
           <br/><br/>
           <b>Accept:</b> Tap "Accept" to instantly convert your Boom Coin Tokens (BCT) into cash.
@@ -341,6 +263,7 @@ const HowToPlay = () => {
           No penalties for declining a sell offer, and your Boom Coin Tokens (BCT) remain intact.
           <br/><br/><br/>
           <Text fontWeight={700}>VI. SOCIAL MEDIA CASHOUT</Text>
+          <br/> 
           Turn your Boom Coin Tokens (BCT) into cash by participating in our social media challenges!
           <br/>
           <br/>
@@ -361,6 +284,7 @@ const HowToPlay = () => {
           Wallet will be converted into cash!
           <br/><br/>
           <Text fontWeight={700}>Why Choose NairaBoom?</Text>
+          <br/> 
           Transform your everyday bank alerts into BIG BOOMS with NairaBoom! Join our vibrant community today and unlock multiple cashout options 
           alongside a rewarding monetization program that maximizes the value of your alerts!💸
         </Text>

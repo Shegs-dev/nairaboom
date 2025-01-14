@@ -255,19 +255,13 @@ const Home = () => {
                   className="ml-1 text-[13px] font-normal"
                   style={{ fontFamily: "Source Sans Pro" }}
                 >
-                  &nbsp;{item.fullname} won&nbsp;
+                  &nbsp;{item.fullname} cashed in&nbsp;
                 </span>
                 <span
                   className=" text-[13px] text-white font-bold"
                   style={{ fontFamily: "Source Sans Pro" }}
                 >
                   &nbsp;NGN {item.amount_won}&nbsp;
-                </span>
-                <span
-                  className="text-[13px] font-normal"
-                  style={{ fontFamily: "Source Sans Pro" }}
-                >
-                  &nbsp;in 3 Sure Cashout&nbsp;
                 </span>
               </div>
             ))}
@@ -311,19 +305,19 @@ const Home = () => {
                 </div>
                 <div className="absolute ml-4 text-start text-3xl">
                   <p
-                    className="mt-2 mb-1 text-[33px]"
+                    className="mt-2 mb-1 text-[30px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     WITHDRAW
                   </p>
                   <p
-                    className="-mt-3 mb-1 text-[33px]"
+                    className="-mt-3 mb-1 text-[30px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     UP TO
                   </p>
                   <p
-                    className="-mt-3 text-[33px]"
+                    className="-mt-3 text-[30px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     <b>₦</b>35,000,000
@@ -349,19 +343,19 @@ const Home = () => {
                 </div>
                 <div className="absolute ml-4 text-start text-3xl">
                   <p
-                    className="mt-2 mb-1 text-[30px]"
+                    className="mt-2 mb-1 text-[25px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     GET 35,000 BOOM
                   </p>
                   <p
-                    className="-mt-3 mb-1 text-[30px]"
+                    className="-mt-3 mb-1 text-[25px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     COIN TOKENS ON YOUR
                   </p>
                   <p
-                    className="-mt-3 text-[30px]"
+                    className="-mt-3 text-[25px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     FIRST DEPOSIT
@@ -374,7 +368,7 @@ const Home = () => {
                 />
                 <img
                   src="/mobile/assets/slide2.svg"
-                  className="absolute bottom-0 cursor-pointer right-2 max-w-[167px] max-h-[101px] min-w-[167px] min-h-[101px]"
+                  className="absolute bottom-0 cursor-pointer right-0 max-w-[167px] max-h-[101px] min-w-[167px] min-h-[101px]"
                 />
               </div>
             </div>
@@ -387,13 +381,13 @@ const Home = () => {
                 </div>
                 <div className="absolute ml-4 text-start text-3xl">
                   <p
-                    className=" mb-1 text-[30px]"
+                    className=" mb-1 text-[27px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     CASHOUT YOUR CUMULATIVE{" "}
                   </p>
                   <p
-                    className="-mt-3 text-[30px]"
+                    className="-mt-3 text-[27px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     WITH 3 SURE CASHOUT
@@ -423,19 +417,19 @@ const Home = () => {
                 </div>
                 <div className="absolute ml-4 text-start text-2xl">
                   <p
-                    className="mt-2 text-[25px]"
+                    className="mt-2 text-[24px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     MONETIZE YOUR
                   </p>
                   <p
-                    className="-mt-2 text-[25px]"
+                    className="-mt-2 text-[24px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     ACCOUNT & EARN
                   </p>
                   <p
-                    className="-mt-2 text-[25px]"
+                    className="-mt-2 text-[24px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     FOR LIFE
@@ -448,7 +442,7 @@ const Home = () => {
                 />
                 <img
                   src="/mobile/assets/slide4.svg"
-                  className="absolute cursor-pointer right-10 bottom-0 max-w-[153px] max-h-[151px] min-w-[153px] min-h-[151px]"
+                  className="absolute cursor-pointer right-5 bottom-0 max-w-[153px] max-h-[151px] min-w-[153px] min-h-[151px]"
                 />
               </div>
             </div>
@@ -489,18 +483,18 @@ const Home = () => {
                   <input
                     type="text"
                     placeholder="Type here..."
-                    className="max-w-[125px] max-h-[33.48px] min-w-[125px] min-h-[33.48px] bg-white text-neutral-500 text-xs text-center border-4 border-secondary rounded-full"
+                    className="max-w-[115px] max-h-[33.48px] min-w-[125px] min-h-[33.48px] bg-white text-neutral-500 text-xs text-center border-4 border-secondary rounded-full"
                   />
                   <img
                     onClick={() => router.push("/auth/signup/customer")}
                     src="/mobile/assets/Enter.png"
-                    className="cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[106.59px] max-h-[45px] min-w-[106.59px] min-h-[45px]"
+                    className="cursor-pointer transition-transform transform active:scale-90 ml-[3px] max-w-[100.59px] max-h-[45px] min-w-[100.59px] min-h-[45px]"
                   />
                 </div>
 
                 <img
                   src="/mobile/assets/slide5.svg"
-                  className="absolute mt-[0px] cursor-pointer right-0 max-w-[137px] max-h-[160px] min-w-[137px] min-h-[160px]"
+                  className="absolute mt-[0px] cursor-pointer right-0 max-w-[123px] max-h-[160px] min-w-[123px] min-h-[160px]"
                 />
                 {/* <img
               src="/mobile/assets/Thousands.png"
@@ -517,19 +511,19 @@ const Home = () => {
                 </div>
                 <div className="absolute ml-4 text-start text-3xl">
                   <p
-                    className="mt-2 text-[35px]"
+                    className="mt-2 text-[30px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     SELL YOUR
                   </p>
                   <p
-                    className="-mt-3 text-[35px]"
+                    className="-mt-3 text-[30px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     BOOM COIN TOKENS
                   </p>
                   <p
-                    className="-mt-3 text-[35px]"
+                    className="-mt-3 text-[30px]"
                     style={{ fontFamily: "Changa One" }}
                   >
                     FOR CASH
@@ -779,7 +773,7 @@ const Home = () => {
               power of your Bank Alerts
             </p>
             <div
-              onClick={() => console.log("reload")}
+              onClick={() => router.push("/auth/signup/customer")}
               className="cursor-pointer mb-3 transition-transform transform active:scale-90"
             >
               <img

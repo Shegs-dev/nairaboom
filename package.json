@@ -45,6 +45,7 @@
     "react-moving-text": "^0.0.7",
     "react-number-format": "^5.1.2",
     "react-password-checklist": "^1.4.1",
+    "react-query": "^3.39.3",
     "react-responsive": "^10.0.0",
     "react-select": "^5.8.0",
     "react-share": "^4.4.1",

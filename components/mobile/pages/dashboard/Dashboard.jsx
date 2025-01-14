@@ -78,6 +78,7 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import {
   sellEligibility,
+  sellVisibility,
   sellAcceptance,
   getLatestCashbackTime,
   getBonusWallet,
@@ -111,6 +112,7 @@ const Dashboard = () => {
   const [monetizeModal, setMonetizeModal] = useState(false);
   const [agreeMonetizeModal, setAgreeMonetizeModal] = useState(false);
   const [agreedMonetizeModal, setAgreedMonetizeModal] = useState(false);
+  const [notAllowMonetizeModal, setNotAllowMonetizeModal] = useState(false);
   const [allowMonetize, setAllowMonetize] = useState(false);
   const [agreeMonetize, setAgreeMonetize] = useState(false);
   const { user, error } = useUser();
@@ -361,11 +363,15 @@ const Dashboard = () => {
   }, []);
 
   const allowedModalRedirect = () => {
-    if (agreeMonetize) {
+    if (user?.details?.monetization_status === '1') {
       setAgreedMonetizeModal(true);
-    } else if (!agreeMonetize) {
+    } else if (user?.details?.monetization_status === '3') {
       setAgreeMonetizeModal(true);
     }
+  };
+
+  const notAllowedModalRedirect = () => {
+    setNotAllowMonetizeModal(true);
   };
 
   const checkMonetizationEligibility = async () => {
@@ -388,64 +394,121 @@ const Dashboard = () => {
     const res = await getThreeSureCashOutStatus(bearerToken);
 
     if (res?.data?.payload?.games) {
-      let x = 1;
+      //let x = 1;
       let checkers = [];
-      while (x <= res?.data?.payload?.games.length) {
-        let val = false;
-        if (res?.data?.payload?.games[x - 1].green_balls > 0) {
-          val = true;
-        }
-
-        let check = {};
-        check.id = x;
-        check.price = res?.data?.payload?.games[x - 1].stake_amount;
-        check.status = val;
-        checkers.push(check);
-
-        x++;
+      if (res?.data?.payload?.is_win_state && res?.data?.payload?.games_played === 3) {
+        toast({
+          status: "success",
+          isClosable: true,
+          duration: "5000",
+          title: "Congrats! 🎉 You've hit 3 Sure Cashout and Your Wallet has been credited!",
+          position: "top"
+        })
       }
+      if (!res?.data?.payload?.is_win_state && res?.data?.payload?.games_played === 3) {
+        toast({
+          status: "error",
+          isClosable: true,
+          duration: "5000",
+          title: "Oops! You missed 3 Sure Cashout. Restart from Game 1 and try again!",
+          position: "top"
+        })
+      }
+      for (let x = 1; x <= 3; x++) {
+        if (x <= res?.data?.payload?.games.length) {
+          let val = 1;
+          if (res?.data?.payload?.games[x - 1].green_balls > 0) {
+            val = 2;
+          }
+
+          let check = {};
+          check.id = x;
+          check.price = res?.data?.payload?.games[x - 1].stake_amount;
+          check.status = val;
+          checkers.push(check);
+        } else {
+          let val = 0;
+          let check = {};
+          check.id = x;
+          check.price = '0.00';
+          check.status = val;
+          checkers.push(check);
+        }
+      }
+      // while (x <= res?.data?.payload?.games.length) {
+      //   let val = false;
+      //   if (res?.data?.payload?.games[x - 1].green_balls > 0) {
+      //     val = true;
+      //   }
+
+      //   let check = {};
+      //   check.id = x;
+      //   check.price = res?.data?.payload?.games[x - 1].stake_amount;
+      //   check.status = val;
+      //   checkers.push(check);
+
+      //   x++;
+      // }
       setThreeSureCashout(checkers);
     }
   };
 
   const fetchSellEligibility = async () => {
-    setIsLoading(true);
-    const res = await sellEligibility(bearerToken);
-    setIsLoading(false);
-    if (res.status && (res.status === 200 || res.status === 201)) {
-      if (res?.data?.payload?.status === "ineligible") {
-        setSell(false);
-        setNoSell(true);
-      } else {
-        setSellPayload(res?.data?.payload);
-        setNoSell(false);
-        setSell(true);
+    if (sellButton === 0) {
+      setSell(false);
+      setNoSell(true);
+    } else {
+      setIsLoading(true);
+      const res = await sellEligibility(bearerToken);
+      setIsLoading(false);
+      if (res.status && (res.status === 200 || res.status === 201)) {
+        if (res?.data?.payload?.status === "ineligible") {
+          setSell(false);
+          setNoSell(true);
+        } else {
+          setSellPayload(res?.data?.payload);
+          setNoSell(false);
+          setSell(true);
+        }
       }
     }
   };
 
   const fetchBuyAvailability = async () => {
-    setIsLoading(true);
-    const res = await sellEligibility(bearerToken);
-    setIsLoading(false);
-    if (res.status && (res.status === 200 || res.status === 201)) {
-      if (res?.data?.payload?.status === "ineligible") {
-        setNoBuy(true);
-      } else {
-        setNoBuy(false);
-      }
-    }
+    setNoBuy(true);
+    // if (sellButton === 0) {
+    //   setNoBuy(true);
+    // } else {
+    //   setIsLoading(true);
+    //   const res = await sellEligibility(bearerToken);
+    //   setIsLoading(false);
+    //   if (res.status && (res.status === 200 || res.status === 201)) {
+    //     if (res?.data?.payload?.status === "ineligible") {
+    //       setNoBuy(true);
+    //     } else {
+    //       setNoBuy(false);
+    //     }
+    //   }
+    // }
   };
 
   const checkSellEligibility = async () => {
     setIsLoading(true);
-    const res = await sellEligibility(bearerToken);
-    setIsLoading(false);
+    const res = await sellVisibility(bearerToken);
     if (res.status && (res.status === 200 || res.status === 201)) {
-      if (res?.data?.payload?.status === "ineligible") {
-        setSellButton(0);
+      if (res?.data?.message === "Sell offer is now active") {
+        const response = await sellEligibility(bearerToken);
+        setIsLoading(false);
+        if (response.status && (response.status === 200 || response.status === 201)) {
+          if (response?.data?.payload?.status === "ineligible") {
+            setSellButton(0);
+          } else {
+            setSellButton(1);
+          }
+        }
       } else {
-        setSellButton(1);
+        setIsLoading(false);
+        setSellButton(0);
       }
     }
   };
@@ -478,6 +541,7 @@ const Dashboard = () => {
     const res = await sellAcceptance(bearerToken);
     setIsLoading(false);
     if (res?.data?.status) {
+      setSell(false);
       toast({
         status: "success",
         isClosable: true,
@@ -488,18 +552,22 @@ const Dashboard = () => {
         window.location.reload();
       });
     } else {
+      setSell(false);
       toast({
         status: "error",
         isClosable: true,
         duration: "5000",
         title: res.data.message,
         position: "top"
+      }).then(() => {
+        window.location.reload();
       });
     }
   };
 
   const completeSellDecline = async () => {
     setIsLoading(true);
+    setSell(false);
     const res = await sellDecline();
     setIsLoading(false);
     if (res?.data?.status) {
@@ -519,6 +587,8 @@ const Dashboard = () => {
         duration: "5000",
         title: res.data.message,
         position: "top"
+      }).then(() => {
+        window.location.reload();
       });
     }
   };
@@ -574,14 +644,15 @@ const Dashboard = () => {
     return (
       <div>
         <div className="gold-ring-container bg-cover bg-center bg-no-repeat flex items-center justify-center max-w-[92px] max-h-[88px] min-w-[92px] min-h-[88px]">
-          {item.status === false ? (
+          {item.status === 1 &&
             <IoClose size={50} color={"red"} />
-          ) : (
+          }
+          {item.status === 2 &&
             <img
               src="/mobile/assets/3SCCheck.png"
               className="max-w-[43px] max-h-[27px] min-w-[43px] min-h-[27px]"
             />
-          )}
+          }
         </div>
         <div className="gradient-div font-changa font-semibold -mt-2 p-[2px] text-center rounded-full text-secondary ">
           ₦{item.price}
@@ -787,7 +858,10 @@ const Dashboard = () => {
                 </>
               ) : (
                 <>
-                  <div>
+                  <div
+                    onClick={notAllowedModalRedirect}
+                    className="cursor-pointer brightness-50"
+                  >
                     <img src="/mobile/assets/Monetize.png" />
                   </div>
                 </>
@@ -1109,13 +1183,13 @@ const Dashboard = () => {
                 justifyContent="space-between"
                 alignItems={"center"}
               >
-                <div>
-                  <b>Current Rate</b>
+                <div className="w-1/3">
+                  <b>Rate</b><br/>
                   <input size="5" value={sellPayload?.sell_percentage} disabled />
                 </div>
-                <div>
-                  <b>Amount</b>
-                  <input size="5" value={sellPayload?.sell_amount_display} disabled />
+                <div className="w-2/3">
+                  <b>Amount</b><br/>
+                  <input size="15" value={"₦" + sellPayload?.sell_amount_display} disabled />
                 </div>
               </Box>
               <p>
@@ -1297,6 +1371,59 @@ const Dashboard = () => {
         </Modal>
         <Modal
           isCentered
+          isOpen={notAllowMonetizeModal}
+          onClose={() => {
+            setNotAllowMonetizeModal(false);
+          }}
+        >
+          <ModalOverlay />
+          <ModalContent
+            fontFamily={"poppins"}
+            w={{ base: "90%", md: "45%" }}
+            maxW={"95%"}
+            p={{ base: "1rem", md: "3rem" }}
+          >
+            <ModalHeader>
+              <Center>
+                <font size="14" color="nairagreen">
+                  MONETIZE
+                </font>
+              </Center>
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              You are not eligible for monetization. Build your Trybe and increase your Boom 
+              Coin Tokens.
+              <br /><br />
+              <Center>
+                <Button
+                  w="100%"
+                  h="3.25rem"
+                  colorScheme="none"
+                  bg="nairagreen"
+                  color="white"
+                  borderRadius={50}
+                  pos="relative"
+                  border={"none"}
+                  type={"button"}
+                  fontWeight={700}
+                  fontSize={"2xl"}
+                  cursor={"pointer"}
+                  isDisabled={false}
+                  _hover={{ transform: "scale(1.05)" }}
+                  onClick={() => {
+                    setNotAllowMonetizeModal(false);
+                  }}
+                >
+                  OK
+                </Button>
+              </Center>
+              <br />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+        <Modal
+          isCentered
           isOpen={agreedMonetizeModal}
           onClose={() => {
             setAgreedMonetizeModal(false);
@@ -1368,19 +1495,13 @@ const Dashboard = () => {
                 className="ml-1 text-[13px] font-normal"
                 style={{ fontFamily: "Source Sans Pro" }}
               >
-                &nbsp;{item.fullname} won&nbsp;
+                &nbsp;{item.fullname} cashed in&nbsp;
               </span>
               <span
                 className=" text-[13px] text-white font-bold"
                 style={{ fontFamily: "Source Sans Pro" }}
               >
                 &nbsp;NGN {item.amount_won}&nbsp;
-              </span>
-              <span
-                className="text-[13px] font-normal"
-                style={{ fontFamily: "Source Sans Pro" }}
-              >
-                &nbsp;in 3 Sure Cashout&nbsp;
               </span>
             </div>
           ))}

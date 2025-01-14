@@ -208,7 +208,7 @@ const CustomerRegisterForm = () => {
                 isClosable: true,
                 duration: 6000,
                 status: "success",
-                title: "Refer 35 People and Monetize Your Account only on Nairaboom!",
+                title: "Refer 10 people and start earning regular income with your Nairaboom account!",
                 position: "top",
             });
             router.push("/auth?p=login");
