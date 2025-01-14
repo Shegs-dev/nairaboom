@@ -62,6 +62,7 @@ import {
   BsShareFill,
   BsWallet
 } from "react-icons/bs";
+import { FaBell } from "react-icons/fa";
 import { HiHome, HiOutlineCash } from "react-icons/hi";
 import { MdContentPaste, MdFileCopy, MdHelpCenter } from "react-icons/md";
 import { RiMenu3Fill } from "react-icons/ri";
@@ -129,6 +130,7 @@ const Dashboard = () => {
   const [cashOut1, setCashOut1] = useState(0);
   const [cashOut2, setCashOut2] = useState(0);
   const [cashOut3, setCashOut3] = useState(0);
+  const [unreadNotfis, setUnreadNotfis] = useState(4);
 
   const [notifications, setNotifications] = useState([]);
   const [notificationModal, setNotificationModal] = useState(false);
@@ -363,9 +365,9 @@ const Dashboard = () => {
   }, []);
 
   const allowedModalRedirect = () => {
-    if (user?.details?.monetization_status === '1') {
+    if (user?.details?.monetization_status === "1") {
       setAgreedMonetizeModal(true);
-    } else if (user?.details?.monetization_status === '3') {
+    } else if (user?.details?.monetization_status === "3") {
       setAgreeMonetizeModal(true);
     }
   };
@@ -396,23 +398,31 @@ const Dashboard = () => {
     if (res?.data?.payload?.games) {
       //let x = 1;
       let checkers = [];
-      if (res?.data?.payload?.is_win_state && res?.data?.payload?.games_played === 3) {
+      if (
+        res?.data?.payload?.is_win_state &&
+        res?.data?.payload?.games_played === 3
+      ) {
         toast({
           status: "success",
           isClosable: true,
           duration: "5000",
-          title: "Congrats! 🎉 You've hit 3 Sure Cashout and Your Wallet has been credited!",
+          title:
+            "Congrats! 🎉 You've hit 3 Sure Cashout and Your Wallet has been credited!",
           position: "top"
-        })
+        });
       }
-      if (!res?.data?.payload?.is_win_state && res?.data?.payload?.games_played === 3) {
+      if (
+        !res?.data?.payload?.is_win_state &&
+        res?.data?.payload?.games_played === 3
+      ) {
         toast({
           status: "error",
           isClosable: true,
           duration: "5000",
-          title: "Oops! You missed 3 Sure Cashout. Restart from Game 1 and try again!",
+          title:
+            "Oops! You missed 3 Sure Cashout. Restart from Game 1 and try again!",
           position: "top"
-        })
+        });
       }
       for (let x = 1; x <= 3; x++) {
         if (x <= res?.data?.payload?.games.length) {
@@ -430,7 +440,7 @@ const Dashboard = () => {
           let val = 0;
           let check = {};
           check.id = x;
-          check.price = '0.00';
+          check.price = "0.00";
           check.status = val;
           checkers.push(check);
         }
@@ -499,7 +509,10 @@ const Dashboard = () => {
       if (res?.data?.message === "Sell offer is now active") {
         const response = await sellEligibility(bearerToken);
         setIsLoading(false);
-        if (response.status && (response.status === 200 || response.status === 201)) {
+        if (
+          response.status &&
+          (response.status === 200 || response.status === 201)
+        ) {
           if (response?.data?.payload?.status === "ineligible") {
             setSellButton(0);
           } else {
@@ -644,15 +657,13 @@ const Dashboard = () => {
     return (
       <div>
         <div className="gold-ring-container bg-cover bg-center bg-no-repeat flex items-center justify-center max-w-[92px] max-h-[88px] min-w-[92px] min-h-[88px]">
-          {item.status === 1 &&
-            <IoClose size={50} color={"red"} />
-          }
-          {item.status === 2 &&
+          {item.status === 1 && <IoClose size={50} color={"red"} />}
+          {item.status === 2 && (
             <img
               src="/mobile/assets/3SCCheck.png"
               className="max-w-[43px] max-h-[27px] min-w-[43px] min-h-[27px]"
             />
-          }
+          )}
         </div>
         <div className="gradient-div font-changa font-semibold -mt-2 p-[2px] text-center rounded-full text-secondary ">
           ₦{item.price}
@@ -664,9 +675,7 @@ const Dashboard = () => {
   const TSCItemsEmpty = () => {
     return (
       <div>
-        <div className="gold-ring-container bg-cover bg-center bg-no-repeat flex items-center justify-center max-w-[92px] max-h-[88px] min-w-[92px] min-h-[88px]">
-          
-        </div>
+        <div className="gold-ring-container bg-cover bg-center bg-no-repeat flex items-center justify-center max-w-[92px] max-h-[88px] min-w-[92px] min-h-[88px]"></div>
         <div className="gradient-div font-changa font-semibold -mt-2 p-[2px] text-center rounded-full text-secondary ">
           ₦0.00
         </div>
@@ -699,9 +708,16 @@ const Dashboard = () => {
               >
                 Hi, {user?.details?.fullname?.split(" ")[0]}
               </span>
-              <div className="flex justify-bottom items-end mt-1 ml-1 cursor-pointer" 
-                  onClick={openNotification}>
-                <LiaBellSolid size={15} color={"fff"} />
+              <div
+                className="relative flex justify-bottom items-end mt-1 ml-1 cursor-pointer"
+                onClick={openNotification}
+              >
+                <FaBell size={22} color={"#808080"} />
+                {unreadNotfis > 0 && (
+                  <div className="absolute -right-[2px] top-[0px] bg-red-600 border border-white text-white text-[6px] rounded-full px-[2px] py-[0px]">
+                    {unreadNotfis}
+                  </div>
+                )}
               </div>
               <Drawer
                 isOpen={isOpen}
@@ -1074,15 +1090,15 @@ const Dashboard = () => {
             </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <hr/>
+              <hr />
               {notifications.map((item, index) => (
                 <div>
-                <div className="py-3 px-1">
-                  <b>{item.title}</b>
-                  <br/>
-                  {item.desciption}
-                </div>
-                <hr/>
+                  <div className="py-3 px-1">
+                    <b>{item.title}</b>
+                    <br />
+                    {item.desciption}
+                  </div>
+                  <hr />
                 </div>
               ))}
             </ModalBody>
@@ -1112,7 +1128,8 @@ const Dashboard = () => {
             <ModalCloseButton />
             <ModalBody>
               <br />
-              Boom Coin Tokens (BCT) are not available to buy at the moment. Please try again later.
+              Boom Coin Tokens (BCT) are not available to buy at the moment.
+              Please try again later.
               <br />
               <br />
             </ModalBody>
@@ -1146,8 +1163,8 @@ const Dashboard = () => {
               </Center>
               <br />
               To be eligible to sell, maintain a minimum balance of 500,000 Boom
-              Coin Tokens in your wallet and stay active. Keep swapping your alerts 
-              to accumulate more BCT!
+              Coin Tokens in your wallet and stay active. Keep swapping your
+              alerts to accumulate more BCT!
               <br />
               <br />
             </ModalBody>
@@ -1184,18 +1201,28 @@ const Dashboard = () => {
                 alignItems={"center"}
               >
                 <div className="w-1/3">
-                  <b>Rate</b><br/>
-                  <input size="5" value={sellPayload?.sell_percentage} disabled />
+                  <b>Rate</b>
+                  <br />
+                  <input
+                    size="5"
+                    value={sellPayload?.sell_percentage}
+                    disabled
+                  />
                 </div>
                 <div className="w-2/3">
-                  <b>Amount</b><br/>
-                  <input size="15" value={"₦" + sellPayload?.sell_amount_display} disabled />
+                  <b>Amount</b>
+                  <br />
+                  <input
+                    size="15"
+                    value={"₦" + sellPayload?.sell_amount_display}
+                    disabled
+                  />
                 </div>
               </Box>
               <p>
-                If you accept this offer, you agree to sell your Boom Coin Tokens at
-                the specified rate and will receive the cash equivalent in your
-                Main Wallet. Note: 5% Agency Fee applies.
+                If you accept this offer, you agree to sell your Boom Coin
+                Tokens at the specified rate and will receive the cash
+                equivalent in your Main Wallet. Note: 5% Agency Fee applies.
               </p>
             </ModalBody>
             <Box
@@ -1265,7 +1292,7 @@ const Dashboard = () => {
             </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              Hey Boomster, you can monetize your NairaBoom account and earn 
+              Hey Boomster, you can monetize your NairaBoom account and earn
               passive income when you meet the following criteria:
               <br />
               <br />
@@ -1281,9 +1308,10 @@ const Dashboard = () => {
               <br />
               1. Receive commission on every referral you make.
               <br />
-              2. Earn revenue daily from rollover swaps and winnings of members of your Trybe.
+              2. Earn revenue daily from rollover swaps and winnings of members
+              of your Trybe.
               <br />
-              3. Become a Nairaboom partner and earn performance bonuses. 
+              3. Become a Nairaboom partner and earn performance bonuses.
               <br />
               <br />
               <Center>
@@ -1392,9 +1420,10 @@ const Dashboard = () => {
             </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              You are not eligible for monetization. Build your Trybe and increase your Boom 
-              Coin Tokens.
-              <br /><br />
+              You are not eligible for monetization. Build your Trybe and
+              increase your Boom Coin Tokens.
+              <br />
+              <br />
               <Center>
                 <Button
                   w="100%"
@@ -1449,9 +1478,9 @@ const Dashboard = () => {
               <br />
               <br />
               <Center>
-                Did you know that there's no limit to the number of people you can 
-                invite to join your Trybe on NairaBoom? Invite more people and earn 
-                more money!
+                Did you know that there's no limit to the number of people you
+                can invite to join your Trybe on NairaBoom? Invite more people
+                and earn more money!
               </Center>
               <br />
               <Center>
@@ -1486,26 +1515,26 @@ const Dashboard = () => {
       {/* megaphone card */}
       <div className="gradient-div mt-2 w-full flex items-center justify-between text-secondary ">
         <marquee direction="left" loop="">
-        <div className="text-xs flex items-center py-[2px] pl-[5px]">
-          <img src="/mobile/assets/Group.svg" className="w-[25px] h-[25px]" />
-          {dailyWinners.map((item, index) => (
-            // eslint-disable-next-line react/jsx-key
-            <div className="inline-block">
-              <span
-                className="ml-1 text-[13px] font-normal"
-                style={{ fontFamily: "Source Sans Pro" }}
-              >
-                &nbsp;{item.fullname} cashed in&nbsp;
-              </span>
-              <span
-                className=" text-[13px] text-white font-bold"
-                style={{ fontFamily: "Source Sans Pro" }}
-              >
-                &nbsp;NGN {item.amount_won}&nbsp;
-              </span>
-            </div>
-          ))}
-        </div>
+          <div className="text-xs flex items-center py-[2px] pl-[5px]">
+            <img src="/mobile/assets/Group.svg" className="w-[25px] h-[25px]" />
+            {dailyWinners.map((item, index) => (
+              // eslint-disable-next-line react/jsx-key
+              <div className="inline-block">
+                <span
+                  className="ml-1 text-[13px] font-normal"
+                  style={{ fontFamily: "Source Sans Pro" }}
+                >
+                  &nbsp;{item.fullname} cashed in&nbsp;
+                </span>
+                <span
+                  className=" text-[13px] text-white font-bold"
+                  style={{ fontFamily: "Source Sans Pro" }}
+                >
+                  &nbsp;NGN {item.amount_won}&nbsp;
+                </span>
+              </div>
+            ))}
+          </div>
         </marquee>
         <div className="flex items-center rounded-br-md rounded-tr-md justify-center aspect-video small-ribbon bg-cover bg-center bg-no-repeat  h-[32px]">
           <div
@@ -1556,15 +1585,15 @@ const Dashboard = () => {
               <div className="absolute top-24 flex items-center space-x-2 justify-between">
                 {threeSureCashout.length === 0 ? (
                   <>
-                  <TSCItemsEmpty />
-                  <TSCItemsEmpty />
-                  <TSCItemsEmpty />
+                    <TSCItemsEmpty />
+                    <TSCItemsEmpty />
+                    <TSCItemsEmpty />
                   </>
                 ) : (
                   <>
-                  {threeSureCashout.map((each) => {
-                    return <TSCItems item={each} />;
-                  })}
+                    {threeSureCashout.map((each) => {
+                      return <TSCItems item={each} />;
+                    })}
                   </>
                 )}
               </div>
@@ -1853,9 +1882,9 @@ const Dashboard = () => {
               color="nairablue"
               textAlign={"center"}
             >
-              Unlock multiple ways to earn Boom Coin Tokens (BCT) 
-              on NairaBoom to boost your earnings. Tap the button 
-              below to discover all the opportunities waiting for you!
+              Unlock multiple ways to earn Boom Coin Tokens (BCT) on NairaBoom
+              to boost your earnings. Tap the button below to discover all the
+              opportunities waiting for you!
             </Text>
             <Box
               display={"flex"}
