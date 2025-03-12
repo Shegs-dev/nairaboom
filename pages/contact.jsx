@@ -64,7 +64,7 @@ const ContactPage = () => {
     },
     data: {
       fromAddress: contactMessage?.email,
-      toAddress: "info@nairaboom.ng",
+      toAddress: "support@nairaboom.ng",
       // ccAddress: "colleagues@mywork.com",
       // bccAddress: "restadmin1@restapi.com",
       subject: "Email - Contact us",
@@ -173,7 +173,7 @@ const ContactPage = () => {
             <Image src={email} alt="email icon" />{" "}
             <Text color={"nairablue"} fontWeight={400} fontSize="21.22px">
               {" "}
-              info@nairaboom.ng
+              support@nairaboom.ng
             </Text>
           </HStack>
         </Box>

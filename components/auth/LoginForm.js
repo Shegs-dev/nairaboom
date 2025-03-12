@@ -28,6 +28,7 @@ import {
 import useUser from "../../lib/hooks/useUser";
 import PlayResponsibly from "../general/PlayResponsibly";
 import {
+  getMonetizationEligibility,
   signInCall
 } from "../../src/apis/func";
 
@@ -89,6 +90,7 @@ const LoginForm = () => {
         return;
       }
 
+      const res = await getMonetizationEligibility(response.data.payload.token);
       signInformData.remember_me === true &&
         storeTokenInLocalStorage(response.data.payload.remember_me.token);
       storeTokenInLocalStorage2(response.data.payload.remember_me.token);
@@ -96,6 +98,11 @@ const LoginForm = () => {
       localStorage.setItem(
         "items",
         JSON.stringify(response.data.payload?.remember_me.token)
+      );
+
+      localStorage.setItem(
+        "monetize",
+        res?.data?.payload?.monetization_status
       );
 
       toast({

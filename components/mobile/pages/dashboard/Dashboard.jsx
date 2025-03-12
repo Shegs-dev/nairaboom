@@ -94,7 +94,8 @@ import {
   getThreeSureCashOutStatus,
   getNotifications,
   getDailyWinners,
-  sellDecline
+  sellDecline,
+  getProfile
 } from "../../../../src/apis/func";
 import { useRouter } from "next/router";
 import useUser from "../../../../lib/hooks/useUser";
@@ -114,7 +115,7 @@ const Dashboard = () => {
   const [agreeMonetizeModal, setAgreeMonetizeModal] = useState(false);
   const [agreedMonetizeModal, setAgreedMonetizeModal] = useState(false);
   const [notAllowMonetizeModal, setNotAllowMonetizeModal] = useState(false);
-  const [allowMonetize, setAllowMonetize] = useState(false);
+  const [allowMonetize, setAllowMonetize] = useState(0);
   const [agreeMonetize, setAgreeMonetize] = useState(false);
   const { user, error } = useUser();
   const bearerToken = user?.token;
@@ -130,7 +131,7 @@ const Dashboard = () => {
   const [cashOut1, setCashOut1] = useState(0);
   const [cashOut2, setCashOut2] = useState(0);
   const [cashOut3, setCashOut3] = useState(0);
-  const [unreadNotfis, setUnreadNotfis] = useState(4);
+  const [unreadNotfis, setUnreadNotfis] = useState(0);
 
   const [notifications, setNotifications] = useState([]);
   const [notificationModal, setNotificationModal] = useState(false);
@@ -253,6 +254,7 @@ const Dashboard = () => {
     boom();
     fetchBalance2();
     checkSellEligibility();
+    fetchMyNotifications();
   }, [bearerToken, router]);
 
   function convertStringToArray(inputString) {
@@ -329,6 +331,7 @@ const Dashboard = () => {
         position: "top"
       });
       setAgreeMonetize(true);
+      localStorage.setItem("monetize", 1);
     } else {
       toast({
         status: "error",
@@ -345,17 +348,23 @@ const Dashboard = () => {
 
   //check if monetize is active
   useEffect(() => {
+    let monetization_status = "";
     localStorage.setItem("referral_code", user?.details?.referral_code);
+    if (user?.details?.monetization_status && user?.details?.monetization_status.length > 0) {
+      monetization_status = user?.details?.monetization_status;
+    } else {
+      monetization_status = localStorage.getItem("monetize");
+    } 
     if (
-      user?.details?.monetization_status === 0 ||
-      user?.details?.monetization_status === 2
+      monetization_status === '0' ||
+      monetization_status === '2'
     ) {
-      setAllowMonetize(false);
-    } else if (user?.details?.monetization_status === 1) {
-      setAllowMonetize(true);
+      setAllowMonetize(0);
+    } else if (monetization_status === '1') {
+      setAllowMonetize(1);
       setAgreeMonetize(true);
-    } else if (user?.details?.monetization_status === 3) {
-      setAllowMonetize(true);
+    } else if (monetization_status === '3') {
+      setAllowMonetize(1);
       setAgreeMonetize(false);
     }
 
@@ -382,12 +391,12 @@ const Dashboard = () => {
       res?.data?.payload?.monetization_status === "0" ||
       res?.data?.payload?.monetization_status === "2"
     ) {
-      setAllowMonetize(false);
+      setAllowMonetize(0);
     } else if (res?.data?.payload?.monetization_status === "1") {
-      setAllowMonetize(true);
+      setAllowMonetize(1);
       setAgreeMonetize(true);
     } else if (res?.data?.payload?.monetization_status === "3") {
-      setAllowMonetize(true);
+      setAllowMonetize(1);
       setAgreeMonetize(false);
     }
   };
@@ -541,11 +550,12 @@ const Dashboard = () => {
     setIsLoading(false);
     if (res.status && (res.status === 200 || res.status === 201)) {
       setNotifications(res?.data?.payload?.content);
+      const notes = res?.data?.payload?.content;
+      setUnreadNotfis(notes.length);
     }
   };
 
   const openNotification = async () => {
-    fetchMyNotifications();
     setNotificationModal(true);
   };
 
@@ -712,7 +722,7 @@ const Dashboard = () => {
                 className="relative flex justify-bottom items-end mt-1 ml-1 cursor-pointer"
                 onClick={openNotification}
               >
-                <FaBell size={22} color={"#808080"} />
+                <FaBell size={18} color={"#f5f5f5"} />
                 {unreadNotfis > 0 && (
                   <div className="absolute -right-[2px] top-[0px] bg-red-600 border border-white text-white text-[6px] rounded-full px-[2px] py-[0px]">
                     {unreadNotfis}
@@ -863,11 +873,11 @@ const Dashboard = () => {
               </Drawer>
             </div>
             <div className="flex space-x-1 items-center">
-              {!allowMonetize ? (
+              {allowMonetize === 1 ? (
                 <>
                   <div
                     onClick={allowedModalRedirect}
-                    className="cursor-pointer"
+                    className="cursor-pointer" 
                   >
                     <img src="/mobile/assets/Monetize.png" />
                   </div>
@@ -1043,7 +1053,7 @@ const Dashboard = () => {
               <div className="flex space-x-2 items-center">
                 <div
                   onClick={fetchSellEligibility}
-                  className={`ccursor-pointer transition-transform transform active:scale-90 rounded-full py-2 px-4 w-fit text-[13px] ${
+                  className={`cursor-pointer transition-transform transform active:scale-90 rounded-full py-2 px-4 w-fit text-[13px] ${
                     sellButton == 0
                       ? "bg-[#DD3215]"
                       : " bg-secondary text-primary"
@@ -1054,11 +1064,7 @@ const Dashboard = () => {
                 </div>
                 <div
                   onClick={fetchBuyAvailability}
-                  className={`ccursor-pointer transition-transform transform active:scale-90 rounded-full py-2 px-4 w-fit text-[13px] ${
-                    sellButton == 0
-                      ? "bg-[#FFCF17]"
-                      : " bg-secondary text-primary"
-                  }`}
+                  className="cursor-pointer transition-transform transform active:scale-90 rounded-full py-2 px-4 w-fit text-[13px] bg-[#FFCF17]"
                   style={{ fontFamily: "Source Code Pro" }}
                 >
                   <b>BUY</b>

@@ -300,8 +300,7 @@ const ReferralLink = () => {
           >
             <RWebShare
               data={{
-                text: "I swap my bank alerts to Boom Coin Tokens (BCT) on NairaBoom and earn daily income. Join me now to receive 35,000 \
-                Boom Coin Tokens (BCT) and start cashing out too!",
+                text: "I swap my bank alerts into BCT on NairaBoom and earn daily income. Sign up now to receive 35,000 BCT Airdrop (Boom Coin Tokens) and start earning daily too!",
                 url: `https://nairaboom.ng/auth/signup/customer?r=${data?.referral_code}&type=normal&t=normal`,
                 title: "Nairaboom",
               }}
