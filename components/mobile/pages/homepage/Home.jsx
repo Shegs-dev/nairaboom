@@ -134,7 +134,8 @@ const Home = () => {
 
   return (
     <div className="w-full appearance-none bg-secondary text-white flex-1 overflow-y-auto ios-scroll-fix">
-      <div className="justify-center background-ribbon bg-cover bg-center bg-no-repeat  h-auto">
+      {/* <div className="justify-center background-ribbon bg-cover bg-center bg-no-repeat  h-auto"> */}
+      <div className="justify-center bg-center">
         <div className="w-full">
           <div className="flex py-10 w-full justify-center">
             <img src="/mobile/assets/NairaBoomLogo.svg" />
@@ -284,7 +285,8 @@ const Home = () => {
         </div>
       </div>
       {/* First Slide */}
-      <div className="justify-center mt-1 background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
+      {/* <div className="justify-center mt-1 background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto"> */}
+      <div className="justify-center mt-1 bg-center max-w-full min-w-full w-full">
         {/* <div className="flex items-start space-x-4 pt-2 pb-1 overflow-y-clip overflow-x-scroll"> */}
         <div className="space-x-4 pt-2 pb-1 relative w-full">
           {/* <div className="relative ">
@@ -552,7 +554,8 @@ const Home = () => {
       </div>
       {/* Games */}
       <div className="-mt-8  px-4">
-        <div className=" justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
+      {/* <div className=" justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto"> */}
+      <div className=" justify-center bg-center max-w-full min-w-full w-full">
           <p className="mt-1 text-[15px]" style={{ fontFamily: "Changa" }}>
             <b>Games</b>
           </p>
@@ -647,7 +650,8 @@ const Home = () => {
       {/* How to play */}
       <div>
         <div className="lg:-mt-20 mb-4">
-          <div className=" px-4 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
+        {/* <div className=" px-4 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto"> */}
+        <div className=" px-4 justify-center bg-center max-w-full min-w-full w-full">
             <p
               className="mt-4 mb-1 text-[15px]"
               style={{ fontFamily: "Changa" }}
@@ -669,7 +673,8 @@ const Home = () => {
       </div>
       {/*  */}
       <div className="appearance-none">
-        <div className="lg:-mt-40 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
+      {/* <div className="lg:-mt-40 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto"> */}
+      <div className="lg:-mt-40 justify-center bg-center max-w-full min-w-full w-full">
           <div className="gradient-div relative mt-2 max-w-screen overflow-x-hidden flex flex-col items-center max-w-screen mx-4 rounded-md">
             {/* <div className="-mt-3 mx-4 relative text-secondary justify-center background-ribbon1 bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto"> */}
             <img
@@ -686,7 +691,8 @@ const Home = () => {
             {/* </div> */}
           </div>
         </div>
-        <div className="lg:-mt-40 px-4 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
+        {/* <div className="lg:-mt-40 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto"> */}
+        <div className="lg:-mt-40 justify-center bg-center max-w-full min-w-full w-full">
           <div className="flex flex-col items-center w-full">
             <p
               className="text-[15px] text-primary mt-4 mb-1"
@@ -793,7 +799,8 @@ const Home = () => {
       </div>
 
       {/* Footer */}
-      <div className="flex flex-col flex-1 px-6 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto">
+      {/* <div className="flex flex-col flex-1 px-6 justify-center background-ribbon bg-cover bg-center max-w-full bg-no-repeat min-w-full w-full h-auto"> */}
+      <div className="flex flex-col flex-1 px-6 justify-center bg-center max-w-full min-w-full w-full">
         <div className="flex flex-col flex-1">
           <div className="mt-4 flex flex-col text-center items-center w-full">
             <div className="mb-1">
