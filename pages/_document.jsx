@@ -22,6 +22,7 @@ export default function Document() {
         {/* Global CSS for Scrolling */}
         <style>{`
           html, body {
+            overflow-y: scroll;
             -webkit-overflow-scrolling: touch;
             touch-action: auto;
           }
