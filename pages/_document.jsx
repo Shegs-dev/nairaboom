@@ -19,12 +19,13 @@ export default function Document() {
           rel="stylesheet"
         />
         <link rel="shortcut icon" href="/Nairaboom-Thumbnail.png" />{" "}
-        <style> 
+        {/* Global CSS for Scrolling */}
+        <style>{`
           html, body {
             -webkit-overflow-scrolling: touch;
             touch-action: auto;
           }
-        </style>{" "}
+        `}</style>
         {/* Add the Notix CDN script tag here */}
         <script src="https://cdn.notix.io/notix.min.js" async>
           {" "}
