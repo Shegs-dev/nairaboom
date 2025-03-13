@@ -114,6 +114,9 @@ const Home = () => {
     slidesToScroll: 1, // Number of slides to scroll per swipe/animation
     arrows: false, // Hide navigation arrows
     dotsClass: "slick-dots custom-dots" // Custom class for dots
+    touchMove: true, // Ensure touch scrolling works
+    swipe: true, // Allow swipe gestures
+    vertical: false, // Prevent vertical blocking
   };
 
   const [dailyWinners, setDailyWinners] = useState([]);
@@ -130,7 +133,7 @@ const Home = () => {
   };
 
   return (
-    <div className="w-full appearance-none bg-secondary text-white flex-1 overflow-y-auto">
+    <div className="w-full appearance-none bg-secondary text-white flex-1 overflow-y-auto ios-scroll-fix">
       <div className="justify-center background-ribbon bg-cover bg-center bg-no-repeat  h-auto">
         <div className="w-full">
           <div className="flex py-10 w-full justify-center">

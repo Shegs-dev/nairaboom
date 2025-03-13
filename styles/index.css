@@ -95,6 +95,11 @@ input:-webkit-autofill:active {
   scrollbar-width: none; /* Firefox */
 }
 
+.ios-scroll-fix {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
 .custom-dots {
   position: absolute;
   bottom: 20px; /* Adjust distance from the bottom */

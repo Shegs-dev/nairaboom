@@ -694,7 +694,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="w-full appearance-none bg-secondary text-white flex-1 overflow-y-auto">
+    <div className="w-full appearance-none bg-secondary text-white flex-1 overflow-y-auto ios-scroll-fix">
       <div className=" px-4 justify-center background-ribbon bg-cover bg-center bg-no-repeat  h-auto">
         <div className="w-full">
           <div className="flex py-10 w-full justify-center">
