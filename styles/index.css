@@ -94,6 +94,12 @@ input:-webkit-autofill:active {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+html, body {
+  -webkit-overflow-scrolling: touch;
+  touch-action: auto;
+}
+
 .custom-dots {
   position: absolute;
   bottom: 20px; /* Adjust distance from the bottom */
