@@ -113,7 +113,7 @@ const Home = () => {
     slidesToShow: 1, // Number of slides visible at a time
     slidesToScroll: 1, // Number of slides to scroll per swipe/animation
     arrows: false, // Hide navigation arrows
-    dotsClass: "slick-dots custom-dots" // Custom class for dots
+    dotsClass: "slick-dots custom-dots", // Custom class for dots
     touchMove: true, // Ensure touch scrolling works
     swipe: true, // Allow swipe gestures
     vertical: false, // Prevent vertical blocking
