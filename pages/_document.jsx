@@ -19,7 +19,13 @@ export default function Document() {
           rel="stylesheet"
         />
         <link rel="shortcut icon" href="/Nairaboom-Thumbnail.png" />{" "}
-        {/* Add the Notix CDN script tag here */}{" "}
+        <style> 
+          html, body {
+            -webkit-overflow-scrolling: touch;
+            touch-action: auto;
+          }
+        </style>{" "}
+        {/* Add the Notix CDN script tag here */}
         <script src="https://cdn.notix.io/notix.min.js" async>
           {" "}
         </script>{" "}
